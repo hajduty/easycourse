@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="EasyCourse.Core/EasyCourse.Core.csproj" Id="8061a616-525c-46e6-a818-4a632cb3cc32" />
+  <Project Path="EasyCourse.Infrastructure/EasyCourse.Infrastructure.csproj" Id="dec9745c-295a-466f-9c9e-fb9fa8bc0cca" />
+  <Project Path="EasyCourse.API/EasyCourse.API.csproj" />
+</Solution>
