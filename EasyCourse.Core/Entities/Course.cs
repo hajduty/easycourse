@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 
-namespace EasyCourse.Core.Entities
+namespace EasyCourse.Core.Entities;
+
+public class Course
 {
-    internal class Course
-    {
-    }
+    [Key]
+    public Guid CourseId { get; set; }
+    public string CourseName { get; set; }
+    public string CourseDescription { get; set; }
+    public string CreatedByUserId { get; set; }
+    public ICollection<Section> Sections { get; set; }
 }

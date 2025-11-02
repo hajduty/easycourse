@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace EasyCourse.Core.DTO;
 
-namespace EasyCourse.Core.Entities;
-
-public class User
+public class NewUserRequest
 {
-    [Key]
     public Guid Id { get; set; }
     public string Username { get; set; }
     public string PasswordHash { get; set; }
