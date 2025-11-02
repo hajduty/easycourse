@@ -1,4 +1,6 @@
 
+using EasyCourse.Infrastructure;
+
 namespace easycourse
 {
     public class Program
@@ -8,7 +10,7 @@ namespace easycourse
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddInfrastructure(builder.Configuration);
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -26,7 +28,6 @@ namespace easycourse
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
