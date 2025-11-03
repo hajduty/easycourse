@@ -1,28 +1,61 @@
 ﻿using EasyCourse.Core.DTO;
 using EasyCourse.Core.Entities;
 using EasyCourse.Core.Interfaces;
+using EasyCourse.Infrastructure.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace EasyCourse.Infrastructure.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository(AppDbContext _context) : IUserRepository
 {
-    public Task<User> CreateUser(NewUserRequest user)
+    private readonly PasswordHasher<User> _passwordHasher = new();
+
+    public async Task<User> CreateUser(AuthRequest user)
     {
-        throw new NotImplementedException();
+        if (await UserExists(user.Email))
+            throw new InvalidOperationException("User with this email already exists.");
+
+        var entity = new User
+        {
+            Id = Guid.NewGuid(),
+            Username = user.Username,
+            Email = user.Email,
+        };
+
+        entity.PasswordHash = _passwordHasher.HashPassword(entity, user.Password);
+
+        _context.Users.Add(entity);
+        await _context.SaveChangesAsync();
+
+        return entity;
     }
 
-    public Task DeleteUserById(Guid id)
+    public async Task DeleteUserById(Guid id)
     {
-        throw new NotImplementedException();
+        var user = await _context.Users.FindAsync(id);
+        if (user == null)
+            throw new KeyNotFoundException("User not found.");
+
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
     }
 
-    public Task GetUserById(Guid id)
+    public async Task<User?> GetUserByEmail(string email)
     {
-        throw new NotImplementedException();
+        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
 
-    public Task<bool> UserExists(string? email)
+    public async Task<User?> GetUserById(Guid id)
     {
-        throw new NotImplementedException();
+        return await _context.Users.FindAsync(id);
+    }
+
+    public async Task<bool> UserExists(string? email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            return false;
+
+        return await _context.Users.AnyAsync(u => u.Email == email);
     }
 }
