@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyCourse.Core.DTO
+namespace EasyCourse.Infrastructure.Services
 {
-    internal class CourseResult
+    internal class CourseService
     {
     }
 }

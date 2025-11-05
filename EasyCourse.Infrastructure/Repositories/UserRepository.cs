@@ -33,9 +33,7 @@ public class UserRepository(AppDbContext _context) : IUserRepository
 
     public async Task DeleteUserById(Guid id)
     {
-        var user = await _context.Users.FindAsync(id);
-        if (user == null)
-            throw new KeyNotFoundException("User not found.");
+        var user = await _context.Users.FindAsync(id) ?? throw new KeyNotFoundException("User not found.");
 
         _context.Users.Remove(user);
         await _context.SaveChangesAsync();

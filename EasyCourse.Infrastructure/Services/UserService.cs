@@ -5,21 +5,14 @@ using EasyCourse.Core.Mappings;
 
 namespace EasyCourse.Infrastructure.Services;
 
-public class UserService : IUserService
+public class UserService(IUserRepository userRepository) : IUserService
 {
-    private readonly IUserRepository _userRepository;
-
-    public UserService(IUserRepository userRepository)
-    {
-        _userRepository = userRepository;
-    }
-
     public async Task<UserResult> CreateUser(AuthRequest newUser)
     {
-        if (await _userRepository.UserExists(newUser.Email))
+        if (await userRepository.UserExists(newUser.Email))
             throw new InvalidOperationException($"User with email {newUser.Email} already exists.");
 
-        var createdUser = await _userRepository.CreateUser(newUser);
+        var createdUser = await userRepository.CreateUser(newUser);
         return UserMappings.MapToResult(createdUser);
     }
 
@@ -43,21 +36,19 @@ public class UserService : IUserService
 
     public async Task<UserResult?> GetUserById(Guid id)
     {
-        var user = await _userRepository.GetUserById(id);
+        var user = await userRepository.GetUserById(id);
         return user == null ? null : UserMappings.MapToResult(user);
     }
 
-    public async Task<UserResult?> GetUserByEmail(string email)
+    public Task<UserResult?> GetUserByEmail(string email)
     {
         throw new NotImplementedException("Not implemented.");
     }
 
     public async Task DeleteUserById(Guid id)
     {
-        var user = await _userRepository.GetUserById(id);
-        if (user == null)
-            throw new KeyNotFoundException($"User with id {id} not found.");
+        _ = await userRepository.GetUserById(id) ?? throw new KeyNotFoundException($"User with id {id} not found.");
 
-        await _userRepository.DeleteUserById(id);
+        await userRepository.DeleteUserById(id);
     }
 }
