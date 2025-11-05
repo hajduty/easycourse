@@ -2,40 +2,28 @@
 using EasyCourse.Core.Interfaces;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
 
 namespace EasyCourse.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 
-public class AuthController : ControllerBase
+public class AuthController(IAuthService authService) : ApiControllerBase
 {
-    private readonly IAuthService _authService;
-
-    public AuthController(IAuthService authService)
-    {
-        _authService = authService;
-    }
-
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] AuthRequest request)
     {
-        var result = await _authService.LoginUser(request.Email,request.Password);
+        var result = await authService.LoginUser(request.Email,request.Password);
 
-        if (!result.Success)
-            return BadRequest(result.Errors);
-
-        return Ok(result);
+        return HandleResult(result);
     }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] AuthRequest request)
     {
-        var result = await _authService.RegisterUser(request.Email, request.Password, request.Username);
+        var result = await authService.RegisterUser(request.Email, request.Password, request.Username);
 
-        if (!result.Success)
-            return BadRequest(result.Errors);
-
-        return Ok(result);
+        return HandleResult(result);
     }
 }

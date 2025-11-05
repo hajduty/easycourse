@@ -1,7 +1,8 @@
 
+using EasyCourse.API.Middleware;
 using EasyCourse.Infrastructure;
 
-namespace easycourse
+namespace EasyCourse.API
 {
     public class Program
     {
@@ -24,6 +25,8 @@ namespace easycourse
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseHttpsRedirection();
 
