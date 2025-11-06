@@ -7,6 +7,7 @@ namespace EasyCourse.Infrastructure.Services;
 
 public class UserService(IUserRepository userRepository) : IUserService
 {
+    /*
     public async Task<UserResult> CreateUser(AuthRequest newUser)
     {
         if (await userRepository.UserExists(newUser.Email))
@@ -15,6 +16,7 @@ public class UserService(IUserRepository userRepository) : IUserService
         var createdUser = await userRepository.CreateUser(newUser);
         return UserMappings.MapToResult(createdUser);
     }
+    */
 
     /*
     public async Task<UserResult> UpdateUser(Guid id, NewUserRequest updatedUser)

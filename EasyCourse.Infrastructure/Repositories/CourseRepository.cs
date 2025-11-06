@@ -34,12 +34,13 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
         return CourseMappings.CourseToDto(course.Entity);
     }
 
-    public async Task DeleteCourseById(Guid courseId, string userId)
+    public async Task<bool> DeleteCourseById(Guid courseId, string userId)
     {
         var course = await _context.Courses.FindAsync(courseId) ?? throw new KeyNotFoundException($"Course with id {courseId} not found.");
 
         _context.Courses.Remove(course);
         await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<CourseDto?> GetCourseById(Guid courseId)
@@ -64,7 +65,7 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
             .ToListAsync();
     }
 
-    public Task UpdateCourse(CourseDto updatedCourse, string userId)
+    public Task<bool> UpdateCourse(CourseDto updatedCourse, string userId)
     {
         throw new NotImplementedException();
     }

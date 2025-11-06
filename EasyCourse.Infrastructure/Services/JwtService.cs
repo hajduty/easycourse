@@ -8,15 +8,8 @@ using System.Text;
 
 namespace EasyCourse.Infrastructure.Services;
 
-public class JwtService : IJwtService
+public class JwtService(IConfiguration config) : IJwtService
 {
-    private readonly IConfiguration _config;
-
-    public JwtService(IConfiguration config)
-    {
-        _config = config;
-    }
-
     public string GenerateToken(User user)
     {
         var claims = new[]
@@ -26,15 +19,15 @@ public class JwtService : IJwtService
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
         
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var descriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddHours(int.Parse(_config["Jwt:ExpireHours"])),
-            Issuer = _config["Jwt:Issuer"],
-            Audience = _config["Jwt:Audience"],
+            Expires = DateTime.UtcNow.AddHours(int.Parse(config["Jwt:ExpireHours"]!)),
+            Issuer = config["Jwt:Issuer"],
+            Audience = config["Jwt:Audience"],
             SigningCredentials = creds
         };
 
