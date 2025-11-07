@@ -1,7 +1,7 @@
 ﻿using EasyCourse.Core.DTO;
 using EasyCourse.Core.Entities;
 
-namespace EasyCourse.Core.Interfaces;
+namespace EasyCourse.Core.Interfaces.Repository;
 
 public interface ICourseRepository
 {

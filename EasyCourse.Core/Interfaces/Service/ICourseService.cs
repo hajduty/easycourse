@@ -1,6 +1,6 @@
 ﻿using EasyCourse.Core.DTO;
 
-namespace EasyCourse.Core.Interfaces;
+namespace EasyCourse.Core.Interfaces.Service;
 
 public interface ICourseService
 {

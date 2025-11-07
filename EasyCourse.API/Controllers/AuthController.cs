@@ -1,5 +1,5 @@
 ﻿using EasyCourse.Core.DTO;
-using EasyCourse.Core.Interfaces;
+using EasyCourse.Core.Interfaces.Service;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.InteropServices;

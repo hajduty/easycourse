@@ -1,5 +1,5 @@
 ﻿using EasyCourse.Core.DTO;
-using EasyCourse.Core.Interfaces;
+using EasyCourse.Core.Interfaces.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -1,5 +1,5 @@
 ﻿using EasyCourse.Core.Entities;
-using EasyCourse.Core.Interfaces;
+using EasyCourse.Core.Interfaces.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;

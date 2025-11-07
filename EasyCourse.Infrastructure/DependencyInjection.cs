@@ -1,4 +1,5 @@
-﻿using EasyCourse.Core.Interfaces;
+﻿using EasyCourse.Core.Interfaces.Repository;
+using EasyCourse.Core.Interfaces.Service;
 using EasyCourse.Infrastructure.Data;
 using EasyCourse.Infrastructure.Repositories;
 using EasyCourse.Infrastructure.Services;
