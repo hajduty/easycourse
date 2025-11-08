@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyCourse.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251103150958_InitialCreate")]
+    [Migration("20251107191904_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -39,9 +39,8 @@ namespace EasyCourse.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedByUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CreatedByUserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CourseId");
 
@@ -123,11 +122,13 @@ namespace EasyCourse.Infrastructure.Migrations
 
             modelBuilder.Entity("EasyCourse.Core.Entities.Section", b =>
                 {
-                    b.HasOne("EasyCourse.Core.Entities.Course", null)
+                    b.HasOne("EasyCourse.Core.Entities.Course", "Course")
                         .WithMany("Sections")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("EasyCourse.Core.Entities.Course", b =>

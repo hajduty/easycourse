@@ -12,4 +12,5 @@ public class Section
 
     public string SectionData { get; set; } = string.Empty;
     public string SectionQuestions { get; set; } = string.Empty;
+    public Course? Course { get; set; } // navigation property
 }
