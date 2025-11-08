@@ -11,6 +11,7 @@ namespace EasyCourse.API.Controllers;
 public class AuthController(IAuthService authService) : ApiControllerBase
 {
     [HttpPost("login")]
+    [ProducesResponseType(typeof(ApiResponse<AuthResult>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Login([FromBody] AuthRequest request)
     {
         var result = await authService.LoginUser(request.Email,request.Password);
@@ -19,6 +20,7 @@ public class AuthController(IAuthService authService) : ApiControllerBase
     }
 
     [HttpPost("register")]
+    [ProducesResponseType(typeof(ApiResponse<AuthResult>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Register([FromBody] AuthRequest request)
     {
         var result = await authService.RegisterUser(request.Email, request.Password, request.Username);

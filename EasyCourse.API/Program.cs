@@ -1,6 +1,8 @@
 
+using EasyCourse.API.Filters;
 using EasyCourse.API.Middleware;
 using EasyCourse.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -21,11 +23,16 @@ namespace EasyCourse.API
             {
                 options.Conventions.Add(
                     new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
+                options.Filters.Add<ValidateModelAttribute>();
             });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new() { Title = "EasyCourse.API", Version = "v1" });
+                c.OperationFilter<CommonResponseOperationFilter>();
+            });
 
             builder.Services.AddAuthentication(options =>
             {
@@ -47,6 +54,11 @@ namespace EasyCourse.API
                     ),
                     NameClaimType = JwtRegisteredClaimNames.Sub
                 };
+            });
+
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
             });
 
             var app = builder.Build();
