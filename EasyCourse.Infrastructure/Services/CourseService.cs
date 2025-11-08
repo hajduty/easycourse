@@ -1,18 +1,19 @@
 ﻿using EasyCourse.Core.DTO;
-using EasyCourse.Core.Interfaces;
+using EasyCourse.Core.Interfaces.Repository;
+using EasyCourse.Core.Interfaces.Service;
 
 namespace EasyCourse.Infrastructure.Services;
 
 public class CourseService(ICourseRepository courseRepo) : ICourseService
 {
-    public async Task<CourseDto> CreateCourse(CourseDto newCourse, string userId)
+    public async Task<CourseDto> CreateCourse(CourseDto newCourse, Guid userId)
     {
         var course = await courseRepo.CreateCourse(newCourse, userId);
 
         return course ?? throw new InvalidOperationException("Failed to create course.");
     }
 
-    public async Task<bool> DeleteCourseById(Guid courseId, string userId)
+    public async Task<bool> DeleteCourseById(Guid courseId, Guid userId)
     {
         var course = await courseRepo.GetCourseById(courseId);
 
@@ -31,7 +32,7 @@ public class CourseService(ICourseRepository courseRepo) : ICourseService
         return course ?? throw new InvalidOperationException("Course does not exist");
     }
 
-    public async Task<IEnumerable<CourseDto>> GetCoursesByUserId(string userId)
+    public async Task<IEnumerable<CourseDto>> GetCoursesByUserId(Guid userId)
     {
         var courses = await courseRepo.GetCoursesByUserId(userId);
 
@@ -45,7 +46,7 @@ public class CourseService(ICourseRepository courseRepo) : ICourseService
         return (IEnumerable<CourseDto>)(courses ?? throw new InvalidOperationException("No courses found matching the query."));
     }
 
-    public Task<bool> UpdateCourse(CourseDto updatedCourse, string userId)
+    public Task<bool> UpdateCourse(CourseDto updatedCourse, Guid userId)
     {
         var result = courseRepo.UpdateCourse(updatedCourse, userId);
 

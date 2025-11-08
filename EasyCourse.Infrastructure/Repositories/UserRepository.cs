@@ -1,6 +1,6 @@
 ﻿using EasyCourse.Core.DTO;
 using EasyCourse.Core.Entities;
-using EasyCourse.Core.Interfaces;
+using EasyCourse.Core.Interfaces.Repository;
 using EasyCourse.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

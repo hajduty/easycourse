@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace EasyCourse.Core.DTO;
 
-namespace EasyCourse.Core.Entities;
-
-public class Section
+public class SectionDto
 {
-    [Key]
     public Guid SectionId { get; set; }
     public Guid CourseId { get; set; }
     public int Order { get; set; }
@@ -12,5 +9,4 @@ public class Section
 
     public string SectionData { get; set; } = string.Empty;
     public string SectionQuestions { get; set; } = string.Empty;
-    public Course? Course { get; set; } // navigation property
 }
