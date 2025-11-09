@@ -1,4 +1,4 @@
-﻿using EasyCourse.Core.DTO;
+﻿using EasyCourse.Core.DTO.Course;
 using EasyCourse.Core.Entities;
 using EasyCourse.Core.Interfaces.Repository;
 using EasyCourse.Core.Mappings;
@@ -14,27 +14,19 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
         return await _context.Courses.AnyAsync(c => c.CourseId == courseId);
     }
 
-    public async Task<CourseDto> CreateCourse(CourseDto newCourse, Guid userId)
+    public async Task<Course> CreateCourse(Course newCourse)
     {
-        var courseEntity = new Course
-        {
-            CourseName = newCourse.CourseName,
-            CourseDescription = newCourse.CourseDescription,
-            CreatedByUserId = userId,
-            Sections = newCourse.Sections
-        };
-
-        var course = await _context.Courses.AddAsync(courseEntity);
+        var course = await _context.Courses.AddAsync(newCourse);
 
         await _context.SaveChangesAsync();
 
         if (course == null)
             throw new InvalidOperationException("Failed to create course.");
 
-        return CourseMappings.CourseToDto(course.Entity);
+        return course.Entity;
     }
 
-    public async Task<bool> DeleteCourseById(Guid courseId, Guid userId)
+    public async Task<bool> DeleteCourseById(Guid courseId)
     {
         var course = await _context.Courses.FindAsync(courseId) ?? throw new KeyNotFoundException($"Course with id {courseId} not found.");
 
@@ -43,18 +35,15 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
         return true;
     }
 
-    public async Task<CourseDto?> GetCourseById(Guid courseId)
+    public async Task<Course?> GetCourseById(Guid courseId)
     {
-        return await _context.Courses.FindAsync(courseId) is Course course
-            ? CourseMappings.CourseToDto(course)
-            : null;
+        return await _context.Courses.FindAsync(courseId);
     }
 
-    public async Task<IEnumerable<CourseDto>> GetCoursesByUserId(Guid userId)
+    public async Task<IEnumerable<Course>> GetCoursesByUserId(Guid userId)
     {
         return await _context.Courses
             .Where(c => c.CreatedByUserId == userId)
-            .Select(c => CourseMappings.CourseToDto(c))
             .ToListAsync();
     }
 
@@ -65,8 +54,16 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
             .ToListAsync();
     }
 
-    public Task<bool> UpdateCourse(CourseDto updatedCourse, Guid userId)
+    public async Task<Course> UpdateCourse(Course updatedCourse)
     {
-        throw new NotImplementedException();
+        var getCourse = _context.Courses.Find(updatedCourse.CourseId) ?? throw new KeyNotFoundException($"Course with id {updatedCourse.CourseId} not found.");
+
+        getCourse.CourseName = updatedCourse.CourseName;
+        getCourse.CourseDescription = updatedCourse.CourseDescription;
+        if (updatedCourse.Sections != null)
+            getCourse.Sections = updatedCourse.Sections;
+
+        await _context.SaveChangesAsync();
+        return getCourse;
     }
 }

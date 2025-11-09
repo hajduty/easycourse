@@ -4,5 +4,6 @@ public class EnrolledCourse
 {
     public Guid UserId { get; set; }
     public Guid CourseId { get; set; }
+    public Course Course { get; set; } = null!;
     public Guid? LastCompletedSectionId { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using EasyCourse.Core.DTO;
+using EasyCourse.Core.DTO.Auth;
 using EasyCourse.Core.Interfaces.Service;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;

@@ -1,13 +1,13 @@
-﻿using EasyCourse.Core.DTO;
+﻿using EasyCourse.Core.DTO.Course;
 
 namespace EasyCourse.Core.Interfaces.Service;
 
 public interface ICourseService
 {
-    public Task<CourseDto> CreateCourse(CourseDto newCourse, Guid userId);
-    public Task<CourseDto?> GetCourseById(Guid courseId);
-    public Task<IEnumerable<CourseDto>> GetCoursesByUserId(Guid userId);
-    public Task<bool> UpdateCourse(CourseDto updatedCourse, Guid userId);
+    public Task<CourseResponse> CreateCourse(CourseRequest newCourse, Guid userId);
+    public Task<CourseResponse?> GetCourseById(Guid courseId);
+    public Task<IEnumerable<CourseResponse>> GetCoursesByUserId(Guid userId);
+    public Task<CourseResponse> UpdateCourse(CourseRequest updatedCourse, Guid userId);
     public Task<bool> DeleteCourseById(Guid courseId, Guid userId);
-    public Task<IEnumerable<CourseDto>> SearchCoursesAsync(string query);
+    public Task<IEnumerable<CourseResponse>> SearchCoursesAsync(string query);
 }

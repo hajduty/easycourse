@@ -1,4 +1,4 @@
-﻿using EasyCourse.Core.DTO;
+﻿using EasyCourse.Core.DTO.Auth;
 using EasyCourse.Core.Entities;
 using EasyCourse.Core.Interfaces.Repository;
 using EasyCourse.Infrastructure.Data;

@@ -1,4 +1,4 @@
-﻿using EasyCourse.Core.DTO;
+﻿using EasyCourse.Core.DTO.Auth;
 
 namespace EasyCourse.Core.Mappings;
 

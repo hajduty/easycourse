@@ -1,4 +1,4 @@
-﻿namespace EasyCourse.Core.DTO;
+﻿namespace EasyCourse.Core.DTO.Auth;
 
 public class UserResult
 {
