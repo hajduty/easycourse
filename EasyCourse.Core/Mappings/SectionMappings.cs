@@ -1,10 +1,13 @@
-﻿namespace EasyCourse.Core.Mappings;
+﻿using EasyCourse.Core.DTO;
+using EasyCourse.Core.Entities;
+
+namespace EasyCourse.Core.Mappings;
 
 public static class SectionMappings
 {
-    public static DTO.SectionDto ToDto(this Entities.Section section)
+    public static SectionDto ToDto(this Section section)
     {
-        return new DTO.SectionDto
+        return new SectionDto
         {
             SectionId = section.SectionId,
             CourseId = section.CourseId,
@@ -15,9 +18,9 @@ public static class SectionMappings
         };
     }
 
-    public static Entities.Section ToEntity(this DTO.SectionDto sectionDto)
+    public static Section ToEntity(this SectionDto sectionDto)
     {
-        return new Entities.Section
+        return new Section
         {
             SectionId = sectionDto.SectionId,
             CourseId = sectionDto.CourseId,
@@ -26,5 +29,15 @@ public static class SectionMappings
             SectionData = sectionDto.SectionData,
             SectionQuestions = sectionDto.SectionQuestions
         };
+    }
+
+    public static List<Section> ToEntity(this IEnumerable<SectionDto> sectionDtos)
+    {
+        return sectionDtos.Select(s => s.ToEntity()).ToList();
+    }
+
+    public static List<SectionDto> ToDto(this IEnumerable<Section> sections)
+    {
+        return sections.Select(s => s.ToDto()).ToList();
     }
 }

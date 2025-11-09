@@ -26,19 +26,6 @@ namespace EasyCourse.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EnrolledCourses",
-                columns: table => new
-                {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LastCompletedSectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EnrolledCourses", x => new { x.UserId, x.CourseId });
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -51,6 +38,25 @@ namespace EasyCourse.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EnrolledCourses",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LastCompletedSectionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EnrolledCourses", x => new { x.UserId, x.CourseId });
+                    table.ForeignKey(
+                        name: "FK_EnrolledCourses_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "CourseId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,6 +80,11 @@ namespace EasyCourse.Infrastructure.Migrations
                         principalColumn: "CourseId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EnrolledCourses_CourseId",
+                table: "EnrolledCourses",
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sections_CourseId",

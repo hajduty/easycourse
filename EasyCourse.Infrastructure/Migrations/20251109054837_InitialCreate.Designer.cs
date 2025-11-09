@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyCourse.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251107191904_InitialCreate")]
+    [Migration("20251109054837_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -59,6 +59,8 @@ namespace EasyCourse.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "CourseId");
+
+                    b.HasIndex("CourseId");
 
                     b.ToTable("EnrolledCourses");
                 });
@@ -120,6 +122,17 @@ namespace EasyCourse.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("EasyCourse.Core.Entities.EnrolledCourse", b =>
+                {
+                    b.HasOne("EasyCourse.Core.Entities.Course", "Course")
+                        .WithMany("Participants")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
             modelBuilder.Entity("EasyCourse.Core.Entities.Section", b =>
                 {
                     b.HasOne("EasyCourse.Core.Entities.Course", "Course")
@@ -133,6 +146,8 @@ namespace EasyCourse.Infrastructure.Migrations
 
             modelBuilder.Entity("EasyCourse.Core.Entities.Course", b =>
                 {
+                    b.Navigation("Participants");
+
                     b.Navigation("Sections");
                 });
 #pragma warning restore 612, 618

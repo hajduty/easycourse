@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using SwaggerThemes;
 using System.Text;
 
 namespace EasyCourse.API
@@ -67,7 +68,7 @@ namespace EasyCourse.API
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(Theme.UniversalDark);
             }
 
             app.UseMiddleware<ErrorHandlingMiddleware>();

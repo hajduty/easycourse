@@ -1,4 +1,5 @@
 ﻿using EasyCourse.Core.DTO;
+using EasyCourse.Core.DTO.Course;
 using EasyCourse.Core.Interfaces.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,8 +13,8 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
 {
     [HttpPost]
     [Authorize]
-    [ProducesResponseType(typeof(ApiResponse<CourseDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CreateCourse([FromBody] CourseDto newCourse)
+    [ProducesResponseType(typeof(ApiResponse<CourseResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> CreateCourse([FromBody] CourseRequest newCourse)
     {
         var userId = GetUserId();
         if (userId == null)
@@ -25,7 +26,7 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
     }
 
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(ApiResponse<CourseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<CourseResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCourse(Guid id)
     {
         var course = await courseService.GetCourseById(id);
@@ -33,7 +34,7 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
     }
 
     [HttpGet("user/{userId}")]
-    [ProducesResponseType(typeof(ApiResponse<List<CourseDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<List<CourseResponse>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCoursesByUser(Guid userId)
     {
         var courses = await courseService.GetCoursesByUserId(userId);
@@ -41,7 +42,7 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
     }
 
     [HttpGet("search")]
-    [ProducesResponseType(typeof(ApiResponse<List<CourseDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<List<CourseResponse>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchCourses([FromQuery] string query)
     {
         var courses = await courseService.SearchCoursesAsync(query);
@@ -50,14 +51,14 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
 
     [HttpPut]
     [Authorize]
-    [ProducesResponseType(typeof(ApiResponse<CourseDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> UpdateCourse([FromBody] CourseDto updatedCourse)
+    [ProducesResponseType(typeof(ApiResponse<CourseRequest>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> UpdateCourse([FromBody] CourseRequest updatedCourse)
     {
         var userId = GetUserId();
         if (userId == null)
             return Unauthorized("User is not authenticated.");
 
         var result = await courseService.UpdateCourse(updatedCourse, new Guid(userId));
-        return result ? HandleBoolResult(result, "Course updated successfully") : HandleBoolResult(result, "Failed to update course");
+        return HandleResult(result);
     }
 }
