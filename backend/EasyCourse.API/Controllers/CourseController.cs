@@ -16,7 +16,7 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
     [ProducesResponseType(typeof(ApiResponse<CourseResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateCourse([FromBody] CourseRequest newCourse)
     {
-        var userId = GetUserId();
+        var userId = GetUserId(); 
         if (userId == null)
             return Unauthorized("User is not authenticated.");
 
