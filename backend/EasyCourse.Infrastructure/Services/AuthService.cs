@@ -28,7 +28,7 @@ public class AuthService(IUserRepository userRepository, IJwtService jwtService)
         return new AuthResult
         {
             Token = token,
-            UserId = user.Id.ToString()
+            User = UserMappings.MapToResult(user)
         };
     }
 
@@ -51,7 +51,7 @@ public class AuthService(IUserRepository userRepository, IJwtService jwtService)
         return new AuthResult
         {
             Token = token,
-            UserId = user.Id.ToString()
+            User = UserMappings.MapToResult(user)
         };
     }
 }

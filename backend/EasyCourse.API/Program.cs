@@ -62,6 +62,17 @@ namespace EasyCourse.API
                 options.SuppressModelStateInvalidFilter = true;
             });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin", policy =>
+                {
+                    policy.WithOrigins(builder.Configuration["AllowedOrigin"]!)
+                          .AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .AllowCredentials();
+                });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -70,6 +81,8 @@ namespace EasyCourse.API
                 app.UseSwagger();
                 app.UseSwaggerUI(Theme.UniversalDark);
             }
+
+            app.UseCors("AllowOrigin");
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
