@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Navbar } from "./components/Navbar"
-import dashboard from '@/assets/dashboard-dark.png';
 import { useNavigate } from "react-router";
 
 export const HomePage = () => {

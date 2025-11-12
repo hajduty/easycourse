@@ -10,7 +10,7 @@ function AuthPage() {
           <BubbleBackground
       interactive={true}
       draggable={false}
-      className="absolute inset-0 flex items-center justify-center rounded-xl opacity-10 sepia-100"
+      className="absolute inset-0 flex items-center justify-center rounded-xl opacity-10 saturate-0"
     />
       <Tabs defaultValue="login" className="w-96">
         <TabsList className="px-4">
