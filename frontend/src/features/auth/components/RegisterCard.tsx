@@ -5,12 +5,14 @@ import { useAuth } from "@/providers/AuthProvider"
 import { Label } from "@radix-ui/react-label"
 import { useMutation } from "@tanstack/react-query"
 import { sendRegisterRequest } from "../api"
-import { useState } from "react"
+import { useRef, useState } from "react"
 
 export const RegisterCard = () => {
   const {login} =  useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const registerRef = useRef<HTMLInputElement>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const mutation = useMutation({
     mutationFn: () => sendRegisterRequest(email, password),
@@ -18,13 +20,13 @@ export const RegisterCard = () => {
       if (res.success) {
         login(res.data.token, res.data.user);
       }
-      if (res.success === false) {
-        alert(res.message || res.errors);
-      }
     },
-    onError: (err) => {
+    onError: (err) =>{
       console.error(err);
-    },
+      setPassword("");
+      setError("Email already in use, please try again.");
+      registerRef.current?.focus();
+    }
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -46,6 +48,7 @@ export const RegisterCard = () => {
             <div className="grid gap-2">
               <Label htmlFor="registerEmail">Email</Label>
               <Input
+                ref={registerRef}
                 id="registerEmail"
                 type="email"
                 placeholder="user@example.com"
@@ -63,10 +66,11 @@ export const RegisterCard = () => {
           </div>
         </form>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex flex-col">
         <Button type="submit" className="w-full" onClick={handleSubmit}>
           {mutation.isPending ? "Registering..." : "Register"}
         </Button>
+        {error && <p className="mt-4 text-xs text-red-400 text-start p-0">{error}</p>}
       </CardFooter>
     </div>
   )
