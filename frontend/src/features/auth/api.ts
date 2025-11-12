@@ -11,7 +11,7 @@ export const sendLoginRequest = async (
     password,
   });
 
-    console.log("sendlogin returns:", JSON.stringify(data));
+  //console.log("sendlogin returns:", JSON.stringify(data));
 
   return data;
 };
@@ -25,7 +25,7 @@ export const sendRegisterRequest = async (
     password,
   });
 
-  console.log("sendRegisterRequest returns:", JSON.stringify(data));
+  //console.log("sendRegisterRequest returns:", JSON.stringify(data));
 
   return data;
 };

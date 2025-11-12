@@ -1,9 +1,11 @@
 export interface CourseResponse {
   courseId: string;
-  title: string;
-  description: string;
-  createdByUserId: string;
+  courseName: string;
+  courseDescription: string;
+  createdBy: string;
   sections: any[];
+  participantCount: number;
+  createdAt: Date;
 }
 
 export interface CourseRequest {

@@ -9,7 +9,8 @@ function AuthPage() {
     <div className="h-screen w-screen flex flex-col justify-center items-center gap-6 bg-stone-950">
           <BubbleBackground
       interactive={true}
-      className="absolute inset-0 flex items-center justify-center rounded-xl opacity-5"
+      draggable={false}
+      className="absolute inset-0 flex items-center justify-center rounded-xl opacity-10 saturate-0"
     />
       <Tabs defaultValue="login" className="w-96">
         <TabsList className="px-4">
@@ -17,7 +18,7 @@ function AuthPage() {
           <TabsTrigger value="register">Register</TabsTrigger>
         </TabsList>
         <Card className="">
-          <TabsContents className="py-6">
+          <TabsContents className="py-4">
             <TabsContent value="login">
               <LoginCard />
             </TabsContent>
