@@ -36,10 +36,15 @@ namespace EasyCourse.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CourseId");
+
+                    b.HasIndex("CreatedByUserId");
 
                     b.ToTable("Courses");
                 });
@@ -117,6 +122,17 @@ namespace EasyCourse.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("EasyCourse.Core.Entities.Course", b =>
+                {
+                    b.HasOne("EasyCourse.Core.Entities.User", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedByUser");
                 });
 
             modelBuilder.Entity("EasyCourse.Core.Entities.EnrolledCourse", b =>

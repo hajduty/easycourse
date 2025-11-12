@@ -69,8 +69,18 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
             {
                 courseQuery = query.SortBy.ToLower() switch
                 {
-                    "coursename" => query.Descending ? courseQuery.OrderByDescending(c => c.CourseName) : courseQuery.OrderBy(c => c.CourseName),
-                    "participantcount" => query.Descending ? courseQuery.OrderByDescending(c => c.Participants.Count) : courseQuery.OrderBy(c => c.Participants.Count),
+                    "coursename" => query.Descending
+                        ? courseQuery.OrderByDescending(c => c.CourseName)
+                        : courseQuery.OrderBy(c => c.CourseName),
+
+                    "Popular" => query.Descending
+                        ? courseQuery.OrderByDescending(c => c.Participants.Count)
+                        : courseQuery.OrderBy(c => c.Participants.Count),
+
+                    "Created" => query.Descending
+                        ? courseQuery.OrderByDescending(c => c.CreatedAt)
+                        : courseQuery.OrderBy(c => c.CreatedAt),
+
                     _ => courseQuery
                 };
             }

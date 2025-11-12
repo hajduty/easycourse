@@ -43,7 +43,7 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(ApiResponse<List<CourseResponse>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCourses([FromQuery] CourseQuery query)
+    public async Task<IActionResult> GetCourses([FromQuery(Name = "")] CourseQuery query)
     {
         var courses = await courseService.GetCoursesAsync(query);
         return HandleResult(courses);

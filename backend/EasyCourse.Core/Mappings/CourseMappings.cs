@@ -12,9 +12,10 @@ public static class CourseMappings
             CourseId = course.CourseId,
             CourseName = course.CourseName,
             CourseDescription = course.CourseDescription,
-            CreatedBy = course.CreatedByUser.Username,
+            CreatedBy = course.CreatedByUser?.Username,
             Sections = course.Sections.ToDto(),
-            ParticipantCount = course.Participants?.Count ?? 0
+            ParticipantCount = course.Participants?.Count ?? 0,
+            CreatedAt = course.CreatedAt
         };
     }
 
