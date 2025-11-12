@@ -1,4 +1,5 @@
-﻿using EasyCourse.Core.DTO.Course;
+﻿using EasyCourse.Core.DTO;
+using EasyCourse.Core.DTO.Course;
 
 namespace EasyCourse.Core.Interfaces.Service;
 
@@ -9,5 +10,5 @@ public interface ICourseService
     public Task<IEnumerable<CourseResponse>> GetCoursesByUserId(Guid userId);
     public Task<CourseResponse> UpdateCourse(CourseRequest updatedCourse, Guid userId);
     public Task<bool> DeleteCourseById(Guid courseId, Guid userId);
-    public Task<IEnumerable<CourseResponse>> SearchCoursesAsync(string query);
+    public Task<PagedResponse<CourseResponse>> GetCoursesAsync(CourseQuery query);
 }

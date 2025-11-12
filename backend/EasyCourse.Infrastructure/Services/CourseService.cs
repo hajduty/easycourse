@@ -1,4 +1,5 @@
-﻿using EasyCourse.Core.DTO.Course;
+﻿using EasyCourse.Core.DTO;
+using EasyCourse.Core.DTO.Course;
 using EasyCourse.Core.Interfaces.Repository;
 using EasyCourse.Core.Interfaces.Service;
 using EasyCourse.Core.Mappings;
@@ -35,18 +36,20 @@ public class CourseService(ICourseRepository courseRepo) : ICourseService
         return CourseMappings.ToResponseDto(course) ?? throw new InvalidOperationException("Course does not exist");
     }
 
+    public async Task<PagedResponse<CourseResponse>> GetCoursesAsync(CourseQuery query)
+    {
+        var (courses, totalCount) = await courseRepo.GetAndFilterCoursesAsync(query);
+
+        var response = courses.ToResponseDto();
+
+        return new PagedResponse<CourseResponse>(response, totalCount, query.Page, query.PageSize);
+    }
+
     public async Task<IEnumerable<CourseResponse>> GetCoursesByUserId(Guid userId)
     {
         var courses = await courseRepo.GetCoursesByUserId(userId);
 
         return courses == null || !courses.Any() ? throw new InvalidOperationException("No courses found for this user.") : courses.ToResponseDto();
-    }
-
-    public async Task<IEnumerable<CourseResponse>> SearchCoursesAsync(string query)
-    {
-        var courses = await courseRepo.SearchCoursesAsync(query);
-
-        return (IEnumerable<CourseResponse>)(courses ?? throw new InvalidOperationException("No courses found matching the query."));
     }
 
     public async Task<CourseResponse> UpdateCourse(CourseRequest updatedCourse, Guid userId)

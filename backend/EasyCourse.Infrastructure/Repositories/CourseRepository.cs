@@ -44,14 +44,48 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
     {
         return await _context.Courses
             .Where(c => c.CreatedByUserId == userId)
+            .Include(c => c.CreatedByUser)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Course>> SearchCoursesAsync(string query)
+    public async Task<(IEnumerable<Course> Courses, int TotalCount)> GetAndFilterCoursesAsync(CourseQuery query)
     {
-        return await _context.Courses
-            .Where(c => c.CourseName.Contains(query) || c.CourseDescription.Contains(query))
-            .ToListAsync();
+        IQueryable<Course> courseQuery = _context.Courses.Include(c => c.Participants).Include(c => c.CreatedByUser).AsNoTracking();
+
+        if (!string.IsNullOrEmpty(query.Query))
+        {
+            courseQuery = courseQuery.Where(c => c.CourseName.Contains(query.Query) || c.CourseDescription.Contains(query.Query));
+        }
+
+        if (query.MinParticipants.HasValue)
+        {
+            courseQuery = courseQuery.Where(c => c.Participants.Count >= query.MinParticipants.Value);
+        }
+
+        try
+        {
+            var totalCount = await courseQuery.CountAsync();
+            if (!string.IsNullOrEmpty(query.SortBy))
+            {
+                courseQuery = query.SortBy.ToLower() switch
+                {
+                    "coursename" => query.Descending ? courseQuery.OrderByDescending(c => c.CourseName) : courseQuery.OrderBy(c => c.CourseName),
+                    "participantcount" => query.Descending ? courseQuery.OrderByDescending(c => c.Participants.Count) : courseQuery.OrderBy(c => c.Participants.Count),
+                    _ => courseQuery
+                };
+            }
+
+            var courses = await courseQuery
+                .Skip((query.Page - 1) * query.PageSize)
+                .Take(query.PageSize)
+                .ToListAsync();
+
+            return (courses, totalCount);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An error occurred while retrieving courses.", ex);
+        }
     }
 
     public async Task<Course> UpdateCourse(Course updatedCourse)

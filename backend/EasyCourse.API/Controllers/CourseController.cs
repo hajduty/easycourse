@@ -41,11 +41,11 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
         return HandleResult(courses);
     }
 
-    [HttpGet("search")]
+    [HttpGet]
     [ProducesResponseType(typeof(ApiResponse<List<CourseResponse>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> SearchCourses([FromQuery] string query)
+    public async Task<IActionResult> GetCourses([FromQuery] CourseQuery query)
     {
-        var courses = await courseService.SearchCoursesAsync(query);
+        var courses = await courseService.GetCoursesAsync(query);
         return HandleResult(courses);
     }
 

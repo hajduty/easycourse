@@ -10,6 +10,8 @@ public class Course
     public required string CourseName { get; set; }
     public required string CourseDescription { get; set; }
     public required Guid CreatedByUserId { get; set; }
+    [JsonIgnore]
+    public User? CreatedByUser { get; set; }
     public ICollection<Section> Sections { get; set; } = [];
     [JsonIgnore]
     public ICollection<EnrolledCourse> Participants { get; set; } = [];

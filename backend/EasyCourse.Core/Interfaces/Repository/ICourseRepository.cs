@@ -11,5 +11,5 @@ public interface ICourseRepository
     Task<Course> UpdateCourse(Course updatedCourse);
     Task<bool> DeleteCourseById(Guid courseId);
     Task<bool> CourseExists(Guid courseId);
-    Task<IEnumerable<Course>> SearchCoursesAsync(string query);
+    Task<(IEnumerable<Course> Courses, int TotalCount)> GetAndFilterCoursesAsync(CourseQuery query);
 }
