@@ -4,27 +4,40 @@ import { CourseCard } from "./components/CourseCard";
 import { CourseFilter } from "./components/CourseFilter";
 import { CoursePagination } from "./components/CoursePagination";
 import { CourseSearch } from "./components/CourseSearch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { GetCourses } from "./api";
 import { useDebounce } from "use-debounce";
+import { useSearchParams } from "react-router";
 
 export const CoursePage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [query, setQuery] = useState<CourseQuery>({
-    query: "",
-    page: 1,
-    pageSize: 8,
-    sortBy: "Popular",
-    descending: true,
+    query: searchParams.get("query") ?? "",
+    page: Number(searchParams.get("page")) || 1,
+    pageSize: Number(searchParams.get("pageSize")) || 8,
+    sortBy: searchParams.get("sortBy") ?? "Popular",
+    descending: searchParams.get("descending") === "true",
   });
 
   const [debouncedQuery] = useDebounce(query, 200);
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["courses", debouncedQuery],
     queryFn: async () => GetCourses(debouncedQuery),
     staleTime: 0,
   });
+
+  useEffect(() => {
+    setSearchParams({
+      query: query.query!,
+      page: String(query.page),
+      pageSize: String(query.pageSize),
+      sortBy: query.sortBy!,
+      descending: String(query.descending),
+    });
+  }, [query, setSearchParams]);
 
   const courses = data?.data.items ?? [];
 
