@@ -1,4 +1,5 @@
 ﻿using EasyCourse.Core.DTO;
+using EasyCourse.Core.Entities;
 using EasyCourse.Core.Interfaces.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,11 @@ public class SectionController(ISectionService sectionService) : ApiControllerBa
 {
     [HttpGet]
     [ProducesResponseType(typeof(ApiResponse<List<SectionDto>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetSections()
+    public async Task<IActionResult> GetSectionsByCourseId(Guid courseId)
     {
-        return Ok("GetSections endpoint is not yet implemented.");
+        var sections = await sectionService.GetSectionsByCourseId(courseId);
+
+        return HandleResult(sections);
     }
 
     [Authorize]
@@ -25,7 +28,7 @@ public class SectionController(ISectionService sectionService) : ApiControllerBa
 
         var createdSection = await sectionService.CreateSection(section, new Guid(userId));
 
-        return Ok(createdSection);
+        return HandleResult(createdSection);
     }
 
     [Authorize]
@@ -37,7 +40,7 @@ public class SectionController(ISectionService sectionService) : ApiControllerBa
 
         var updatedSection = await sectionService.UpdateSection(section, new Guid(userId));
 
-        return Ok(updatedSection);
+        return HandleResult(updatedSection);
     }
 
     [Authorize]

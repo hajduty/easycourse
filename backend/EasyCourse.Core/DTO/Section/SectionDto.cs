@@ -9,4 +9,5 @@ public class SectionDto
 
     public string SectionData { get; set; } = string.Empty;
     public string SectionQuestions { get; set; } = string.Empty;
+    public int ReadingTime { get; set; } = 0;
 }

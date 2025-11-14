@@ -14,7 +14,8 @@ public static class SectionMappings
             Order = section.Order,
             Title = section.Title,
             SectionData = section.SectionData,
-            SectionQuestions = section.SectionQuestions
+            SectionQuestions = section.SectionQuestions,
+            ReadingTime = section.ReadingTime,
         };
     }
 
@@ -27,7 +28,8 @@ public static class SectionMappings
             Order = sectionDto.Order,
             Title = sectionDto.Title,
             SectionData = sectionDto.SectionData,
-            SectionQuestions = sectionDto.SectionQuestions
+            SectionQuestions = sectionDto.SectionQuestions,
+            ReadingTime = sectionDto.ReadingTime,
         };
     }
 
