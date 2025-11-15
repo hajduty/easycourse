@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace EasyCourse.Core.Entities;
@@ -6,6 +7,7 @@ namespace EasyCourse.Core.Entities;
 public class Section
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid SectionId { get; set; }
     public Guid CourseId { get; set; }
     public int Order { get; set; }
