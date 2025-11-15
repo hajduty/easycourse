@@ -37,7 +37,7 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
 
     public async Task<Course?> GetCourseById(Guid courseId)
     {
-        return await _context.Courses.FindAsync(courseId);
+        return await _context.Courses.Include(c => c.CreatedByUser).FirstOrDefaultAsync(c => c.CourseId == courseId);
     }
 
     public async Task<IEnumerable<Course>> GetCoursesByUserId(Guid userId)

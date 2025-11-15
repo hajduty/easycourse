@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthProvider } from './providers/AuthProvider.tsx'
 import { HomePage } from './features/home/HomePage.tsx'
 import { CoursePage } from './features/course/CoursePage.tsx'
+import { CourseInfo } from './features/course/CourseInfo.tsx'
 
 const queryClient = new QueryClient();
 
@@ -18,7 +19,8 @@ createRoot(document.getElementById('root')!).render(
         <BrowserRouter>
           <Routes>
             <Route index path="/" element={<HomePage></HomePage>} />
-            <Route path="course" element={<CoursePage></CoursePage>} />
+            <Route path="course" element={<CoursePage />} />
+            <Route path="course/:courseId" element={<CourseInfo />} />
             <Route element={<AuthPage />} path="auth"></Route>
           </Routes>
         </BrowserRouter>

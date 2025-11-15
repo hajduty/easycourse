@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace EasyCourse.Core.Entities;
@@ -6,6 +7,7 @@ namespace EasyCourse.Core.Entities;
 public class Course
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid CourseId { get; set; }
     public required string CourseName { get; set; }
     public required string CourseDescription { get; set; }

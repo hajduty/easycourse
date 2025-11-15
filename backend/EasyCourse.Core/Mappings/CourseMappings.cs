@@ -13,6 +13,7 @@ public static class CourseMappings
             CourseName = course.CourseName,
             CourseDescription = course.CourseDescription,
             CreatedBy = course.CreatedByUser?.Username,
+            CreatedById = course.CreatedByUserId.ToString(),
             Sections = course.Sections.ToDto(),
             ParticipantCount = course.Participants?.Count ?? 0,
             CreatedAt = course.CreatedAt

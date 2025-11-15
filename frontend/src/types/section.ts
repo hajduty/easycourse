@@ -5,4 +5,5 @@ export interface Section {
   courseId: string;
   sectionData: any;
   sectionQuestions: any;
+  readingTime: number;
 }
