@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { Navbar } from "../home/components/Navbar"
 import { CourseContent } from "./components/CourseContent"
-import { GetCourseById, GetCourses, GetCoursesByUserId, GetSections } from "./api";
-import { Link, useNavigate, useParams } from "react-router";
+import { GetCourseById, GetCoursesByUserId, GetSections } from "./api";
+import { Link, useParams } from "react-router";
 
 export const CourseInfo = () => {
-  const navigate = useNavigate();
   const { courseId } = useParams();
 
   const sectionsQuery = useQuery({
@@ -53,8 +52,7 @@ export const CourseInfo = () => {
           </div>
         </div>
 
-        <div className=" flex flex-col gap-6 flex-3
-          bg-stone-900/40 border-r border-stone-800 py-16 px-8">
+        <div className=" flex flex-col gap-6 flex-3 border-r border-stone-800 py-16 px-8">
           <div className="w-full h-72 bg-stone-800 rounded-xl">
             <img
               draggable={false}

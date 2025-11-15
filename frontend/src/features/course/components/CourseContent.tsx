@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator"
 import type { Section } from "@/types/section"
-import React, { type FC } from "react"
+import { type FC } from "react"
 
 export const CourseContent: FC<Section> = ({title, order, readingTime}) => {
   return (

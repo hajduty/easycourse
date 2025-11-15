@@ -13,7 +13,7 @@ export const Navbar = () => {
 
       <div className="absolute left-1/2 transform -translate-x-1/2 flex gap-4">
         <button className="px-4 py-1 rounded hover:bg-stone-800 transition cursor-pointer" onClick={() => navigate("/course")}>Learn</button>
-        <button className="px-4 py-1 rounded hover:bg-stone-800 transition cursor-pointer" onClick={() => navigate("/dashboard")}>Create</button>
+        <button className="px-4 py-1 rounded hover:bg-stone-800 transition cursor-pointer" onClick={() => navigate("/course/create")}>Create</button>
         <button className="px-4 py-1 rounded hover:bg-stone-800 transition cursor-pointer" onClick={() => navigate("/rankings")}>Rankings</button>
       </div>
 
