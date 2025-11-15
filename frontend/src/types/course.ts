@@ -3,6 +3,7 @@ export interface CourseResponse {
   courseName: string;
   courseDescription: string;
   createdBy: string;
+  createdById: string;
   sections: any[];
   participantCount: number;
   createdAt: Date;
