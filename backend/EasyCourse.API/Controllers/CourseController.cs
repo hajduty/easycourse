@@ -49,16 +49,16 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
         return HandleResult(courses);
     }
 
-    [HttpPut]
+    [HttpPut("{id}")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResponse<CourseRequest>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> UpdateCourse([FromBody] CourseRequest updatedCourse)
+    public async Task<IActionResult> UpdateCourse([FromBody] CourseRequest updatedCourse, Guid id)
     {
         var userId = GetUserId();
         if (userId == null)
             return Unauthorized("User is not authenticated.");
 
-        var result = await courseService.UpdateCourse(updatedCourse, new Guid(userId));
+        var result = await courseService.UpdateCourse(updatedCourse, new Guid(userId), id);
         return HandleResult(result);
     }
 }

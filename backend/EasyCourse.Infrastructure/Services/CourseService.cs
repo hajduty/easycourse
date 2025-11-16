@@ -10,7 +10,7 @@ public class CourseService(ICourseRepository courseRepo) : ICourseService
 {
     public async Task<CourseResponse> CreateCourse(CourseRequest newCourse, Guid userId)
     {
-        var entity = CourseMappings.ToEntity(newCourse, userId);
+        var entity = CourseMappings.ToEntity(newCourse, userId, null);
 
         var course = await courseRepo.CreateCourse(entity);
 
@@ -52,9 +52,9 @@ public class CourseService(ICourseRepository courseRepo) : ICourseService
         return courses == null || !courses.Any() ? throw new InvalidOperationException("No courses found for this user.") : courses.ToResponseDto();
     }
 
-    public async Task<CourseResponse> UpdateCourse(CourseRequest updatedCourse, Guid userId)
+    public async Task<CourseResponse> UpdateCourse(CourseRequest updatedCourse, Guid userId, Guid courseId)
     {
-        var result = await courseRepo.UpdateCourse(updatedCourse.ToEntity(userId));
+        var result = await courseRepo.UpdateCourse(updatedCourse.ToEntity(userId, courseId));
 
         return result.ToResponseDto() ?? throw new InvalidOperationException("Error updating course");
     }

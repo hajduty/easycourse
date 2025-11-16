@@ -25,19 +25,26 @@ public static class CourseMappings
         return courses.Select(c => c.ToResponseDto()).ToList();
     }
 
-    public static Course ToEntity(this CourseRequest courseRequest, Guid userId)
+    public static Course ToEntity(this CourseRequest courseRequest, Guid userId, Guid? courseId)
     {
-        return new Course
+        var entity = new Course
         {
             CourseName = courseRequest.CourseName,
             CourseDescription = courseRequest.CourseDescription,
             CreatedByUserId = userId,
             Sections = courseRequest.Sections.ToEntity()
         };
+
+        if (courseId.HasValue)
+        {
+            entity.CourseId = courseId.Value;
+        }
+
+        return entity;
     }
 
     public static List<Course> ToEntity(this IEnumerable<CourseRequest> courseRequests, Guid userId)
     {
-        return courseRequests.Select(cr => cr.ToEntity(userId)).ToList();
+        return courseRequests.Select(cr => cr.ToEntity(userId, null)).ToList();
     }
 }
