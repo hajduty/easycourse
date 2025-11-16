@@ -31,3 +31,8 @@ export const CreateCourse = async (course: CourseRequest): Promise<ApiResponse<C
   const { data } = await apiClient.post<ApiResponse<CourseResponse>>("/course", course);
   return data;
 }
+
+export const UpdateCourse = async (course: CourseRequest, courseId: string): Promise<ApiResponse<CourseResponse>> => {
+  const { data } = await apiClient.put<ApiResponse<CourseResponse>>(`/course/${courseId}`, course);
+  return data;
+}

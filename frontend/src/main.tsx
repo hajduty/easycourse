@@ -11,6 +11,7 @@ import { CoursePage } from './features/course/CourseLearnHome.tsx'
 import { CourseInfo } from './features/course/CourseInfo.tsx'
 import { CourseDashboard } from './features/course/dashboard/CourseDashboard.tsx'
 import { CourseCreate } from './features/course/CourseCreate.tsx'
+import { CourseEditor } from './features/course/editor/CourseEditor.tsx'
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="course/:courseId" element={<CourseInfo />} />
             <Route path="dashboard" element={<CourseDashboard/>}/>
             <Route path="course/create" element={<CourseCreate/>}/>
+            <Route path="course/editor/:courseId" element={<CourseEditor/>}/>
             <Route element={<AuthPage />} path="auth"></Route>
           </Routes>
         </BrowserRouter>

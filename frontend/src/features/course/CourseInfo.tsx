@@ -3,8 +3,12 @@ import { Navbar } from "../home/components/Navbar"
 import { CourseContent } from "./components/CourseContent"
 import { GetCourseById, GetCoursesByUserId, GetSections } from "./api";
 import { Link, useParams } from "react-router";
+import { useAuth } from "@/providers/AuthProvider";
+import { Button } from "@/components/ui/button";
+import { Pencil } from "lucide-react";
 
 export const CourseInfo = () => {
+  const { user } = useAuth();
   const { courseId } = useParams();
 
   const sectionsQuery = useQuery({
@@ -67,6 +71,14 @@ export const CourseInfo = () => {
           <p className="text-sm text-stone-500">
             Published: {date.toLocaleDateString()}
           </p>
+          {course?.createdById == user?.id &&
+            <Link to={`/course/editor/${course?.courseId}?isEditing=true`} className="self-start">
+              <Button className="self-start cursor-pointer" variant={'secondary'}>
+                <Pencil></Pencil>
+                Edit
+              </Button>
+            </Link>
+          }
         </div>
 
         <div className="flex flex-col gap-4 flex-1 border-r border-stone-800 py-16 px-8">
