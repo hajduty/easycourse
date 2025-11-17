@@ -243,7 +243,7 @@ export function SimpleEditor() {
   }, [isMobile, mobileView])
 
   return (
-    <div className="simple-editor-wrapper">
+    <div className="bg-stone-950">
       <EditorContext.Provider value={{ editor }}>
         <Toolbar
           ref={toolbarRef}

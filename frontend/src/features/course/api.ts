@@ -22,6 +22,11 @@ export const GetSections = async (courseId: string): Promise<ApiResponse<Section
   return data;
 }
 
+export const CreateSection = async (section: Section): Promise<ApiResponse<Section>> => {
+  const { data } = await apiClient.post(`/course/${section.courseId}/section`, section);
+  return data;
+}
+
 export const GetCourseById = async (courseId: string): Promise<ApiResponse<CourseResponse>> => {
   const { data } = await apiClient.get<ApiResponse<CourseResponse>>(`/course/${courseId}`);
   return data;

@@ -1,0 +1,28 @@
+
+import { Spinner } from "@/components/ui/spinner";
+import { Outlet, useParams } from "react-router";
+import { useCourse } from "../hooks/useCourse";
+import { useSections } from "../hooks/useSection";
+import { SectionList } from "./SectionList";
+
+export const EditorLayout = () => {
+  const { courseId } = useParams();
+  const courseQuery = useCourse(courseId);
+  const sectionsQuery = useSections(courseId);
+
+  if (courseQuery.isLoading || sectionsQuery.isLoading)
+    return <Spinner />;
+
+  const course = courseQuery.data?.data;
+  const sections = sectionsQuery.data ?? [];
+
+  return (
+    <div className="flex flex-col md:flex-row w-full h-full">
+      <SectionList sections={sections} courseId={courseId!} />
+
+      <div className="flex-5 md:px-8 h-full w-fit">
+        <Outlet context={{course, sections}}/>
+      </div>
+    </div>
+  );
+};
