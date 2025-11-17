@@ -15,7 +15,7 @@ export const CourseCard: FC<CourseResponse> = ({ courseName, courseDescription, 
         alt={courseName}
         className="w-full h-full object-cover"
       />
-      <div className="absolute bottom-0 w-full bg-stone-900 pt-2 transition-all duration-300 max-h-[18%] group-hover:max-h-full overflow-hidden px-4 pb-4">
+      <div className="absolute bottom-0 w-full bg-stone-900/80 border backdrop-blur-lg pt-2 transition-all duration-300 max-h-[18%] group-hover:max-h-full overflow-hidden px-4 pb-4">
         <CardTitle className="text-stone-300 text-md">{courseName}</CardTitle>
         <CardContent className="p-0 mt-1 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <CardDescription className="text-pretty">{courseDescription}</CardDescription>

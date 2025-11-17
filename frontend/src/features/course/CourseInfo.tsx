@@ -1,120 +1,94 @@
-import { useQuery } from "@tanstack/react-query";
-import { Navbar } from "../home/components/Navbar"
 import { CourseContent } from "./components/CourseContent"
-import { GetCourseById, GetCourses, GetCoursesByUserId, GetSections } from "./api";
-import { Link, useNavigate, useParams } from "react-router";
+import { Link } from "react-router";
+import { useAuth } from "@/providers/AuthProvider";
+import { Button } from "@/components/ui/button";
+import { Pencil } from "lucide-react";
+import { useCourseData } from "./hooks/course/useCourseData";
+import { useDeleteSection } from "./hooks/section/useDeleteSection";
 
 export const CourseInfo = () => {
-  const navigate = useNavigate();
-  const { courseId } = useParams();
-
-  const sectionsQuery = useQuery({
-    queryKey: ["sections", courseId],
-    queryFn: () => GetSections(courseId!),
-    enabled: !!courseId,
-  });
-
-  const courseQuery = useQuery({
-    queryKey: ["courseById", courseId],
-    queryFn: () => GetCourseById(courseId!),
-    enabled: !!courseId,
-  });
-
-  const sections = sectionsQuery.data?.data ?? [];
-  const course = courseQuery.data?.data;
-
-  const userCoursesQuery = useQuery({
-    queryKey: ["coursesByUserId", course?.createdById],
-    queryFn: () => GetCoursesByUserId(course?.createdById!),
-    enabled: !!courseId,
-  });
-
-  const creatorCourses = userCoursesQuery.data?.data ?? [];
-  const updatedCourses = creatorCourses.filter(
-    (c) => c.courseId !== course!.courseId
-  );
-
-  const totalTime = sections.reduce((sum, s) => sum + s.readingTime, 0);
-  const date = new Date(course?.createdAt!)
+  const { user } = useAuth();
+  const { course, date, otherCourses, sections, totalTime } = useCourseData();
 
   return (
-    <div className="h-screen text-white">
-      <Navbar />
-      <div className="relative flex flex-col md:flex-row w-full h-full">
-        <div className="flex-1 h-full border-r p-8 flex flex-col pt-16">
-          <h1 className="font-semibold">Course content</h1>
-          <h1 className="pb-6 text-sm text-stone-300">{totalTime} minutes total</h1>
-          <div className="flex flex-col gap-4">
-            {sections.map((val, index) => (
-              <Link to={`/course/${course?.courseId}/section/${val.sectionId}`}>
-                <CourseContent key={index} {...val}></CourseContent>
+    <div className="flex flex-col md:flex-row min-h-screen text-white">
+      {/* Left sidebar: Course content */}
+      <div className="md:w-1/5 w-full border-b md:border-b-0 md:border-r p-6 md:p-8 flex flex-col">
+        <h1 className="font-semibold text-lg">Course content</h1>
+        <p className="pb-4 text-sm text-stone-300">{totalTime} minutes total</p>
+        <div className="flex flex-col gap-2 md:gap-4">
+          {sections.map((val, index) => (
+            <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`}>
+              <CourseContent {...val} canDelete={false} onDelete={() => {}} />
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Main content: Course info */}
+      <div className="md:w-3/5 w-full border-b md:border-b-0 md:border-r p-6 md:p-8 flex flex-col gap-6">
+        <div className="w-full h-72 bg-stone-800 rounded-xl overflow-hidden">
+          <img
+            draggable={false}
+            src={"https://picsum.photos/600/400"}
+            alt="Course cover"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <h1 className="text-3xl font-bold">{course?.courseName}</h1>
+        <p className="text-stone-300 leading-relaxed">{course?.courseDescription}</p>
+        <p className="text-sm text-stone-500">Published: {date?.toLocaleDateString()}</p>
+
+        {course?.createdById === user?.id && (
+          <Link to={`/course/editor/${course?.courseId}`} className="self-start">
+            <Button variant="secondary" className="flex items-center gap-2 cursor-pointer">
+              <Pencil /> Go to editor
+            </Button>
+          </Link>
+        )}
+      </div>
+
+      {/* Right sidebar: Creator info & other courses */}
+      <div className="md:w-1/5 w-full p-6 md:p-8 flex flex-col gap-6">
+        <div>
+          <p className="font-semibold mb-2">Created by</p>
+          <div className="flex items-center gap-4 bg-stone-950 rounded">
+            <img
+              draggable={false}
+              src={"https://picsum.photos/150"}
+              alt="Creator"
+              className="w-18 h-18 rounded"
+            />
+            <div>
+              <h2 className="font-semibold text-md">John Doe</h2>
+              <p className="text-xs text-stone-400">4 courses</p>
+              <p className="text-xs text-stone-500">Joined 2025-11-15</p>
+            </div>
+          </div>
+
+          {otherCourses?.length > 0 && <h2 className="pt-6 font-semibold">More by this user</h2>}
+
+          <div className="flex flex-col gap-4 mt-2">
+            {otherCourses?.slice(0, 6).map((val) => (
+              <Link key={val.courseId} to={`/course/${val.courseId}`}>
+                <div className="flex items-center gap-3 rounded bg-stone-900/60 hover:bg-stone-800 transition">
+                  <img
+                    draggable={false}
+                    src={"https://picsum.photos/150"}
+                    alt={val.courseName}
+                    className="w-14 h-14 rounded-l"
+                  />
+                  <div className="flex flex-col overflow-hidden p-1">
+                    <h2 className="font-semibold text-xs line-clamp-1">{val.courseName}</h2>
+                    <p className="text-xs text-stone-400 line-clamp-1">{val.courseDescription}</p>
+                    <p className="text-xs text-stone-500 line-clamp-1">{val.participantCount} participants</p>
+                  </div>
+                </div>
               </Link>
             ))}
           </div>
         </div>
-
-        <div className=" flex flex-col gap-6 flex-3
-          bg-stone-900/40 border-r border-stone-800 py-16 px-8">
-          <div className="w-full h-72 bg-stone-800 rounded-xl">
-            <img
-              draggable={false}
-              src={"https://picsum.photos/150"}
-              alt={"hello"}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <h1 className="text-3xl font-bold">{course?.courseName}</h1>
-          <p className="text-stone-300 leading-relaxed">{course?.courseDescription}</p>
-
-          <p className="text-sm text-stone-500">
-            Published: {date.toLocaleDateString()}
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-4 flex-1 border-r border-stone-800 py-16 px-8">
-          <div className="flex flex-col gap-2">
-            <p className="font-semibold">Created by</p>
-            <div className="flex flex-row bg-stone-900 w-full rounded-sm gap-4 items-center">
-              <div>
-                <img
-                  draggable={false}
-                  src={"https://picsum.photos/150"}
-                  alt={"hello"}
-                  className="w-18 h-18 rounded-r rounded-sm"
-                />
-              </div>
-              <div>
-                <h2 className="font-semibold text-md">John Doe</h2>
-                <p className="text-xs text-stone-400">4 courses</p>
-                <p className="text-xs text-stone-500">Joined 2025-11-15</p>
-              </div>
-            </div>
-            {!!creatorCourses.length && (
-              <h2 className="pt-8 font-semibold">More by this user</h2>
-            )}
-            {updatedCourses.slice(0, 4).map((val, index) => (
-              <Link to={`/course/${val.courseId}`} key={index}>
-                <div className="flex flex-row bg-stone-900 grow rounded-sm gap-4 items-center w-full mb-4 cursor-pointer">
-                  <div className="flex flex-row gap-4 items-center">
-                    <img
-                      draggable={false}
-                      src={"https://picsum.photos/150"}
-                      alt={"hello"}
-                      className="w-18 h-18 rounded-r rounded-sm"
-                    />
-                    <div>
-                      <h2 className="font-semibold text-md line-clamp-1">{val.courseName}</h2>
-                      <p className="text-xs text-stone-400 line-clamp-1">{val.courseDescription}</p>
-                      <p className="text-xs text-stone-500 line-clamp-1">{val.participantCount} participants</p>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))
-            }
-          </div>
-        </div>
       </div>
     </div>
-  )
-}
+  );
+};
