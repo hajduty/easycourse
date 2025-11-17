@@ -18,4 +18,5 @@ public class Section
     public string SectionQuestions { get; set; } = string.Empty;
     [JsonIgnore]
     public Course? Course { get; set; } // navigation property
+    public DateTime? LastUpdated { get; set; } = DateTime.UtcNow;
 }

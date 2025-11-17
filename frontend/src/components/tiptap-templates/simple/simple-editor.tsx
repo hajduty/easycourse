@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Editor, EditorContent, EditorContext, useEditor } from "@tiptap/react"
+import { Editor, EditorContent, EditorContext } from "@tiptap/react"
 
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit"
@@ -62,7 +62,6 @@ import { LinkIcon } from "@/components/tiptap-icons/link-icon"
 // --- Hooks ---
 import { useIsBreakpoint } from "@/hooks/use-is-breakpoint"
 import { useWindowSize } from "@/hooks/use-window-size"
-import { useCursorVisibility } from "@/hooks/use-cursor-visibility"
 
 // --- Components ---
 import { ThemeToggle } from "@/components/tiptap-templates/simple/theme-toggle"
@@ -73,8 +72,7 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 
-import content from "@/components/tiptap-templates/simple/data/content.json"
-import { Section } from "lucide-react"
+import { useUpdateSection } from "@/features/course/hooks/section/useUpdateSection"
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -192,6 +190,8 @@ export function SimpleEditor({ sectionId }: { sectionId: string }) {
 
   const [editor, setEditor] = useState<Editor | null>(null);
   const [content, setContent] = useState<any>("x"); // default to empty string
+
+  const updateSection = useUpdateSection();
 
   useEffect(() => {
     const raw = localStorage.getItem(`editorContent:${sectionId}`);

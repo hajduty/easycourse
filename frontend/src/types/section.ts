@@ -6,4 +6,5 @@ export interface Section {
   sectionData?: any;
   sectionQuestions?: any;
   readingTime?: number;
+  lastUpdated?: Date;
 }
