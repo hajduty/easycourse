@@ -6,15 +6,15 @@ import { Trash } from "lucide-react";
 import { useState, type FC } from "react"
 
 export interface SectionItem extends Section {
-  onClick: () => void;
+  onDelete: () => void;
   canDelete: boolean;
 }
 
-export const CourseContent: FC<SectionItem> = ({ onClick, order, title, readingTime, canDelete }) => {
+export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, readingTime, canDelete }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
-    <div className="bg-stone-900 w-full h-8 p-2 flex items-center rounded-sm gap-4 justify-around px-4 group relative border hover:bg-stone-800 transition">
+    <div className="bg-stone-900/40 w-full h-8 p-2 flex items-center rounded-sm gap-4 justify-around px-4 group relative border hover:bg-stone-800 transition text-white">
       <h1 className="text-center justify-self-center">{order}</h1>
       <Separator className="w-8" orientation="vertical"></Separator>
       <h1 className="grow line-clamp-1">{title}</h1>
@@ -24,9 +24,10 @@ export const CourseContent: FC<SectionItem> = ({ onClick, order, title, readingT
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogTrigger asChild>
             <Button
-              className="absolute right-0 opacity-0 group-hover:opacity-100 text-red-400 transition-opacity cursor-pointer rounded-sm hover:text-red-500"
+              className="absolute right-0 text-stone-500 group-hover:text-red-200 transition-opacity cursor-pointer rounded-sm hover:text-red-500"
               onClick={(e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 setIsDialogOpen(true);
               }}
               variant={'ghost'}
@@ -36,7 +37,7 @@ export const CourseContent: FC<SectionItem> = ({ onClick, order, title, readingT
             </Button>
           </AlertDialogTrigger>
 
-          <AlertDialogContent>
+          <AlertDialogContent onClick={(e) => {e.stopPropagation()}} className="text-white">
             <AlertDialogHeader>
               <AlertDialogTitle>Delete Section?</AlertDialogTitle>
               <AlertDialogDescription>
@@ -44,10 +45,12 @@ export const CourseContent: FC<SectionItem> = ({ onClick, order, title, readingT
               </AlertDialogDescription>
             </AlertDialogHeader>
             <div className="flex justify-end gap-2 mt-4">
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel onClick={(e) => { e.stopPropagation()}}>Cancel</AlertDialogCancel>
               <AlertDialogAction
-                onClick={() => {
-                  onClick?.();
+                onClick={(e) => {
+                  onDelete?.();
+                  e.stopPropagation();
+                  e.preventDefault();
                   setIsDialogOpen(false);
                 }}
               >

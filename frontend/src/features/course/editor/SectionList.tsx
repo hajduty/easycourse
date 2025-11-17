@@ -5,6 +5,7 @@ import type { Section } from "@/types/section";
 import { Spinner } from "@/components/ui/spinner";
 import { CourseContent } from "../components/CourseContent";
 import { Link } from "react-router";
+import { useDeleteSection } from "../hooks/section/useDeleteSection";
 
 interface SectionListProps {
   sections: Section[];
@@ -28,6 +29,10 @@ export const SectionList: FC<SectionListProps> = ({ sections, courseId }) => {
     });
   };
 
+  const handleDelete = () => {
+    
+  }
+
   if (!sections)
     return <><Spinner></Spinner></>
 
@@ -48,7 +53,7 @@ export const SectionList: FC<SectionListProps> = ({ sections, courseId }) => {
         ${isOpen ? "max-h-[1000px]" : "max-h-0"} md:max-h-full`}
       >
         <h1 className="font-semibold pb-4 hidden md:block">Sections</h1>
-        <SectionsGradientList sections={sections} />
+        <SectionsGradientList sections={sections}/>
         <Button
           className="cursor-pointer"
           variant="secondary"
@@ -85,15 +90,21 @@ export function SectionsGradientList({ sections }: {sections: Section[]}) {
     return () => el.removeEventListener("scroll", update);
   }, [sections]); // rerun if list changes
 
+  const deleteSection = useDeleteSection(sections.at(0)?.courseId!);
+
+  const handleDelete = (sectionId: string) => {
+    deleteSection.mutate(sectionId);
+  };
+
   return (
     <div className="relative">
       <div
         ref={scrollRef}
         className="max-h-[600px] overflow-y-auto pr-2 flex flex-col gap-4"
       >
-        {sections.map((val: any) => (
+        {sections.map((val) => (
           <Link key={val.sectionId} to={`section/${val.sectionId}`}>
-            <CourseContent {...val} canDelete={true} />
+            <CourseContent {...val} canDelete={true} onDelete={() => handleDelete(val.sectionId!)}/>
           </Link>
         ))}
       </div>

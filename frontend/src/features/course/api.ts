@@ -48,6 +48,6 @@ export const UpdateSection = async (section: Section, courseId: string): Promise
 }
 
 export const DeleteSection = async (sectionId: string, courseId: string): Promise<ApiResponse<Section>> => {
-  const {data} = await apiClient.delete<ApiResponse<Section>>(`/course/${courseId}/${sectionId}`);
+  const {data} = await apiClient.delete<ApiResponse<Section>>(`/course/${courseId}/section/${sectionId}`);
   return data;
 }

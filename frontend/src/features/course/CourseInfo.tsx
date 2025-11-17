@@ -10,12 +10,6 @@ export const CourseInfo = () => {
   const { user } = useAuth();
   const { course, date, otherCourses, sections, totalTime } = useCourseData();
 
-  const deleteSection = useDeleteSection(course?.courseId!);
-
-  const handleDelete = (sectionId: string) => {
-    deleteSection.mutate(sectionId);
-  };
-
   return (
     <div className="flex flex-col md:flex-row min-h-screen text-white">
       {/* Left sidebar: Course content */}
@@ -25,7 +19,7 @@ export const CourseInfo = () => {
         <div className="flex flex-col gap-2 md:gap-4">
           {sections.map((val, index) => (
             <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`}>
-              <CourseContent {...val} canDelete={false} onClick={() => handleDelete(val.sectionId!)} />
+              <CourseContent {...val} canDelete={false} onDelete={() => {}} />
             </Link>
           ))}
         </div>
@@ -58,12 +52,12 @@ export const CourseInfo = () => {
       <div className="md:w-1/5 w-full p-6 md:p-8 flex flex-col gap-6">
         <div>
           <p className="font-semibold mb-2">Created by</p>
-          <div className="flex items-center gap-4 bg-stone-900 p-3 rounded">
+          <div className="flex items-center gap-4 bg-stone-950 rounded">
             <img
               draggable={false}
               src={"https://picsum.photos/150"}
               alt="Creator"
-              className="w-16 h-16 rounded"
+              className="w-18 h-18 rounded"
             />
             <div>
               <h2 className="font-semibold text-md">John Doe</h2>
@@ -74,18 +68,18 @@ export const CourseInfo = () => {
 
           {otherCourses?.length > 0 && <h2 className="pt-6 font-semibold">More by this user</h2>}
 
-          <div className="flex flex-col gap-3 mt-2">
-            {otherCourses?.slice(0, 4).map((val) => (
+          <div className="flex flex-col gap-4 mt-2">
+            {otherCourses?.slice(0, 6).map((val) => (
               <Link key={val.courseId} to={`/course/${val.courseId}`}>
-                <div className="flex items-center gap-3 bg-stone-900 p-3 rounded hover:bg-stone-800 transition">
+                <div className="flex items-center gap-3 rounded bg-stone-900/60 hover:bg-stone-800 transition">
                   <img
                     draggable={false}
                     src={"https://picsum.photos/150"}
                     alt={val.courseName}
-                    className="w-16 h-16 rounded"
+                    className="w-14 h-14 rounded-l"
                   />
-                  <div className="flex flex-col overflow-hidden">
-                    <h2 className="font-semibold text-md line-clamp-1">{val.courseName}</h2>
+                  <div className="flex flex-col overflow-hidden p-1">
+                    <h2 className="font-semibold text-xs line-clamp-1">{val.courseName}</h2>
                     <p className="text-xs text-stone-400 line-clamp-1">{val.courseDescription}</p>
                     <p className="text-xs text-stone-500 line-clamp-1">{val.participantCount} participants</p>
                   </div>

@@ -23,7 +23,9 @@ public class SectionService(ICourseRepository courseRepo, ISectionRepository sec
 
     public async Task<bool> DeleteSectionById(Guid sectionId, Guid userId)
     {
-        var course = await courseRepo.GetCourseById(sectionId);
+        var section = await sectionRepo.GetSectionById(sectionId) ?? throw new KeyNotFoundException("Section not found");
+
+        var course = await courseRepo.GetCourseById(section.CourseId) ?? throw new KeyNotFoundException("Course not found");
 
         if (course.CreatedByUserId != userId)
         {
