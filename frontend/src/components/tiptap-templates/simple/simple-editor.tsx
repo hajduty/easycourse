@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
+import { Editor, EditorContent, EditorContext, useEditor } from "@tiptap/react"
 
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit"
@@ -74,6 +74,7 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 
 import content from "@/components/tiptap-templates/simple/data/content.json"
+import { Section } from "lucide-react"
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -183,78 +184,85 @@ const MobileToolbarContent = ({
   </>
 )
 
-export function SimpleEditor() {
-  const isMobile = useIsBreakpoint()
-  const { height } = useWindowSize()
-  const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
-    "main"
-  )
-  const toolbarRef = useRef<HTMLDivElement>(null)
+export function SimpleEditor({ sectionId }: { sectionId: string }) {
+  const isMobile = useIsBreakpoint();
+  const { height } = useWindowSize();
+  const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">("main");
+  const toolbarRef = useRef<HTMLDivElement>(null);
 
-  const editor = useEditor({
-    immediatelyRender: false,
-    editorProps: {
-      attributes: {
-        autocomplete: "off",
-        autocorrect: "off",
-        autocapitalize: "off",
-        "aria-label": "Main content area, start typing to enter text.",
-        class: "simple-editor",
-      },
-    },
-    extensions: [
-      StarterKit.configure({
-        horizontalRule: false,
-        link: {
-          openOnClick: false,
-          enableClickSelection: true,
-        },
-      }),
-      HorizontalRule,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
-      TaskList,
-      TaskItem.configure({ nested: true }),
-      Highlight.configure({ multicolor: true }),
-      Image,
-      Typography,
-      Superscript,
-      Subscript,
-      Selection,
-      ImageUploadNode.configure({
-        accept: "image/*",
-        maxSize: MAX_FILE_SIZE,
-        limit: 3,
-        upload: handleImageUpload,
-        onError: (error) => console.error("Upload failed:", error),
-      }),
-    ],
-    content,
-  })
-
-  const rect = useCursorVisibility({
-    editor,
-    overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
-  })
+  const [editor, setEditor] = useState<Editor | null>(null);
+  const [content, setContent] = useState<any>("x"); // default to empty string
 
   useEffect(() => {
-    if (!isMobile && mobileView !== "main") {
-      setMobileView("main")
+    const raw = localStorage.getItem(`editorContent:${sectionId}`);
+    if (!raw || raw === "undefined" || raw === "null") {
+      setContent("x"); 
+      return;
     }
-  }, [isMobile, mobileView])
+
+    try {
+      setContent(JSON.parse(raw));
+    } catch {
+      setContent("x");
+    }
+  }, [sectionId]);
+
+  useEffect(() => {
+    if (!content) {
+      return; // wait for content to be loaded
+    }
+
+    // destroy previous editor
+    if (editor) {
+      editor.destroy();
+    }
+
+    const newEditor = new Editor({
+      extensions: [
+        StarterKit.configure({
+          horizontalRule: false,
+          link: { openOnClick: false, enableClickSelection: true },
+        }),
+        HorizontalRule,
+        TextAlign.configure({ types: ["heading", "paragraph"] }),
+        TaskList,
+        TaskItem.configure({ nested: true }),
+        Highlight.configure({ multicolor: true }),
+        Image,
+        Typography,
+        Superscript,
+        Subscript,
+        Selection,
+        ImageUploadNode.configure({
+          accept: "image/*",
+          maxSize: MAX_FILE_SIZE,
+          limit: 3,
+          upload: handleImageUpload,
+          onError: (error) => console.error("Upload failed:", error),
+        }),
+      ],
+      content,
+    });
+
+    const save = () => {
+      if (!newEditor.view) return;
+      localStorage.setItem(`editorContent:${sectionId}`, JSON.stringify(newEditor.getJSON()));
+    };
+    newEditor.on("update", save);
+
+    setEditor(newEditor);
+
+    return () => {
+      newEditor.destroy();
+    };
+  }, [content, sectionId]);
+
+  if (!editor) return null;
 
   return (
     <div className="bg-stone-950">
       <EditorContext.Provider value={{ editor }}>
-        <Toolbar
-          ref={toolbarRef}
-          style={{
-            ...(isMobile
-              ? {
-                  bottom: `calc(100% - ${height - rect.y}px)`,
-                }
-              : {}),
-          }}
-        >
+        <Toolbar ref={toolbarRef} style={{ ...(isMobile ? { bottom: `calc(100% - ${height}px)` } : {}) }}>
           {mobileView === "main" ? (
             <MainToolbarContent
               onHighlighterClick={() => setMobileView("highlighter")}
@@ -269,12 +277,8 @@ export function SimpleEditor() {
           )}
         </Toolbar>
 
-        <EditorContent
-          editor={editor}
-          role="presentation"
-          className="simple-editor-content"
-        />
+        <EditorContent editor={editor} role="presentation" className="simple-editor-content" />
       </EditorContext.Provider>
     </div>
-  )
+  );
 }

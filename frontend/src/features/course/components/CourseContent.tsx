@@ -4,17 +4,25 @@ import { Separator } from "@/components/ui/separator"
 import type { Section } from "@/types/section"
 import { Trash } from "lucide-react";
 import { useState, type FC } from "react"
+import { useParams } from "react-router";
 
 export interface SectionItem extends Section {
   onDelete: () => void;
   canDelete: boolean;
 }
 
-export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, readingTime, canDelete }) => {
+export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, readingTime, canDelete, sectionId }) => {
+  const {sectionId: paramSectionId} = useParams();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  const textColorClass = !canDelete || sectionId === paramSectionId
+    ? "text-white"
+    : "text-stone-500";
+
+  const bgClass = sectionId === paramSectionId ? "bg-stone-900" : "bg-stone-900/40";
+
   return (
-    <div className="bg-stone-900/40 w-full h-8 p-2 flex items-center rounded-sm gap-4 justify-around px-4 group relative border hover:bg-stone-800 transition text-white">
+    <div className={` w-full h-8 p-2 flex items-center rounded-sm gap-4 justify-around px-4 group relative border hover:bg-stone-800 transition ${textColorClass} ${bgClass} `}>
       <h1 className="text-center justify-self-center">{order}</h1>
       <Separator className="w-8" orientation="vertical"></Separator>
       <h1 className="grow line-clamp-1">{title}</h1>
