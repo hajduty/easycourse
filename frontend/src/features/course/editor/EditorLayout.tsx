@@ -1,8 +1,8 @@
 
 import { Spinner } from "@/components/ui/spinner";
 import { Outlet, useParams } from "react-router";
-import { useCourse } from "../hooks/useCourse";
-import { useSections } from "../hooks/useSection";
+import { useCourse } from "../hooks/course/useCourse";
+import { useSections } from "../hooks/section/useSection";
 import { SectionList } from "./SectionList";
 
 export const EditorLayout = () => {

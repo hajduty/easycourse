@@ -6,7 +6,7 @@ export const SectionEditor = () => {
 
   return (
     <div className="h-full flex md:flex-row flex-col p-0 m-0">
-      <div className="md:w-4/5 overflow-scroll h-full">
+      <div className="md:w-4/5 overflow-y-scroll h-full">
         <SimpleEditor />
       </div>
       <div className="md:w-1/5 md:block border-l p-8">

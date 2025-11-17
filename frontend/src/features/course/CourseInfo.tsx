@@ -3,11 +3,18 @@ import { Link } from "react-router";
 import { useAuth } from "@/providers/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
-import { useCourseData } from "./hooks/useCourseData";
+import { useCourseData } from "./hooks/course/useCourseData";
+import { useDeleteSection } from "./hooks/section/useDeleteSection";
 
 export const CourseInfo = () => {
   const { user } = useAuth();
   const { course, date, otherCourses, sections, totalTime } = useCourseData();
+
+  const deleteSection = useDeleteSection(course?.courseId!);
+
+  const handleDelete = (sectionId: string) => {
+    deleteSection.mutate(sectionId);
+  };
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen text-white">
@@ -18,7 +25,7 @@ export const CourseInfo = () => {
         <div className="flex flex-col gap-2 md:gap-4">
           {sections.map((val, index) => (
             <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`}>
-              <CourseContent {...val} />
+              <CourseContent {...val} canDelete={false} onClick={() => handleDelete(val.sectionId!)} />
             </Link>
           ))}
         </div>
@@ -40,8 +47,8 @@ export const CourseInfo = () => {
 
         {course?.createdById === user?.id && (
           <Link to={`/course/editor/${course?.courseId}`} className="self-start">
-            <Button variant="secondary" className="flex items-center gap-2">
-              <Pencil /> Edit
+            <Button variant="secondary" className="flex items-center gap-2 cursor-pointer">
+              <Pencil /> Go to editor
             </Button>
           </Link>
         )}

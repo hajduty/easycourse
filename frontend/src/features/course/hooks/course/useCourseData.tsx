@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
-import { useCourse } from "../hooks/useCourse";
-import { useSections } from "../hooks/useSection";
-import { useCoursesByUser } from "../hooks/useCoursesByUser";
+import { useCourse } from "./useCourse";
+import { useSections } from "../section/useSection";
+import { useCoursesByUser } from "./useCoursesByUser";
 
 export const useCourseData = (courseIdFromParam?: string) => {
   const { courseId: paramId } = useParams();

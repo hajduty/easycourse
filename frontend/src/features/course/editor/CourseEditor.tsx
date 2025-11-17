@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { useUpdateCourse } from "../hooks/useUpdateCourse";
+import { useUpdateCourse } from "../hooks/course/useUpdateCourse";
 import { Pencil } from "lucide-react";
 
 export const CourseEditor = () => {
@@ -54,7 +54,7 @@ export const CourseEditor = () => {
 
       {/* BUTTONS */}
       {!isEditing ? (
-        <Button onClick={() => setIsEditing(true)} className="w-fit" >Edit course</Button>
+        <Button onClick={() => setIsEditing(true)} className="w-fit self-end" ><Pencil></Pencil>Edit</Button>
       ) : (
         <div className="flex gap-2">
           <Button onClick={save}>Save</Button>

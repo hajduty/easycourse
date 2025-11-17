@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { GetCoursesByUserId } from "../api";
+import { GetCourseById } from "../../api";
 
-export const useCoursesByUser = (courseId?: string) => {
+export const useCourse = (courseId?: string) => {
   return useQuery({
     queryKey: ["course", courseId],
-    queryFn: () => GetCoursesByUserId(courseId!),
+    queryFn: () => GetCourseById(courseId!),
     enabled: Boolean(courseId),
     staleTime: 1000 * 60,
   });

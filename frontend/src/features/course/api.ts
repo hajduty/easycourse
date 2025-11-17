@@ -41,3 +41,13 @@ export const UpdateCourse = async (course: CourseRequest, courseId: string): Pro
   const { data } = await apiClient.put<ApiResponse<CourseResponse>>(`/course/${courseId}`, course);
   return data;
 }
+
+export const UpdateSection = async (section: Section, courseId: string): Promise<ApiResponse<Section>> => {
+  const { data } = await apiClient.put<ApiResponse<Section>>(`/course/${courseId}/${section.sectionId}`, section);
+  return data;
+}
+
+export const DeleteSection = async (sectionId: string, courseId: string): Promise<ApiResponse<Section>> => {
+  const {data} = await apiClient.delete<ApiResponse<Section>>(`/course/${courseId}/${sectionId}`);
+  return data;
+}

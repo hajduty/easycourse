@@ -8,7 +8,7 @@ import type { CourseRequest } from "@/types/course";
 import { useNavigate } from "react-router";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CircleAlert } from "lucide-react";
-import { useCreateCourse } from "./hooks/useCreateCourse";
+import { useCreateCourse } from "./hooks/course/useCreateCourse";
 
 export const CourseCreate = () => {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { GetSections } from "../api";
+import { GetSections } from "../../api";
 
 export const useSections = (courseId?: string) => {
   return useQuery({

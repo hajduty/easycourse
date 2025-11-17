@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CreateSection } from "../api";
+import { CreateSection } from "../../api";
 import type { ApiResponse } from "@/types/apiResponse";
 import type { Section } from "@/types/section";
 

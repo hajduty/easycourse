@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { UpdateCourse } from "../api";
+import { UpdateCourse } from "../../api";
 import type { CourseResponse } from "@/types/course";
 import type { ApiResponse } from "@/types/apiResponse";
 
