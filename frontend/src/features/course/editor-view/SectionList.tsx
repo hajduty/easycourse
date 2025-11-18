@@ -171,18 +171,31 @@ export function SectionsGradientList({ sections: initialSections }: { sections: 
   };
 
   return (
-    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        <div ref={scrollRef} className="max-h-[600px] overflow-y-auto flex flex-col gap-4">
-          {items.map((id) => {
-            const val = sectionState.find((s) => s.sectionId === id)!;
-            return (
-              <SortableSection key={id} section={val} onDelete={handleDelete} onEdit={handleUpdate} />
-            );
-          })}
-        </div>
-      </SortableContext>
-    </DndContext>
+    <div className="relative">
+      {/* Top gradient overlay */}
+      {showTop && (
+        <div className="absolute top-0 left-0 right-0 h-16 bg-linear-to-b from-background to-transparent pointer-events-none z-10" />
+      )}
+      
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <SortableContext items={items} strategy={verticalListSortingStrategy}>
+          <div ref={scrollRef} className="max-h-[600px] overflow-y-auto scrollbar-hide flex flex-col gap-4">
+            {items.map((id) => {
+              const val = sectionState.find((s) => s.sectionId === id)!;
+              return (
+                <SortableSection key={id} section={val} onDelete={handleDelete} onEdit={handleUpdate}/>
+              );
+            })}
+          </div>
+        </SortableContext>
+      </DndContext>
+      
+      {/* Bottom gradient overlay */}
+      {showBottom && (
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-linear-to-t from-background to-transparent pointer-events-none z-10" />
+      )}
+    </div>
+
   );
 }
 
