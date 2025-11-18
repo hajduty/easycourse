@@ -4,12 +4,32 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useCourseData } from "../hooks/course/useCourseData";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 export const CourseLayout = () => {
   const { user } = useAuth();
   const { course, date, otherCourses, sections, totalTime } = useCourseData();
-
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [showTop, setShowTop] = useState(false);
+  const [showBottom, setShowBottom] = useState(false);
   const { sectionId } = useParams();
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const update = () => {
+      const atTop = el.scrollTop <= 0;
+      const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+
+      setShowTop(!atTop);
+      setShowBottom(!atBottom);
+    };
+
+    update();
+    el.addEventListener("scroll", update);
+    return () => el.removeEventListener("scroll", update);
+  }, [sections]);
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen h-full text-white">
@@ -24,11 +44,28 @@ export const CourseLayout = () => {
               {course?.courseName}
             </Button>
           </Link>
-          {sections.map((val, index) => (
-            <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`}>
-              <CourseContent {...val} canDelete={false} onDelete={() => { }} onEdit={() => { }} />
-            </Link>
-          ))}
+          <div className="relative">
+            {/* Top gradient overlay */}
+            {showTop && (
+              <div className="absolute top-0 left-0 right-0 h-16 bg-linear-to-b from-background to-transparent pointer-events-none z-10" />
+            )}
+
+            <div
+              ref={scrollRef}
+              className="flex flex-col gap-2 max-h-[600px] overflow-y-scroll scrollbar-hide"
+            >
+              {sections.map((val, index) => (
+                <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`}>
+                  <CourseContent {...val} canDelete={false} onDelete={() => { }} onEdit={() => { }} />
+                </Link>
+              ))}
+            </div>
+
+            {/* Bottom gradient overlay */}
+            {showBottom && (
+              <div className="absolute bottom-0 left-0 right-0 h-16 bg-linear-to-t from-background to-transparent pointer-events-none z-10" />
+            )}
+          </div>
         </div>
       </div>
 

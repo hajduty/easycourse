@@ -36,6 +36,7 @@ public class SectionRepository(AppDbContext context) : ISectionRepository
         return await context.Sections
             .AsNoTracking()
             .Where(s => s.CourseId == courseId)
+            .OrderBy(o => o.Order)
             .ToListAsync();
     }
 
