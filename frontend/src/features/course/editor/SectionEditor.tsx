@@ -184,9 +184,10 @@ export const SectionEditor = () => {
   };
 
   return (
-    <div className="h-full flex md:flex-row flex-col p-0 m-0 text-white">
+    <div className="h-full flex md:flex-row flex-col p-0 m-0 text-white w-full bg-stone-950">
       <div className="md:w-4/5 overflow-y-scroll h-full">
         {showConflictAlert && conflictData ? (
+          <div className="flex items-center justify-center h-full p-8">
             <AlertDialog defaultOpen={true}>
               <AlertDialogContent className='text-white'>
                 <AlertDialogHeader>
@@ -205,6 +206,7 @@ export const SectionEditor = () => {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+          </div>
         ) : isContentLoaded && loadedForSection === sectionId ? (
           <SimpleEditor
             key={sectionId}

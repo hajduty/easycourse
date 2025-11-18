@@ -14,6 +14,8 @@ import { Subscript } from "@tiptap/extension-subscript"
 import { Superscript } from "@tiptap/extension-superscript"
 import { Selection } from "@tiptap/extensions"
 
+import Youtube from '@tiptap/extension-youtube'
+
 // --- UI Primitives ---
 import { Button } from "@/components/tiptap-ui-primitive/button"
 import { Spacer } from "@/components/tiptap-ui-primitive/spacer"
@@ -74,6 +76,9 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 
 import content from "@/components/tiptap-templates/simple/data/content.json"
+import { FileVideoCamera, TvMinimalPlay, YoutubeIcon } from "lucide-react"
+import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
+import { Button as ShadButton } from "@/components/ui/button"
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -139,10 +144,6 @@ const MainToolbarContent = ({
 
       <ToolbarSeparator />
 
-      <ToolbarGroup>
-        <ImageUploadButton text="Add" />
-      </ToolbarGroup>
-
       <Spacer />
 
       {isMobile && <ToolbarSeparator />}
@@ -184,13 +185,27 @@ const MobileToolbarContent = ({
 
 export function SimpleEditor({content, onChange, editable = true}:{content: any, onChange?: (newContent: any) => void, editable?: boolean}) {
   const isMobile = useIsBreakpoint()
-  const { height } = useWindowSize()
+  const { height, width } = useWindowSize()
   const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
     "main"
   )
 
   const toolbarRef = useRef<HTMLDivElement>(null)
   const [wordCount, setWordCount] = useState(0);
+
+  const [ytDialogOpen, setYtDialogOpen] = useState(false)
+  const [ytUrl, setYtUrl] = useState("")
+
+  const insertYoutube = () => {
+    if (!editor || !ytUrl) return
+    editor.commands.setYoutubeVideo({
+      src: ytUrl,
+      width: 360,   // ignored by CSS
+      height: 160,  // ignored by CSS
+    })
+    setYtUrl("")
+    setYtDialogOpen(false)
+  }
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -209,7 +224,11 @@ export function SimpleEditor({content, onChange, editable = true}:{content: any,
         link: {
           openOnClick: false,
           enableClickSelection: true,
-        },
+        },}
+      ),
+      Youtube.configure({
+        controls: true,
+        nocookie: true,
       }),
       HorizontalRule,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
@@ -235,7 +254,7 @@ export function SimpleEditor({content, onChange, editable = true}:{content: any,
       const count = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
       setWordCount(count);
     },
-    editable: editable
+    editable: editable,
   })
 
   useEffect(() => {
@@ -253,7 +272,6 @@ export function SimpleEditor({content, onChange, editable = true}:{content: any,
     };
   }, [editor, onChange]);
 
-
   const rect = useCursorVisibility({
     editor,
     overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
@@ -266,7 +284,7 @@ export function SimpleEditor({content, onChange, editable = true}:{content: any,
   }, [isMobile, mobileView])
 
   return (
-    <div className="bg-stone-950">
+    <div className="bg-stone-950 max-w-svw w-full">
       <EditorContext.Provider value={{ editor }}>
         <Toolbar
           ref={toolbarRef}
@@ -278,6 +296,9 @@ export function SimpleEditor({content, onChange, editable = true}:{content: any,
               : {}),
           }}
         >
+          <div className=" text-sm text-stone-400">
+            {wordCount} words
+          </div>
           {mobileView === "main" ? (
             <MainToolbarContent
               onHighlighterClick={() => setMobileView("highlighter")}
@@ -290,15 +311,37 @@ export function SimpleEditor({content, onChange, editable = true}:{content: any,
               onBack={() => setMobileView("main")}
             />
           )}
-          <div className="ml-auto text-sm text-stone-400">
-            {wordCount} words
-          </div>
 
+          <ShadButton variant={'ghost'} className="text-xs" onClick={() => setYtDialogOpen(true)}>
+            <TvMinimalPlay />
+            Add Video
+          </ShadButton>
+          <AlertDialog open={ytDialogOpen} onOpenChange={setYtDialogOpen}>
+            <AlertDialogContent className="dark text-white">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Insert YouTube Video</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Paste the YouTube video URL below.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <input
+                className="w-full border rounded px-2 py-1"
+                type="text"
+                placeholder="https://www.youtube.com/watch?v=..."
+                value={ytUrl}
+                onChange={(e) => setYtUrl(e.target.value)}
+              />
+              <AlertDialogFooter className="flex justify-end gap-2 mt-2">
+                <ShadButton onClick={() => setYtDialogOpen(false)}>Cancel</ShadButton>
+                <ShadButton onClick={insertYoutube}>Insert</ShadButton>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </Toolbar>
 
         <EditorContent
           editor={editor}
-          role="viewer"
+          role="presentation"
           className="simple-editor-content"
         />
       </EditorContext.Provider>

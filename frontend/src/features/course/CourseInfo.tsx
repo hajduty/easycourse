@@ -19,7 +19,7 @@ export const CourseInfo = () => {
         <div className="flex flex-col gap-2 md:gap-4">
           {sections.map((val, index) => (
             <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`}>
-              <CourseContent {...val} canDelete={false} onDelete={() => {}} />
+              <CourseContent {...val} canDelete={false} onDelete={() => {}} onEdit={() => {}}/>
             </Link>
           ))}
         </div>
