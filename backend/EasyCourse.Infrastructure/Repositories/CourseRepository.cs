@@ -50,52 +50,50 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
 
     public async Task<(IEnumerable<Course> Courses, int TotalCount)> GetAndFilterCoursesAsync(CourseQuery query)
     {
-        IQueryable<Course> courseQuery = _context.Courses.Include(c => c.Participants).Include(c => c.CreatedByUser).AsNoTracking();
+        var baseQuery = _context.Courses.AsQueryable();
 
         if (!string.IsNullOrEmpty(query.Query))
         {
-            courseQuery = courseQuery.Where(c => c.CourseName.Contains(query.Query) || c.CourseDescription.Contains(query.Query));
+            baseQuery = baseQuery.Where(c =>
+                c.CourseName.Contains(query.Query) ||
+                c.CourseDescription.Contains(query.Query));
         }
 
         if (query.MinParticipants.HasValue)
         {
-            courseQuery = courseQuery.Where(c => c.Participants.Count >= query.MinParticipants.Value);
+            baseQuery = baseQuery.Where(c => c.Participants.Count >= query.MinParticipants.Value);
         }
 
-        try
+        var totalCount = await baseQuery.CountAsync();
+
+        IQueryable<Course> courseQuery = baseQuery
+            .Include(c => c.Participants)
+            .Include(c => c.CreatedByUser);
+
+        courseQuery = query.SortBy?.ToLower() switch
         {
-            var totalCount = await courseQuery.CountAsync();
-            if (!string.IsNullOrEmpty(query.SortBy))
-            {
-                courseQuery = query.SortBy.ToLower() switch
-                {
-                    "coursename" => query.Descending
-                        ? courseQuery.OrderByDescending(c => c.CourseName)
-                        : courseQuery.OrderBy(c => c.CourseName),
+            "coursename" => query.Descending
+                ? courseQuery.OrderByDescending(c => c.CourseName)
+                : courseQuery.OrderBy(c => c.CourseName),
 
-                    "Popular" => query.Descending
-                        ? courseQuery.OrderByDescending(c => c.Participants.Count)
-                        : courseQuery.OrderBy(c => c.Participants.Count),
+            "popular" => query.Descending
+                ? courseQuery.OrderByDescending(c => c.Participants.Count)
+                : courseQuery.OrderBy(c => c.Participants.Count),
 
-                    "Created" => query.Descending
-                        ? courseQuery.OrderByDescending(c => c.CreatedAt)
-                        : courseQuery.OrderBy(c => c.CreatedAt),
+            "created" => query.Descending
+                ? courseQuery.OrderByDescending(c => c.CreatedAt)
+                : courseQuery.OrderBy(c => c.CreatedAt),
 
-                    _ => courseQuery
-                };
-            }
+            _ => courseQuery.OrderBy(c => c.CreatedAt) // fallback sort
+        };
 
-            var courses = await courseQuery
-                .Skip((query.Page - 1) * query.PageSize)
-                .Take(query.PageSize)
-                .ToListAsync();
+        var courses = await courseQuery
+            .Skip((query.Page - 1) * query.PageSize)
+            .Take(query.PageSize)
+            .AsNoTracking()
+            .ToListAsync();
 
-            return (courses, totalCount);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception("An error occurred while retrieving courses.", ex);
-        }
+        return (courses, totalCount);
     }
 
     public async Task<Course> UpdateCourse(Course updatedCourse)

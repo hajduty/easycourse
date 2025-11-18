@@ -54,4 +54,15 @@ public class SectionController(ISectionService sectionService) : ApiControllerBa
 
         return result ? HandleBoolResult(result, "Course updated successfully") : HandleBoolResult(result, "Failed to update course");
     }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(ApiResponse<SectionDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetSectionById(Guid id)
+    {
+        var userId = GetUserId();
+
+        var result = await sectionService.GetSectionById(id);
+
+        return HandleResult(result);
+    }
 }

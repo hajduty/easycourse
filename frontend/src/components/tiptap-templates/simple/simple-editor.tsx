@@ -148,7 +148,6 @@ const MainToolbarContent = ({
       {isMobile && <ToolbarSeparator />}
 
       <ToolbarGroup>
-        <ThemeToggle />
       </ToolbarGroup>
     </>
   )
@@ -183,13 +182,15 @@ const MobileToolbarContent = ({
   </>
 )
 
-export function SimpleEditor() {
+export function SimpleEditor({content, onChange, editable = true}:{content: any, onChange?: (newContent: any) => void, editable?: boolean}) {
   const isMobile = useIsBreakpoint()
   const { height } = useWindowSize()
   const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
     "main"
   )
+
   const toolbarRef = useRef<HTMLDivElement>(null)
+  const [wordCount, setWordCount] = useState(0);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -228,8 +229,30 @@ export function SimpleEditor() {
         onError: (error) => console.error("Upload failed:", error),
       }),
     ],
-    content,
+    content: content,
+    onUpdate: ({editor}) => {
+      const text = editor.getText();
+      const count = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+      setWordCount(count);
+    },
+    editable: editable
   })
+
+  useEffect(() => {
+  if (!editor || !onChange) return;
+
+    const handleUpdate = () => {
+      const json = editor.getJSON();
+      onChange(json);
+    };
+
+    editor.on("update", handleUpdate);
+
+    return () => {
+      editor.off("update", handleUpdate);
+    };
+  }, [editor, onChange]);
+
 
   const rect = useCursorVisibility({
     editor,
@@ -267,11 +290,15 @@ export function SimpleEditor() {
               onBack={() => setMobileView("main")}
             />
           )}
+          <div className="ml-auto text-sm text-stone-400">
+            {wordCount} words
+          </div>
+
         </Toolbar>
 
         <EditorContent
           editor={editor}
-          role="presentation"
+          role="viewer"
           className="simple-editor-content"
         />
       </EditorContext.Provider>

@@ -16,6 +16,7 @@ public static class SectionMappings
             SectionData = section.SectionData,
             SectionQuestions = section.SectionQuestions,
             ReadingTime = section.ReadingTime,
+            LastUpdated = section.LastUpdated
         };
     }
 
@@ -30,6 +31,7 @@ public static class SectionMappings
             SectionData = sectionDto.SectionData,
             SectionQuestions = sectionDto.SectionQuestions,
             ReadingTime = sectionDto.ReadingTime,
+            LastUpdated = sectionDto.LastUpdated,
         };
     }
 

@@ -4,20 +4,22 @@ import type { ApiResponse } from "@/types/apiResponse";
 import type { Section } from "@/types/section";
 
 type UpdateSectionVariables = {
-  sectionId: string;
-  courseId: string;
-  data: any;
+  data: Section;
 };
 
 export const useUpdateSection = () => {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
 
   return useMutation<ApiResponse<Section>, unknown, UpdateSectionVariables>({
-    mutationFn: async ({ courseId, data }) => {
-      return await UpdateSection(data, courseId);
-    },
-    onSuccess: (_, { courseId }) => {
-      qc.invalidateQueries({ queryKey: ["sections", courseId] });
+    mutationFn: async ({ data }) => UpdateSection(data, data.courseId!),
+    onSuccess: (res, { data }) => {
+      const courseId = data.courseId!;
+      // Update section in cached array
+      queryClient.setQueryData<Section[]>(["sections-fetch", courseId], (old) =>
+        old?.map((s) => (s.sectionId === data.sectionId ? res.data : s))
+      );
+      // Update individual section
+      queryClient.setQueryData(["section", data.sectionId], res.data);
     },
   });
 };

@@ -29,15 +29,11 @@ export const SectionList: FC<SectionListProps> = ({ sections, courseId }) => {
     });
   };
 
-  const handleDelete = () => {
-    
-  }
-
   if (!sections)
     return <><Spinner></Spinner></>
 
   return (
-    <div className="md:sticky md:w-1/5 h-full border-r p-4 md:p-8 flex flex-col text-white">
+    <div className="md:sticky md:w-1/5 md:border-b-0 border-b md:h-full h-fit border-r p-4 md:p-8 flex flex-col text-white">
       <div className="md:hidden mb-4">
         <Button
           variant="secondary"
@@ -53,7 +49,7 @@ export const SectionList: FC<SectionListProps> = ({ sections, courseId }) => {
         ${isOpen ? "max-h-[1000px]" : "max-h-0"} md:max-h-full`}
       >
         <h1 className="font-semibold pb-4 hidden md:block">Sections</h1>
-        <SectionsGradientList sections={sections}/>
+        <SectionsGradientList sections={sections} />
         <Button
           className="cursor-pointer"
           variant="secondary"
@@ -67,7 +63,7 @@ export const SectionList: FC<SectionListProps> = ({ sections, courseId }) => {
   );
 };
 
-export function SectionsGradientList({ sections }: {sections: Section[]}) {
+export function SectionsGradientList({ sections }: { sections: Section[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const [showTop, setShowTop] = useState(false);
@@ -85,10 +81,10 @@ export function SectionsGradientList({ sections }: {sections: Section[]}) {
       setShowBottom(!atBottom);
     };
 
-    update(); // run on mount (important)
+    update();
     el.addEventListener("scroll", update);
     return () => el.removeEventListener("scroll", update);
-  }, [sections]); // rerun if list changes
+  }, [sections]);
 
   const deleteSection = useDeleteSection(sections.at(0)?.courseId!);
 
@@ -104,12 +100,11 @@ export function SectionsGradientList({ sections }: {sections: Section[]}) {
       >
         {sections.map((val) => (
           <Link key={val.sectionId} to={`section/${val.sectionId}`}>
-            <CourseContent {...val} canDelete={true} onDelete={() => handleDelete(val.sectionId!)}/>
+            <CourseContent {...val} canDelete={true} onDelete={() => handleDelete(val.sectionId!)} />
           </Link>
         ))}
       </div>
 
-      {/* Top gradient */}
       {showTop && (
         <div
           aria-hidden="true"
@@ -119,7 +114,6 @@ export function SectionsGradientList({ sections }: {sections: Section[]}) {
         />
       )}
 
-      {/* Bottom gradient */}
       {showBottom && (
         <div
           aria-hidden="true"

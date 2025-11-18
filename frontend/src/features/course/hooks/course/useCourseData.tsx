@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
 import { useCourse } from "./useCourse";
-import { useSections } from "../section/useSection";
+import { useSections } from "../section/useGetSections";
 import { useCoursesByUser } from "./useCoursesByUser";
 
 export const useCourseData = (courseIdFromParam?: string) => {
