@@ -59,7 +59,7 @@ export const CourseInfo = () => {
               draggable={false}
               src={"https://picsum.photos/150"}
               alt="Creator"
-              className="md:w-18 lg:h-18 h-12 w-12 rounded"
+              className="md:w-18 lg:h-18 h-16 w-16 rounded"
             />
             <div>
               <h2 className="font-semibold text-xs text-wrap text line-clamp-1">John Doe Doe Doe</h2>
@@ -80,7 +80,7 @@ export const CourseInfo = () => {
                     draggable={false}
                     src={"https://picsum.photos/150"}
                     alt={val.courseName}
-                    className="w-10 h-10 md:w-14 lg:h-14 rounded-l"
+                    className="w-14 h-14 md:w-16 md:h-16 lg:h-14 rounded-l"
                   />
                   <div className="flex flex-col overflow-hidden p-1">
                     <h2 className="font-semibold text-xs line-clamp-1">{val.courseName}</h2>

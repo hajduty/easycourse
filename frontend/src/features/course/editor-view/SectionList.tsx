@@ -222,12 +222,10 @@ function SortableSection({
 
   return (
     <div ref={setNodeRef} style={style} className="flex items-center gap-2">
-      {/* Drag handle - only this part triggers drag */}
       <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing">
         <GripVertical className="w-4 h-4 text-gray-400" />
       </div>
 
-      {/* Clickable link - separate from drag handler */}
       <Link to={`section/${section.sectionId}`} className="flex-1">
         <CourseContent
           {...section}

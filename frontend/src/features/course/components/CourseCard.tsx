@@ -7,7 +7,7 @@ export const CourseCard: FC<CourseResponse> = ({ courseName, courseDescription, 
   const navigate = useNavigate();
 
   return (
-    <Card className="w-64 h-64 rounded-lg overflow-hidden shadow-md relative group cursor-pointer p-0 m-0"
+    <Card className="min-w-64 min-h-64 rounded-lg overflow-hidden shadow-md relative group cursor-pointer p-0 m-0"
     onClick={() => navigate(`/course/${courseId}`)}>
       <img
         draggable={false}
