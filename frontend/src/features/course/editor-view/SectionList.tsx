@@ -52,7 +52,7 @@ export const SectionList: FC<SectionListProps> = ({ sections, courseId, courseTi
         ${isOpen ? "max-h-[1000px]" : "max-h-0"} md:max-h-full`}
       >
         <Link to={`/course/editor/${courseId}`}>
-          <Button size={'sm'} variant={'ghost'} className="line-clamp-1 w-full">{courseTitle}</Button>
+          <Button size={'sm'} variant={'ghost'} className="line-clamp-1 w-full cursor-pointer">{courseTitle}</Button>
         </Link>
         <SectionsGradientList sections={sections} />
         <Button

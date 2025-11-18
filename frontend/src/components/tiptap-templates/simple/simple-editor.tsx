@@ -183,7 +183,7 @@ const MobileToolbarContent = ({
   </>
 )
 
-export function SimpleEditor({content, onChange, editable = true}:{content: any, onChange?: (newContent: any) => void, editable?: boolean}) {
+export function SimpleEditor({ content, onChange, editable = true }: { content: any, onChange?: (newContent: any) => void, editable?: boolean }) {
   const isMobile = useIsBreakpoint()
   const { height, width } = useWindowSize()
   const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
@@ -224,7 +224,8 @@ export function SimpleEditor({content, onChange, editable = true}:{content: any,
         link: {
           openOnClick: false,
           enableClickSelection: true,
-        },}
+        },
+      }
       ),
       Youtube.configure({
         controls: true,
@@ -249,7 +250,7 @@ export function SimpleEditor({content, onChange, editable = true}:{content: any,
       }),
     ],
     content: content,
-    onUpdate: ({editor}) => {
+    onUpdate: ({ editor }) => {
       const text = editor.getText();
       const count = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
       setWordCount(count);
@@ -258,7 +259,7 @@ export function SimpleEditor({content, onChange, editable = true}:{content: any,
   })
 
   useEffect(() => {
-  if (!editor || !onChange) return;
+    if (!editor || !onChange) return;
 
     const handleUpdate = () => {
       const json = editor.getJSON();
@@ -286,58 +287,60 @@ export function SimpleEditor({content, onChange, editable = true}:{content: any,
   return (
     <div className="bg-stone-950 max-w-svw w-full">
       <EditorContext.Provider value={{ editor }}>
-        <Toolbar
-          ref={toolbarRef}
-          style={{
-            ...(isMobile
-              ? {
+        {editable &&
+          <Toolbar
+            ref={toolbarRef}
+            style={{
+              ...(isMobile
+                ? {
                   bottom: `calc(100% - ${height - rect.y}px)`,
                 }
-              : {}),
-          }}
-        >
-          <div className=" text-sm text-stone-400">
-            {wordCount} words
-          </div>
-          {mobileView === "main" ? (
-            <MainToolbarContent
-              onHighlighterClick={() => setMobileView("highlighter")}
-              onLinkClick={() => setMobileView("link")}
-              isMobile={isMobile}
-            />
-          ) : (
-            <MobileToolbarContent
-              type={mobileView === "highlighter" ? "highlighter" : "link"}
-              onBack={() => setMobileView("main")}
-            />
-          )}
-
-          <ShadButton variant={'ghost'} className="text-xs" onClick={() => setYtDialogOpen(true)}>
-            <TvMinimalPlay />
-            Add Video
-          </ShadButton>
-          <AlertDialog open={ytDialogOpen} onOpenChange={setYtDialogOpen}>
-            <AlertDialogContent className="dark text-white">
-              <AlertDialogHeader>
-                <AlertDialogTitle>Insert YouTube Video</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Paste the YouTube video URL below.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <input
-                className="w-full border rounded px-2 py-1"
-                type="text"
-                placeholder="https://www.youtube.com/watch?v=..."
-                value={ytUrl}
-                onChange={(e) => setYtUrl(e.target.value)}
+                : {}),
+            }}
+          >
+            <div className=" text-sm text-stone-400">
+              {wordCount} words
+            </div>
+            {mobileView === "main" ? (
+              <MainToolbarContent
+                onHighlighterClick={() => setMobileView("highlighter")}
+                onLinkClick={() => setMobileView("link")}
+                isMobile={isMobile}
               />
-              <AlertDialogFooter className="flex justify-end gap-2 mt-2">
-                <ShadButton onClick={() => setYtDialogOpen(false)}>Cancel</ShadButton>
-                <ShadButton onClick={insertYoutube}>Insert</ShadButton>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </Toolbar>
+            ) : (
+              <MobileToolbarContent
+                type={mobileView === "highlighter" ? "highlighter" : "link"}
+                onBack={() => setMobileView("main")}
+              />
+            )}
+
+            <ShadButton variant={'ghost'} className="text-xs" onClick={() => setYtDialogOpen(true)}>
+              <TvMinimalPlay />
+              Add Video
+            </ShadButton>
+            <AlertDialog open={ytDialogOpen} onOpenChange={setYtDialogOpen}>
+              <AlertDialogContent className="dark text-white">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Insert YouTube Video</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Paste the YouTube video URL below.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <input
+                  className="w-full border rounded px-2 py-1"
+                  type="text"
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  value={ytUrl}
+                  onChange={(e) => setYtUrl(e.target.value)}
+                />
+                <AlertDialogFooter className="flex justify-end gap-2 mt-2">
+                  <ShadButton onClick={() => setYtDialogOpen(false)}>Cancel</ShadButton>
+                  <ShadButton onClick={insertYoutube}>Insert</ShadButton>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </Toolbar>
+        }
 
         <EditorContent
           editor={editor}
