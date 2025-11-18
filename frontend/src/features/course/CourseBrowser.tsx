@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GetCourses } from "./api";
 import { useDebounce } from "use-debounce";
 import { useSearchParams } from "react-router";
+import { BubbleBackground } from "@/components/animate-ui/components/backgrounds/bubble";
 
 export const CoursePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
