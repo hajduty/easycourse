@@ -6,13 +6,16 @@ import { Spinner } from "@/components/ui/spinner";
 import { CourseContent } from "../components/CourseContent";
 import { Link } from "react-router";
 import { useDeleteSection } from "../hooks/section/useDeleteSection";
+import { useUpdateSection } from "../hooks/section/useUpdateSection";
+import { PlusCircle } from "lucide-react";
 
 interface SectionListProps {
   sections: Section[];
   courseId: string;
+  courseTitle: string;
 }
 
-export const SectionList: FC<SectionListProps> = ({ sections, courseId }) => {
+export const SectionList: FC<SectionListProps> = ({ sections, courseId, courseTitle }) => {
   const createSection = useCreateSection();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -33,7 +36,7 @@ export const SectionList: FC<SectionListProps> = ({ sections, courseId }) => {
     return <><Spinner></Spinner></>
 
   return (
-    <div className="md:sticky md:w-1/5 md:border-b-0 border-b md:h-full h-fit border-r p-4 md:p-8 flex flex-col text-white">
+    <div className="md:sticky md:w-1/5 md:border-b-0 border-b md:h-full h-fit border-r py-8 md:px-4 lg:px-4 xl:px-8 flex flex-col text-white">
       <div className="md:hidden mb-4">
         <Button
           variant="secondary"
@@ -48,14 +51,17 @@ export const SectionList: FC<SectionListProps> = ({ sections, courseId }) => {
         className={`flex flex-col gap-4 overflow-hidden transition-[max-height] duration-300 ease-in-out
         ${isOpen ? "max-h-[1000px]" : "max-h-0"} md:max-h-full`}
       >
-        <h1 className="font-semibold pb-4 hidden md:block">Sections</h1>
+        <Link to={`/course/editor/${courseId}`}>
+          <Button size={'sm'} variant={'ghost'} className="line-clamp-1 w-full">{courseTitle}</Button>
+        </Link>
         <SectionsGradientList sections={sections} />
         <Button
           className="cursor-pointer"
-          variant="secondary"
+          variant="default"
           onClick={onAdd}
         >
           {createSection.isPending && <Spinner />}
+          <PlusCircle/>
           Add new section
         </Button>
       </div>
@@ -88,19 +94,31 @@ export function SectionsGradientList({ sections }: { sections: Section[] }) {
 
   const deleteSection = useDeleteSection(sections.at(0)?.courseId!);
 
+  const updateSection = useUpdateSection();
+
   const handleDelete = (sectionId: string) => {
     deleteSection.mutate(sectionId);
+  };
+
+  const handleUpdate = (newTitle: string, sectionId: string, courseId: string) => {
+    updateSection.mutate({
+      data: {
+        sectionId,
+        courseId,
+        title: newTitle,
+      },
+    });
   };
 
   return (
     <div className="relative">
       <div
         ref={scrollRef}
-        className="max-h-[600px] overflow-y-auto pr-2 flex flex-col gap-4"
+        className="max-h-[600px] overflow-y-auto flex flex-col gap-4"
       >
         {sections.map((val) => (
           <Link key={val.sectionId} to={`section/${val.sectionId}`}>
-            <CourseContent {...val} canDelete={true} onDelete={() => handleDelete(val.sectionId!)} />
+            <CourseContent {...val} canDelete={true} onDelete={() => handleDelete(val.sectionId!)} onEdit={(newTitle) => handleUpdate(newTitle, val.sectionId!, val.courseId!)}/>
           </Link>
         ))}
       </div>
