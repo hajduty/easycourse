@@ -22,6 +22,11 @@ export const GetSections = async (courseId: string): Promise<ApiResponse<Section
   return data;
 }
 
+export const GetSection = async (courseId: string, sectionId: string): Promise<ApiResponse<Section>> => {
+  const { data } = await apiClient.get<ApiResponse<Section>>(`/course/${courseId}/section/${sectionId}`);
+  return data;
+}
+
 export const CreateSection = async (section: Section): Promise<ApiResponse<Section>> => {
   const { data } = await apiClient.post(`/course/${section.courseId}/section`, section);
   return data;
@@ -43,7 +48,8 @@ export const UpdateCourse = async (course: CourseRequest, courseId: string): Pro
 }
 
 export const UpdateSection = async (section: Section, courseId: string): Promise<ApiResponse<Section>> => {
-  const { data } = await apiClient.put<ApiResponse<Section>>(`/course/${courseId}/${section.sectionId}`, section);
+  const { data } = await apiClient.put<ApiResponse<Section>>(`/course/${courseId}/section`, section);
+  console.log("updated someshit");
   return data;
 }
 

@@ -33,7 +33,7 @@ export const SectionList: FC<SectionListProps> = ({ sections, courseId }) => {
     return <><Spinner></Spinner></>
 
   return (
-    <div className="md:sticky md:w-1/5 h-full border-r p-4 md:p-8 flex flex-col text-white">
+    <div className="md:sticky md:w-1/5 md:border-b-0 border-b md:h-full h-fit border-r p-4 md:p-8 flex flex-col text-white">
       <div className="md:hidden mb-4">
         <Button
           variant="secondary"

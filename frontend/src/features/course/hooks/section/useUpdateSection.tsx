@@ -4,20 +4,18 @@ import type { ApiResponse } from "@/types/apiResponse";
 import type { Section } from "@/types/section";
 
 type UpdateSectionVariables = {
-  sectionId: string;
-  courseId: string;
-  data: any;
+  data: Section;
 };
 
 export const useUpdateSection = () => {
   const qc = useQueryClient();
 
   return useMutation<ApiResponse<Section>, unknown, UpdateSectionVariables>({
-    mutationFn: async ({ courseId, data }) => {
-      return await UpdateSection(data, courseId);
+    mutationFn: async ({ data }) => {
+      return await UpdateSection(data, data.courseId!);
     },
-    onSuccess: (_, { courseId }) => {
-      qc.invalidateQueries({ queryKey: ["sections", courseId] });
+    onSuccess: (_, { data }) => {
+      qc.invalidateQueries({ queryKey: ["section", data.sectionId] });
     },
   });
 };

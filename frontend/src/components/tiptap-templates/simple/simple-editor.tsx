@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Editor, EditorContent, EditorContext } from "@tiptap/react"
+import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit"
@@ -62,6 +62,7 @@ import { LinkIcon } from "@/components/tiptap-icons/link-icon"
 // --- Hooks ---
 import { useIsBreakpoint } from "@/hooks/use-is-breakpoint"
 import { useWindowSize } from "@/hooks/use-window-size"
+import { useCursorVisibility } from "@/hooks/use-cursor-visibility"
 
 // --- Components ---
 import { ThemeToggle } from "@/components/tiptap-templates/simple/theme-toggle"
@@ -72,7 +73,7 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 
-import { useUpdateSection } from "@/features/course/hooks/section/useUpdateSection"
+import content from "@/components/tiptap-templates/simple/data/content.json"
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -147,7 +148,6 @@ const MainToolbarContent = ({
       {isMobile && <ToolbarSeparator />}
 
       <ToolbarGroup>
-        <ThemeToggle />
       </ToolbarGroup>
     </>
   )
@@ -182,87 +182,102 @@ const MobileToolbarContent = ({
   </>
 )
 
-export function SimpleEditor({ sectionId }: { sectionId: string }) {
-  const isMobile = useIsBreakpoint();
-  const { height } = useWindowSize();
-  const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">("main");
-  const toolbarRef = useRef<HTMLDivElement>(null);
+export function SimpleEditor({content, onChange, editable = true}:{content: any, onChange?: (newContent: any) => void, editable?: boolean}) {
+  const isMobile = useIsBreakpoint()
+  const { height } = useWindowSize()
+  const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
+    "main"
+  )
 
-  const [editor, setEditor] = useState<Editor | null>(null);
-  const [content, setContent] = useState<any>("x"); // default to empty string
+  const toolbarRef = useRef<HTMLDivElement>(null)
+  const [wordCount, setWordCount] = useState(0);
 
-  const updateSection = useUpdateSection();
+  const editor = useEditor({
+    immediatelyRender: false,
+    editorProps: {
+      attributes: {
+        autocomplete: "off",
+        autocorrect: "off",
+        autocapitalize: "off",
+        "aria-label": "Main content area, start typing to enter text.",
+        class: "simple-editor",
+      },
+    },
+    extensions: [
+      StarterKit.configure({
+        horizontalRule: false,
+        link: {
+          openOnClick: false,
+          enableClickSelection: true,
+        },
+      }),
+      HorizontalRule,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
+      TaskList,
+      TaskItem.configure({ nested: true }),
+      Highlight.configure({ multicolor: true }),
+      Image,
+      Typography,
+      Superscript,
+      Subscript,
+      Selection,
+      ImageUploadNode.configure({
+        accept: "image/*",
+        maxSize: MAX_FILE_SIZE,
+        limit: 3,
+        upload: handleImageUpload,
+        onError: (error) => console.error("Upload failed:", error),
+      }),
+    ],
+    content: content,
+    onUpdate: ({editor}) => {
+      const text = editor.getText();
+      const count = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
+      setWordCount(count);
+    },
+    editable: editable
+  })
 
   useEffect(() => {
-    const raw = localStorage.getItem(`editorContent:${sectionId}`);
-    if (!raw || raw === "undefined" || raw === "null") {
-      setContent("x"); 
-      return;
-    }
+  if (!editor || !onChange) return;
 
-    try {
-      setContent(JSON.parse(raw));
-    } catch {
-      setContent("x");
-    }
-  }, [sectionId]);
-
-  useEffect(() => {
-    if (!content) {
-      return; // wait for content to be loaded
-    }
-
-    // destroy previous editor
-    if (editor) {
-      editor.destroy();
-    }
-
-    const newEditor = new Editor({
-      extensions: [
-        StarterKit.configure({
-          horizontalRule: false,
-          link: { openOnClick: false, enableClickSelection: true },
-        }),
-        HorizontalRule,
-        TextAlign.configure({ types: ["heading", "paragraph"] }),
-        TaskList,
-        TaskItem.configure({ nested: true }),
-        Highlight.configure({ multicolor: true }),
-        Image,
-        Typography,
-        Superscript,
-        Subscript,
-        Selection,
-        ImageUploadNode.configure({
-          accept: "image/*",
-          maxSize: MAX_FILE_SIZE,
-          limit: 3,
-          upload: handleImageUpload,
-          onError: (error) => console.error("Upload failed:", error),
-        }),
-      ],
-      content,
-    });
-
-    const save = () => {
-      if (!newEditor.view) return;
-      localStorage.setItem(`editorContent:${sectionId}`, JSON.stringify(newEditor.getJSON()));
+    const handleUpdate = () => {
+      const json = editor.getJSON();
+      onChange(json);
     };
-    newEditor.on("update", save);
 
-    setEditor(newEditor);
+    editor.on("update", handleUpdate);
 
     return () => {
-      newEditor.destroy();
+      editor.off("update", handleUpdate);
     };
-  }, [content, sectionId]);
+  }, [editor, onChange]);
 
-  if (!editor) return null;
+
+  const rect = useCursorVisibility({
+    editor,
+    overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
+  })
+
+  useEffect(() => {
+    if (!isMobile && mobileView !== "main") {
+      setMobileView("main")
+    }
+  }, [isMobile, mobileView])
 
   return (
     <div className="bg-stone-950">
       <EditorContext.Provider value={{ editor }}>
-        <Toolbar ref={toolbarRef} style={{ ...(isMobile ? { bottom: `calc(100% - ${height}px)` } : {}) }}>
+        <Toolbar
+          ref={toolbarRef}
+          style={{
+            ...(isMobile
+              ? {
+                  bottom: `calc(100% - ${height - rect.y}px)`,
+                }
+              : {}),
+          }}
+        >
           {mobileView === "main" ? (
             <MainToolbarContent
               onHighlighterClick={() => setMobileView("highlighter")}
@@ -275,10 +290,18 @@ export function SimpleEditor({ sectionId }: { sectionId: string }) {
               onBack={() => setMobileView("main")}
             />
           )}
+          <div className="ml-auto text-sm text-stone-400">
+            {wordCount} words
+          </div>
+
         </Toolbar>
 
-        <EditorContent editor={editor} role="presentation" className="simple-editor-content" />
+        <EditorContent
+          editor={editor}
+          role="viewer"
+          className="simple-editor-content"
+        />
       </EditorContext.Provider>
     </div>
-  );
+  )
 }

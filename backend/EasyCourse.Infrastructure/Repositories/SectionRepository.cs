@@ -49,7 +49,11 @@ public class SectionRepository(AppDbContext context) : ISectionRepository
         var existing = await context.Sections.FindAsync(section.SectionId);
         if (existing == null) return null;
 
-        context.Entry(existing).CurrentValues.SetValues(section);
+        existing.LastUpdated = DateTime.UtcNow;
+        existing.SectionData = section.SectionData;
+        existing.SectionQuestions = section.SectionQuestions;
+        existing.Title = section.Title;
+
         await context.SaveChangesAsync();
         return existing;
     }
