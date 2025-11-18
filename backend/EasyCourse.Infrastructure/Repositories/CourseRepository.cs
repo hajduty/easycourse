@@ -100,8 +100,12 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
     {
         var getCourse = _context.Courses.Find(updatedCourse.CourseId) ?? throw new KeyNotFoundException($"Course with id {updatedCourse.CourseId} not found.");
 
-        getCourse.CourseName = updatedCourse.CourseName;
-        getCourse.CourseDescription = updatedCourse.CourseDescription;
+        if (updatedCourse.CourseDescription != "" || updatedCourse.CourseName != "")
+        {
+            getCourse.CourseName = updatedCourse.CourseName;
+            getCourse.CourseDescription = updatedCourse.CourseDescription;
+        }
+
         if (updatedCourse.Sections != null)
             getCourse.Sections = updatedCourse.Sections;
 

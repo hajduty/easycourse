@@ -285,7 +285,7 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
   }, [isMobile, mobileView])
 
   return (
-    <div className="bg-stone-950 max-w-svw w-full">
+    <div className="bg-stone-950 max-w-svw w-full h-full">
       <EditorContext.Provider value={{ editor }}>
         {editable &&
           <Toolbar
@@ -345,7 +345,7 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
         <EditorContent
           editor={editor}
           role="presentation"
-          className="simple-editor-content"
+          className="simple-editor-content h-full"
         />
       </EditorContext.Provider>
     </div>
