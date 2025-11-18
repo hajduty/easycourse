@@ -50,7 +50,7 @@ export const CourseInfo = () => {
         )}
       </div>
 
-      <div className="md:w-1/5 w-full p-6 md:p-8 flex flex-col gap-6 bg-stone-950">
+      <div className="md:w-1/5 w-full p-2 lg:p-8 flex flex-col gap-6 bg-stone-950">
         <div>
           <p className="font-semibold mb-2">Created by</p>
 
@@ -59,10 +59,10 @@ export const CourseInfo = () => {
               draggable={false}
               src={"https://picsum.photos/150"}
               alt="Creator"
-              className="w-18 h-18 rounded"
+              className="md:w-18 lg:h-18 h-12 w-12 rounded"
             />
             <div>
-              <h2 className="font-semibold text-md">John Doe</h2>
+              <h2 className="font-semibold text-xs text-wrap text line-clamp-1">John Doe Doe Doe</h2>
               <p className="text-xs text-stone-400">4 courses</p>
               <p className="text-xs text-stone-500">Joined 2025-11-15</p>
             </div>
@@ -72,7 +72,7 @@ export const CourseInfo = () => {
             <h2 className="pt-6 font-semibold">More by this user</h2>
           )}
 
-          <div className="flex flex-col gap-4 mt-2">
+          <div className="flex flex-col gap-4 md:mt-2">
             {otherCourses?.slice(0, 6).map((val) => (
               <Link key={val.courseId} to={`/course/${val.courseId}`}>
                 <div className="flex items-center gap-3 rounded bg-stone-900/60 hover:bg-stone-800 transition">
@@ -80,7 +80,7 @@ export const CourseInfo = () => {
                     draggable={false}
                     src={"https://picsum.photos/150"}
                     alt={val.courseName}
-                    className="w-14 h-14 rounded-l"
+                    className="w-10 h-10 md:w-14 lg:h-14 rounded-l"
                   />
                   <div className="flex flex-col overflow-hidden p-1">
                     <h2 className="font-semibold text-xs line-clamp-1">{val.courseName}</h2>

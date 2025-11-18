@@ -2,6 +2,8 @@ import { CourseContent } from "../components/CourseContent"
 import { Link, Outlet, useParams } from "react-router";
 import { useAuth } from "@/providers/AuthProvider";
 import { useCourseData } from "../hooks/course/useCourseData";
+import { Button } from "@/components/ui/button";
+import { Home } from "lucide-react";
 
 export const CourseLayout = () => {
   const { user } = useAuth();
@@ -16,6 +18,12 @@ export const CourseLayout = () => {
         <h1 className="font-semibold text-lg">Course content</h1>
         <p className="pb-4 text-sm text-stone-300">{totalTime} minutes total</p>
         <div className="flex flex-col gap-2 md:gap-4">
+          <Link to={`/course/${course?.courseId}`}>
+            <Button variant={'outline'} size={'sm'} className="w-full cursor-pointer">
+              <Home />
+              {course?.courseName}
+            </Button>
+          </Link>
           {sections.map((val, index) => (
             <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`}>
               <CourseContent {...val} canDelete={false} onDelete={() => { }} onEdit={() => { }} />
@@ -27,6 +35,12 @@ export const CourseLayout = () => {
       {/* Mobile / tablet horizontal sections */}
       <div className="lg:hidden w-full overflow-x-auto p-2">
         <div className="flex gap-2 h-full">
+          <Link to={`/course/${course?.courseId}`}>
+            <Button variant={'outline'} size={'sm'}>
+              <Home />
+              Course page
+            </Button>
+          </Link>
           {sections.map((val, index) => (
             <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`} className="shrink-0">
               <CourseContent {...val} canDelete={false} onDelete={() => { }} onEdit={() => { }} />
@@ -36,7 +50,7 @@ export const CourseLayout = () => {
       </div>
 
       {/* Main content / Outlet */}
-      <div className="flex-1 md:px-8 h-full">
+      <div className="flex-1 h-full">
         <Outlet
           context={{
             course,
