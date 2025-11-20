@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { SimpleEditor } from '@/components/tiptap-templates/simple/simple-editor';
 import type { Content } from '@tiptap/react';

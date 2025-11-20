@@ -7,7 +7,7 @@ import { CourseContent } from "../components/CourseContent";
 import { Link } from "react-router";
 import { useDeleteSection } from "../hooks/section/useDeleteSection";
 import { useUpdateSection } from "../hooks/section/useUpdateSection";
-import { PlusCircle, GripVertical, Menu } from "lucide-react";
+import { PlusCircle, GripVertical } from "lucide-react";
 
 interface SectionListProps {
   sections: Section[];

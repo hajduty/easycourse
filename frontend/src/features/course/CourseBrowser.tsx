@@ -3,15 +3,16 @@ import { CourseCard } from "./components/CourseCard";
 import { CourseFilter } from "./components/CourseFilter";
 import { CoursePagination } from "./components/CoursePagination";
 import { CourseSearch } from "./components/CourseSearch";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { GetCourses } from "./api";
 import { useDebounce } from "use-debounce";
 import { useSearchParams } from "react-router";
-import { BubbleBackground } from "@/components/animate-ui/components/backgrounds/bubble";
 
 export const CoursePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [isInitialized, useIsInitialized] = useState(false);
+  const previousDebouncedQuery = useRef<CourseQuery | null>(null);
 
   const [query, setQuery] = useState<CourseQuery>({
     query: searchParams.get("query") ?? "",
@@ -29,15 +30,26 @@ export const CoursePage = () => {
     staleTime: 0,
   });
 
+  // Only update URL when debounced query actually changes
   useEffect(() => {
-    setSearchParams({
-      query: query.query!,
-      page: String(query.page),
-      pageSize: String(query.pageSize),
-      sortBy: query.sortBy!,
-      descending: String(query.descending),
-    });
-  }, [query, setSearchParams]);
+    if (!isInitialized) {
+      useIsInitialized(true);
+      previousDebouncedQuery.current = debouncedQuery;
+      return;
+    }
+
+    // Only update if something actually changed
+    if (JSON.stringify(previousDebouncedQuery.current) !== JSON.stringify(debouncedQuery)) {
+      setSearchParams({
+        query: debouncedQuery.query!,
+        page: String(debouncedQuery.page),
+        pageSize: String(debouncedQuery.pageSize),
+        sortBy: debouncedQuery.sortBy!,
+        descending: String(debouncedQuery.descending),
+      });
+      previousDebouncedQuery.current = debouncedQuery;
+    }
+  }, [debouncedQuery, setSearchParams, isInitialized]);
 
   const courses = data?.data.items ?? [];
 
@@ -76,7 +88,7 @@ export const CoursePage = () => {
             onChange={(sortBy, descending) => setQuery((q) => ({ ...q, sortBy, descending }))}
           />
         </div>
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-8 w-full mx-auto overflow-visible">
+        <div className="mt-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-4 md:gap-8 w-full mx-auto">
           {sortedCourses.map((course, index) => (
             <CourseCard key={index} {...course} />
           ))}

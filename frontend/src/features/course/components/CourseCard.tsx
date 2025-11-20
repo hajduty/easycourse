@@ -7,13 +7,13 @@ export const CourseCard: FC<CourseResponse> = ({ courseName, courseDescription, 
   const navigate = useNavigate();
 
   return (
-    <Card className="min-w-64 min-h-64 rounded-lg overflow-hidden shadow-md relative group cursor-pointer p-0 m-0"
-    onClick={() => navigate(`/course/${courseId}`)}>
+    <Card className="min-w-32 min-h-32 rounded-lg overflow-hidden shadow-md relative group cursor-pointer p-0 m-0 aspect-square"
+      onClick={() => navigate(`/course/${courseId}`)}>
       <img
         draggable={false}
-        src={"https://picsum.photos/150"}
+        src={"https://picsum.photos/250"}
         alt={courseName}
-        className="w-full h-full object-cover"
+        className="w-full h-full min-h-32 min-w-32 object-cover"
       />
       <div className="absolute bottom-0 w-full bg-stone-900/80 border backdrop-blur-lg pt-2 transition-all duration-300 max-h-[18%] group-hover:max-h-full overflow-hidden px-4 pb-4">
         <CardTitle className="text-stone-300 text-md">{courseName}</CardTitle>
