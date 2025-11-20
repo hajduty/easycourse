@@ -17,13 +17,11 @@ export const CourseInfo = () => {
     date,
     otherCourses,
     user,
-    sections,
-    totalTime,
   } = useOutletContext<CourseInfoContext>();
 
   return (
     <div className="flex md:flex-row flex-col h-full">
-      <div className="md:w-4/5 w-full border-b md:border-b-0 md:border-r p-6 md:p-8 flex flex-col gap-6">
+      <div className="md:w-4/5 w-full border-b md:border-b-0 md:border-r p-6 xl:p-8 flex flex-col gap-6">
         <div className="w-full h-72 bg-stone-800 rounded-xl overflow-hidden">
           <img
             draggable={false}
@@ -50,7 +48,7 @@ export const CourseInfo = () => {
         )}
       </div>
 
-      <div className="md:w-1/5 w-full p-2 lg:p-8 flex flex-col gap-6 bg-stone-950">
+      <div className="md:w-1/5 w-full px-2 py-6 xl:p-8 flex flex-col gap-6 bg-stone-950">
         <div>
           <p className="font-semibold mb-2">Created by</p>
 
@@ -59,10 +57,10 @@ export const CourseInfo = () => {
               draggable={false}
               src={"https://picsum.photos/150"}
               alt="Creator"
-              className="md:w-18 lg:h-18 h-16 w-16 rounded"
+              className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l"
             />
             <div>
-              <h2 className="font-semibold text-xs text-wrap text line-clamp-1">John Doe Doe Doe</h2>
+              <h2 className="font-semibold text-xs text-wrap line-clamp-1">John Doe Doe Doe Doe Doe Doe Doe Doe </h2>
               <p className="text-xs text-stone-400">4 courses</p>
               <p className="text-xs text-stone-500">Joined 2025-11-15</p>
             </div>
@@ -72,7 +70,7 @@ export const CourseInfo = () => {
             <h2 className="pt-6 font-semibold">More by this user</h2>
           )}
 
-          <div className="flex flex-col gap-4 md:mt-2">
+          <div className="flex flex-col gap-4 md:mt-2 w-full">
             {otherCourses?.slice(0, 6).map((val) => (
               <Link key={val.courseId} to={`/course/${val.courseId}`}>
                 <div className="flex items-center gap-3 rounded bg-stone-900/60 hover:bg-stone-800 transition">
@@ -80,11 +78,11 @@ export const CourseInfo = () => {
                     draggable={false}
                     src={"https://picsum.photos/150"}
                     alt={val.courseName}
-                    className="w-14 h-14 md:w-16 md:h-16 lg:h-14 rounded-l"
+                    className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l"
                   />
                   <div className="flex flex-col overflow-hidden p-1">
-                    <h2 className="font-semibold text-xs line-clamp-1">{val.courseName}</h2>
-                    <p className="text-xs text-stone-400 line-clamp-1">
+                    <h2 className="font-semibold text-xs line-clamp-1 text-wrap">{val.courseName}</h2>
+                    <p className="text-xs text-stone-400 line-clamp-1 text-wrap">
                       {val.courseDescription}
                     </p>
                     <p className="text-xs text-stone-500 line-clamp-1">

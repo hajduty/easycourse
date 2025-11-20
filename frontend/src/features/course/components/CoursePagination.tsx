@@ -38,7 +38,7 @@ export const CoursePagination: FC<CoursePaginationProps> = ({ page, pageSize, to
                 onChange(p, pageSize, totalCount);
               }}
               size={"icon-sm"}
-              className={`border border-stone-700 transition-colors ${p === page
+              className={` transition-colors ${p === page
                 ? "bg-stone-800 text-white"
                 : "hover:bg-stone-800 text-stone-300 "
                 }`}

@@ -41,7 +41,9 @@ export const CourseLayout = () => {
           <Link to={`/course/${course?.courseId}`}>
             <Button variant={'outline'} size={'sm'} className="w-full cursor-pointer">
               <Home />
+              <p className="w-fit line-clamp-1">
               {course?.courseName}
+              </p>
             </Button>
           </Link>
           <div className="relative">

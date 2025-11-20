@@ -219,7 +219,7 @@ export const SectionEditor = () => {
           </div>
         )}
       </div>
-      <div className="md:w-1/5 md:block border-l p-8">
+      <div className="md:w-1/5 md:block border-l p-8 md:border-t-0 border-t">
         <h1 className="font-semibold pb-4">Questions</h1>
       </div>
     </div>

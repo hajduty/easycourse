@@ -1,7 +1,7 @@
-import { StrictMode } from 'react'
+import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import AuthPage from './features/auth/AuthPage.tsx'
-import { BrowserRouter, Route, Routes } from 'react-router'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthProvider } from './providers/AuthProvider.tsx'
@@ -21,11 +21,25 @@ import { CourseInfo } from './features/course/learn-view/CourseInfo.tsx';
 import { SectionView } from './features/course/learn-view/SectionView.tsx';
 const queryClient = new QueryClient();
 
+export default function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "instant", // safest for route changes
+    });
+  }, [pathname]);
+
+  return null;
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route element={<Layout />}>
               <Route index path="/" element={<HomePage />} />

@@ -62,7 +62,7 @@ export const CoursePage = () => {
   });
 
   return (
-    <div className="relative flex flex-col gap-8 justify-center items-center pt-8 dark pb-8">
+    <div className="relative flex flex-col gap-8 justify-center items-center pt-8 dark pb-8 h-full">
       <div className="w-full max-w-6xl mx-auto px-4">
         <h1 className="text-white text-2xl font-medium pb-8">Browse courses created by other users</h1>
         <div className="flex flex-col w-full text-stone-200 gap-2 md:flex-row md:justify-center items-start transition-all duration-300 ease-in-out">
@@ -76,7 +76,7 @@ export const CoursePage = () => {
             onChange={(sortBy, descending) => setQuery((q) => ({ ...q, sortBy, descending }))}
           />
         </div>
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full mx-auto overflow-visible">
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-8 w-full mx-auto overflow-visible">
           {sortedCourses.map((course, index) => (
             <CourseCard key={index} {...course} />
           ))}
