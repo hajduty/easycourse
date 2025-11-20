@@ -1,20 +1,8 @@
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor"
-import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
-import { useOutletContext, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useSection } from "../hooks/section/useGetSection";
 import type { Content } from "@tiptap/react";
 import { useEffect, useState } from "react";
-
-
-interface CourseInfoContext {
-  course: any;
-  date: Date | null;
-  otherCourses: any[];
-  user: any;
-  sections: any[];
-  totalTime: number;
-}
 
 export const SectionView = () => {
   const { sectionId, courseId } = useParams<{ sectionId: string; courseId: string }>();

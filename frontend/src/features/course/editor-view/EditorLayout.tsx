@@ -20,7 +20,7 @@ export const EditorLayout = () => {
     <div className="flex flex-col md:flex-row w-full h-full">
       <SectionList sections={sections} courseId={courseId!} courseTitle={course?.courseName!}/>
 
-      <div className="flex-5 md:px-8 h-full w-fit">
+      <div className="flex-1 h-full">
         <Outlet context={{course, sections}}/>
       </div>
     </div>

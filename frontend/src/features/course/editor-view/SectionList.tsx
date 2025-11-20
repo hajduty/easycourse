@@ -15,9 +15,12 @@ interface SectionListProps {
   courseTitle: string;
 }
 
-export const SectionList: FC<SectionListProps> = ({ sections, courseId, courseTitle }) => {
+export const SectionList: FC<SectionListProps> = ({
+  sections,
+  courseId,
+  courseTitle,
+}) => {
   const createSection = useCreateSection();
-  const [isOpen, setIsOpen] = useState(false);
 
   const onAdd = () => {
     const maxOrder =
@@ -32,31 +35,33 @@ export const SectionList: FC<SectionListProps> = ({ sections, courseId, courseTi
     });
   };
 
-  if (!sections)
-    return <><Spinner></Spinner></>
+  if (!sections) return <Spinner />;
 
   return (
-    <div className="md:sticky md:w-1/5 md:border-b-0 border-b md:h-full h-fit border-r py-8 md:px-4 lg:px-4 xl:px-8 flex flex-col text-white">
-      <div className="md:hidden mb-4">
-        <Button
-          variant="secondary"
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-full"
-        >
-          {isOpen ? "Hide Sections" : "Show Sections"}
-        </Button>
-      </div>
+    <div className="flex flex-col lg:flex-row h-full text-white lg:w-1/5 md:w-1/4">
 
-      <div
-        className={`flex flex-col gap-4 overflow-hidden transition-[max-height] duration-300 ease-in-out
-        ${isOpen ? "max-h-[1000px]" : "max-h-0"} md:max-h-full`}
-      >
+      {/* Desktop sidebar */}
+      <div className="hidden lg:flex flex-col border-b lg:border-b-0 lg:border-r p-6 lg:p-8">
+        <h1 className="font-semibold text-lg">Course content</h1>
+
         <Link to={`/course/editor/${courseId}`}>
-          <Button size={'sm'} variant={'ghost'} className="line-clamp-1 w-full cursor-pointer">{courseTitle}</Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full my-4 cursor-pointer"
+          >
+            <p className="w-fit line-clamp-1">{courseTitle}</p>
+          </Button>
         </Link>
-        <SectionsGradientList sections={sections} />
+
+        <div className="relative mt-2">
+          <div className="flex flex-col gap-2 max-h-[600px] overflow-y-scroll scrollbar-hide">
+            <SectionsGradientList sections={sections} />
+          </div>
+        </div>
+
         <Button
-          className="cursor-pointer"
+          className="cursor-pointer mt-4"
           variant="default"
           onClick={onAdd}
         >
@@ -65,9 +70,34 @@ export const SectionList: FC<SectionListProps> = ({ sections, courseId, courseTi
           Add new section
         </Button>
       </div>
+
+      {/* Mobile horizontal sections */}
+      <div className="lg:hidden w-full overflow-x-auto p-2">
+        <div className="flex gap-2">
+          <Link to={`/course/editor/${courseId}`}>
+            <Button variant="outline" size="sm">
+              Course page
+            </Button>
+          </Link>
+
+          {/* 🔥 Make your SectionGradientList render horizontally */}
+          {sections.map((s) => (
+            <Link
+              key={s.sectionId}
+              to={`/course/editor/${courseId}/section/${s.sectionId}`}
+              className="shrink-0"
+            >
+              <div className="min-w-[200px]"> 
+                <SectionsGradientList sections={[s]} />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
+
 
 import {
   DndContext,
@@ -84,6 +114,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useUpdateCourse } from "../hooks/course/useUpdateCourse";
+import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 
 export function SectionsGradientList({ sections: initialSections }: { sections: Section[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -222,12 +253,10 @@ function SortableSection({
 
   return (
     <div ref={setNodeRef} style={style} className="flex items-center gap-2">
-      {/* Drag handle - only this part triggers drag */}
       <div {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing">
         <GripVertical className="w-4 h-4 text-gray-400" />
       </div>
 
-      {/* Clickable link - separate from drag handler */}
       <Link to={`section/${section.sectionId}`} className="flex-1">
         <CourseContent
           {...section}

@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { SimpleEditor } from '@/components/tiptap-templates/simple/simple-editor';
 import type { Content } from '@tiptap/react';
@@ -219,7 +218,7 @@ export const SectionEditor = () => {
           </div>
         )}
       </div>
-      <div className="md:w-1/5 md:block border-l p-8">
+      <div className="md:w-1/5 md:block border-l p-8 md:border-t-0 border-t">
         <h1 className="font-semibold pb-4">Questions</h1>
       </div>
     </div>
