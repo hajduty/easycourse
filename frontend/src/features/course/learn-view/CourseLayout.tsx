@@ -32,7 +32,7 @@ export const CourseLayout = () => {
   }, [sections]);
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen h-full text-white">
+    <div className="flex flex-col lg:flex-row h-full text-white">
       {/* Desktop sidebar */}
       <div className="lg:w-1/5 w-1/4 hidden lg:flex flex-col border-b md:border-b-0 md:border-r p-6 md:p-8">
         <h1 className="font-semibold text-lg">Course content</h1>

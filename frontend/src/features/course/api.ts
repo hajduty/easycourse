@@ -49,7 +49,6 @@ export const UpdateCourse = async (course: CourseRequest, courseId: string): Pro
 
 export const UpdateSection = async (section: Section, courseId: string): Promise<ApiResponse<Section>> => {
   const { data } = await apiClient.put<ApiResponse<Section>>(`/course/${courseId}/section`, section);
-  console.log("updated someshit");
   return data;
 }
 

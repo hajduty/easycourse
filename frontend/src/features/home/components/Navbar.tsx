@@ -1,6 +1,6 @@
 import { Notebook, Settings, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate } from "react-router";
 
 export const Navbar = () => {
@@ -51,6 +51,7 @@ export const Navbar = () => {
 
       <div className="ml-auto md:hidden">
         <Sheet>
+          <SheetTitle/>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon">
               <Menu className="text-white" />

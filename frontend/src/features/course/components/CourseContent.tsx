@@ -34,7 +34,7 @@ export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, reading
 
   return (
     <div
-      className={`w-full h-8 p-2 flex items-center rounded-sm gap-4 justify-around px-4 group relative border hover:bg-stone-800 transition ${textColorClass} ${bgClass}`}
+      className={`w-full h-8 p-2 min-w-56 flex items-center rounded-sm gap-4 justify-around px-4 group relative border hover:bg-stone-800 transition ${textColorClass} ${bgClass}`}
     >
       <h1 className="text-center justify-self-center">{order}</h1>
       <Separator className="w-8" orientation="vertical" />
@@ -76,7 +76,7 @@ export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, reading
         <Button
           variant="ghost"
           size="icon-sm"
-          className="absolute right-8 text-stone-400 hover:text-stone-200 transition"
+          className="absolute md:right-8 right-6 text-stone-400 hover:text-stone-200 transition"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();

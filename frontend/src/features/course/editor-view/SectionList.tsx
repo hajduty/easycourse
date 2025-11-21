@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FC } from "react";
 import type { Section } from "@/types/section";
 import { Spinner } from "@/components/ui/spinner";
 import { CourseContent } from "../components/CourseContent";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useDeleteSection } from "../hooks/section/useDeleteSection";
 import { useUpdateSection } from "../hooks/section/useUpdateSection";
 import { PlusCircle, GripVertical, Home } from "lucide-react";
@@ -91,6 +91,16 @@ export const SectionList: FC<SectionListProps> = ({
               </div>
             </Link>
           ))}
+          <Button
+            className="cursor-pointer"
+            variant="outline"
+            onClick={onAdd}
+            size={'sm'}
+          >
+            {createSection.isPending && <Spinner />}
+            <PlusCircle />
+            Add new section
+          </Button>
         </div>
       </div>
     </div>
@@ -237,6 +247,7 @@ function SortableSection({
   onDelete: (id: string) => void;
   onEdit: (newTitle: string, sectionId: string, courseId: string) => void;
 }) {
+  const navigate = useNavigate();
   if (!section) {
     return <Spinner />
   }
@@ -255,14 +266,14 @@ function SortableSection({
         <GripVertical className="w-4 h-4 text-gray-400" />
       </div>
 
-      <Link to={`section/${section.sectionId}`} className="flex-1">
+      <div onClick={() => navigate(`section/${section.sectionId}`)} className="flex-1">
         <CourseContent
           {...section}
           canDelete={true}
           onDelete={() => onDelete(section.sectionId!)}
           onEdit={(newTitle) => onEdit(newTitle, section.sectionId!, section.courseId!)}
         />
-      </Link>
+      </div>
     </div>
   );
 }

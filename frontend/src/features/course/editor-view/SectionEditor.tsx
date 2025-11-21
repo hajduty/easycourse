@@ -7,6 +7,9 @@ import { useSection } from '../hooks/section/useGetSection';
 import { useUpdateSection } from '../hooks/section/useUpdateSection';
 import { AlertDialog, AlertDialogDescription, AlertDialogTitle } from '@radix-ui/react-alert-dialog';
 import { AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from '@/components/ui/alert-dialog';
+import { QuizEditor } from './QuizEditor';
+import { ChevronDown } from 'lucide-react';
+import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from '@/components/animate-ui/primitives/base/collapsible';
 
 export const SectionEditor = () => {
   const { sectionId, courseId } = useParams();
@@ -45,13 +48,13 @@ export const SectionEditor = () => {
       let localData = null;
       const raw = localStorage.getItem(`editorContent:${sectionId}`);
       if (raw) {
-        try { localData = JSON.parse(raw); } catch {}
+        try { localData = JSON.parse(raw); } catch { }
       }
 
       const apiData = loadedSection.data;
       let apiContent = null;
       if (apiData?.sectionData) {
-        try { apiContent = JSON.parse(apiData.sectionData); } catch {}
+        try { apiContent = JSON.parse(apiData.sectionData); } catch { }
       }
 
       const localTime = localData?.lastUpdated ?? 0;
@@ -78,7 +81,7 @@ export const SectionEditor = () => {
     };
 
     loadContent();
-    
+
     // Clear any pending saves when switching sections
     return () => {
       if (saveTimeoutRef.current) {
@@ -90,16 +93,16 @@ export const SectionEditor = () => {
   const handleContentChange = useCallback(
     (newContent: Content) => {
       setContent(newContent);
-      
+
       // Get the current section at call time (not closure time)
       const targetSectionId = currentSectionRef.current;
-      
+
       // Save to localStorage immediately
       localStorage.setItem(
         `editorContent:${targetSectionId}`,
-        JSON.stringify({ 
-          content: newContent, 
-          lastUpdated: Date.now() 
+        JSON.stringify({
+          content: newContent,
+          lastUpdated: Date.now()
         })
       );
 
@@ -121,7 +124,7 @@ export const SectionEditor = () => {
 
         if (loadedSection.data) {
           isSavingRef.current = true;
-          
+
           try {
             await updateSection.mutateAsync({
               data: {
@@ -130,7 +133,7 @@ export const SectionEditor = () => {
                 lastUpdated: new Date(),
               },
             });
-            
+
             // Success! Remove localStorage since it's now in sync with server
             localStorage.removeItem(`editorContent:${targetSectionId}`);
           } catch (error) {
@@ -151,7 +154,7 @@ export const SectionEditor = () => {
       setLoadedForSection(sectionId!);
       setIsContentLoaded(true);
       setShowConflictAlert(false);
-      
+
       // Try to save local data to server
       if (loadedSection.data) {
         updateSection.mutate({
@@ -176,15 +179,48 @@ export const SectionEditor = () => {
       setLoadedForSection(sectionId!);
       setIsContentLoaded(true);
       setShowConflictAlert(false);
-      
+
       // Remove stale localStorage data
       localStorage.removeItem(`editorContent:${sectionId}`);
     }
   };
 
+  const handleQuizChange = useCallback(
+    (newQuizData: any) => {
+      if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+
+      saveTimeoutRef.current = setTimeout(async () => {
+        if (!loadedSection.data) return;
+
+        try {
+          await updateSection.mutateAsync({
+            data: {
+              ...loadedSection.data,
+              sectionQuestions: JSON.stringify(newQuizData),
+              lastUpdated: new Date(),
+            },
+          });
+        } catch (error) {
+          console.error("Failed to save quiz data:", error);
+        }
+      }, 1000);
+    },
+    [sectionId, loadedSection.data, updateSection]
+  );
+
+  const parsedQuizData = (() => {
+    const raw = loadedSection.data?.sectionQuestions;
+    if (!raw) return [];
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return [];
+    }
+  })();
+
   return (
-    <div className="h-full flex md:flex-row flex-col p-0 m-0 text-white w-full bg-stone-950">
-      <div className="md:w-4/5 overflow-y-scroll h-full">
+    <div className="h-full flex xl:flex-row flex-col-reverse p-0 m-0 text-white w-full bg-stone-950">
+      <div className="xl:w-4/5 overflow-y-scroll h-full">
         {showConflictAlert && conflictData ? (
           <div className="flex items-center justify-center h-full p-8">
             <AlertDialog defaultOpen={true}>
@@ -209,7 +245,7 @@ export const SectionEditor = () => {
         ) : isContentLoaded && loadedForSection === sectionId ? (
           <SimpleEditor
             key={sectionId}
-            content={content} 
+            content={content}
             onChange={handleContentChange}
           />
         ) : (
@@ -218,9 +254,32 @@ export const SectionEditor = () => {
           </div>
         )}
       </div>
-      <div className="md:w-1/5 md:block border-l p-8 md:border-t-0 border-t">
-        <h1 className="font-semibold pb-4">Questions</h1>
+      <div className="xl:w-1/5 border-l xl:border-t-0 border-t xl:block">
+        {/* Mobile-only collapse trigger */}
+        <div className="xl:hidden border-b">
+          <Collapsible>
+            <CollapsibleTrigger className={'w-full p-2 border-y hover:bg-stone-900 transition cursor-pointer font-semibold bg-stone-900/30'}>
+              Questions
+            </CollapsibleTrigger>
+            <CollapsiblePanel>
+              <QuizEditor
+                key={sectionId}
+                quizData={parsedQuizData}
+                onSave={handleQuizChange}
+              />
+            </CollapsiblePanel>
+          </Collapsible>
+        </div>
+
+        <div className="hidden xl:block p-2">
+          <QuizEditor
+            key={sectionId}
+            quizData={parsedQuizData}
+            onSave={handleQuizChange}
+          />
+        </div>
       </div>
+
     </div>
   );
 };
