@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GetCourses } from "./api";
 import { useDebounce } from "use-debounce";
 import { useSearchParams } from "react-router";
+import { CourseCardSkeleton } from "./components/CourseCardSkeleton";
 
 export const CoursePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,7 +25,7 @@ export const CoursePage = () => {
 
   const [debouncedQuery] = useDebounce(query, 200);
 
-  const { data } = useQuery({
+  const { data, isLoading, isFetching } = useQuery({
     queryKey: ["courses", debouncedQuery],
     queryFn: async () => GetCourses(debouncedQuery),
     staleTime: 0,
@@ -73,6 +74,8 @@ export const CoursePage = () => {
     return query.descending ? result : -result;
   });
 
+  const isGridLoading = isLoading || isFetching;
+
   return (
     <div className="relative flex flex-col gap-8 justify-center items-center pt-8 dark pb-8 h-full">
       <div className="w-full max-w-6xl mx-auto px-4">
@@ -89,9 +92,9 @@ export const CoursePage = () => {
           />
         </div>
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-4 md:gap-8 w-full mx-auto">
-          {sortedCourses.map((course, index) => (
-            <CourseCard key={index} {...course} />
-          ))}
+          {isGridLoading
+            ? Array.from({ length: 8 }).map((_, i) => <CourseCardSkeleton key={i} />)
+            : sortedCourses.map((course, index) => <CourseCard key={index} {...course} />)}
         </div>
       </div>
       <CoursePagination

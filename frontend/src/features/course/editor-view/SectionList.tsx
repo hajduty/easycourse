@@ -7,7 +7,7 @@ import { CourseContent } from "../components/CourseContent";
 import { Link } from "react-router";
 import { useDeleteSection } from "../hooks/section/useDeleteSection";
 import { useUpdateSection } from "../hooks/section/useUpdateSection";
-import { PlusCircle, GripVertical } from "lucide-react";
+import { PlusCircle, GripVertical, Home } from "lucide-react";
 
 interface SectionListProps {
   sections: Section[];
@@ -38,10 +38,10 @@ export const SectionList: FC<SectionListProps> = ({
   if (!sections) return <Spinner />;
 
   return (
-    <div className="flex flex-col lg:flex-row h-full text-white lg:w-1/5 md:w-1/4">
+    <div className="flex flex-col lg:flex-row text-white lg:w-1/5">
 
       {/* Desktop sidebar */}
-      <div className="hidden lg:flex flex-col border-b lg:border-b-0 lg:border-r p-6 lg:p-8">
+      <div className="hidden lg:flex flex-col border-b lg:border-b-0 lg:border-r p-6 lg:p-8 w-full">
         <h1 className="font-semibold text-lg">Course content</h1>
 
         <Link to={`/course/editor/${courseId}`}>
@@ -50,6 +50,7 @@ export const SectionList: FC<SectionListProps> = ({
             size="sm"
             className="w-full my-4 cursor-pointer"
           >
+            <Home/>
             <p className="w-fit line-clamp-1">{courseTitle}</p>
           </Button>
         </Link>
@@ -71,7 +72,6 @@ export const SectionList: FC<SectionListProps> = ({
         </Button>
       </div>
 
-      {/* Mobile horizontal sections */}
       <div className="lg:hidden w-full overflow-x-auto p-2">
         <div className="flex gap-2">
           <Link to={`/course/editor/${courseId}`}>
@@ -80,7 +80,6 @@ export const SectionList: FC<SectionListProps> = ({
             </Button>
           </Link>
 
-          {/* 🔥 Make your SectionGradientList render horizontally */}
           {sections.map((s) => (
             <Link
               key={s.sectionId}
@@ -114,7 +113,6 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useUpdateCourse } from "../hooks/course/useUpdateCourse";
-import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 
 export function SectionsGradientList({ sections: initialSections }: { sections: Section[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);

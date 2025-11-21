@@ -7,10 +7,12 @@ export interface CourseResponse {
   sections: any[];
   participantCount: number;
   createdAt: Date;
+  isPublic: boolean;
 }
 
 export interface CourseRequest {
   courseName: string;
   courseDescription: string;
   sections: any[];
+  isPublic: boolean;
 }
