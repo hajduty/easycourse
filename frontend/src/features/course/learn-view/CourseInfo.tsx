@@ -1,6 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
-import { Link, useOutletContext } from "react-router";
+import { Link, useOutletContext, useParams } from "react-router";
+import { useRegisterParticipant } from "../hooks/participant/useCreateParticipant";
+import { useAuth } from "@/providers/AuthProvider";
+import { useParticipantInfo } from "../hooks/participant/useGetParticipant";
 
 interface CourseInfoContext {
   course: any;
@@ -19,19 +22,62 @@ export const CourseInfo = () => {
     user,
   } = useOutletContext<CourseInfoContext>();
 
+  const { sectionId, courseId } = useParams<{ sectionId: string; courseId: string }>();
+
+  const { user: userInfo } = useAuth();
+
+  const participantInfo = useParticipantInfo(courseId!, userInfo?.id!);
+  const registerParticipant = useRegisterParticipant();
+
+  const handleParticipate = () => {
+    if (!course.courseId || !userInfo?.id) { console.log(userInfo?.id); return };
+
+    registerParticipant.mutate({
+      courseId: courseId!,
+      userId: userInfo?.id!,
+      participantInfo: {
+        completedSectionIds: [],
+        lastCompletedSectionId: courseId,
+        userId: userInfo?.id!,
+        courseId: courseId!
+      },
+    });
+  };
+
+  const isParticipant = !!participantInfo.data?.data;
+  const isLoading = registerParticipant.isPending;
+
   return (
     <div className="flex md:flex-row flex-col h-full">
       <div className="md:w-4/5 w-full border-b md:border-b-0 md:border-r p-6 xl:p-8 flex flex-col gap-6">
-        <div className="w-full h-72 bg-stone-800 rounded-xl overflow-hidden">
-          <img
-            draggable={false}
-            src={"https://picsum.photos/600/400"}
-            alt="Course cover"
-            className="w-full h-full object-cover"
-          />
+        <div className="relative w-full rounded-xl overflow-visible pb-12">
+          {/* Image with smaller height */}
+          <div className="h-60 overflow-hidden rounded-xl">
+            <img
+              draggable={false}
+              src="https://picsum.photos/600/400"
+              alt="Course cover"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          <div className="absolute bottom-6 right-6">
+            <Button
+              className={`${isParticipant ? "bg-stone-800 cursor-not-allowed" : "bg-green-700 hover:bg-green-800"
+                } text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition-transform duration-200 hover:-translate-y-0.5`}
+              onClick={handleParticipate}
+              disabled={isParticipant || isLoading}
+            >
+              {isParticipant
+                ? "Already Joined"
+                : isLoading
+                  ? "Joining..."
+                  : "Join this course"}
+            </Button>
+          </div>
         </div>
 
-        <h1 className="text-3xl font-bold">{course?.courseName}</h1>
+        <h1 className="text-3xl font-bold -mt-12">{course?.courseName}</h1>
 
         <p className="text-stone-300 leading-relaxed">{course?.courseDescription}</p>
 
@@ -60,9 +106,9 @@ export const CourseInfo = () => {
               className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l"
             />
             <div>
-              <h2 className="font-semibold text-xs text-wrap line-clamp-1">John Doe Doe Doe Doe Doe Doe Doe Doe </h2>
-              <p className="text-xs text-stone-400">4 courses</p>
-              <p className="text-xs text-stone-500">Joined 2025-11-15</p>
+              <h2 className="font-semibold md:text-xs text-lg text-wrap line-clamp-1">John Doe </h2>
+              <p className="md:text-xs text-sm text-stone-400">4 courses</p>
+              <p className="md:text-xs text-sm text-stone-500">Joined 2025-11-15</p>
             </div>
           </div>
 

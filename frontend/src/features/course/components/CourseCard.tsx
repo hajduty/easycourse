@@ -9,6 +9,8 @@ export const CourseCard: FC<CourseResponse> = ({ courseName, courseDescription, 
   const navigate = useNavigate();
   const imageUrl = ""
 
+  
+
   return (
     <Card
       className="min-w-32 min-h-32 rounded-lg overflow-hidden shadow-md relative group cursor-pointer p-0 m-0 aspect-square"

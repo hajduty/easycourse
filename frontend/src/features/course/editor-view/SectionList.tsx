@@ -21,9 +21,6 @@ export const SectionList: FC<SectionListProps> = ({
   courseTitle,
 }) => {
   const createSection = useCreateSection();
-  const deleteSection = useDeleteSection(sections?.[0]?.courseId!);
-  const updateSection = useUpdateSection();
-  const updateCourse = useUpdateCourse();
 
   const onAdd = () => {
     const maxOrder =

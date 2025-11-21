@@ -34,8 +34,6 @@ export const CourseLayout = () => {
     return () => el.removeEventListener("scroll", update);
   }, [sections]);
 
-  const completedSections = participantInfo.data?.data.completedSectionIds;
-
   return (
     <div className="flex flex-col lg:flex-row h-full text-white">
       {/* Desktop sidebar */}

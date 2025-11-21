@@ -59,7 +59,7 @@ export const DeleteSection = async (sectionId: string, courseId: string): Promis
 }
 
 export const RegisterUserAsParticipant = async (courseId: string, userId: string, participantInfo: Participant): Promise<ApiResponse<Participant>> => {
-  const {data} = await apiClient.post<ApiResponse<Participant>>(`/course/${courseId}/participant/${userId}`, participantInfo);
+  const {data} = await apiClient.post<ApiResponse<Participant>>(`/course/${courseId}/participant`, participantInfo);
   return data;
 }
 
