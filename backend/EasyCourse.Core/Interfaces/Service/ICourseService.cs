@@ -7,7 +7,7 @@ public interface ICourseService
 {
     public Task<CourseResponse> CreateCourse(CourseRequest newCourse, Guid userId);
     public Task<CourseResponse?> GetCourseById(Guid courseId);
-    public Task<IEnumerable<CourseResponse>> GetCoursesByUserId(Guid userId);
+    public Task<IEnumerable<CourseResponse>> GetCoursesByUserId(Guid userId, Guid? requestId);
     public Task<CourseResponse> UpdateCourse(CourseRequest updatedCourse, Guid userId, Guid courseId);
     public Task<bool> DeleteCourseById(Guid courseId, Guid userId);
     public Task<PagedResponse<CourseResponse>> GetCoursesAsync(CourseQuery query);

@@ -16,7 +16,8 @@ public static class CourseMappings
             CreatedById = course.CreatedByUserId.ToString(),
             Sections = course.Sections.ToDto(),
             ParticipantCount = course.Participants?.Count ?? 0,
-            CreatedAt = course.CreatedAt
+            CreatedAt = course.CreatedAt,
+            IsPublic = course.IsPublic ?? false
         };
     }
 
@@ -32,14 +33,15 @@ public static class CourseMappings
             CourseName = courseRequest.CourseName,
             CourseDescription = courseRequest.CourseDescription,
             CreatedByUserId = userId,
-            Sections = courseRequest.Sections.ToEntity()
+            Sections = courseRequest.Sections.ToEntity(),
+            IsPublic = courseRequest.IsPublic
         };
 
         if (courseId.HasValue)
         {
             entity.CourseId = courseId.Value;
         }
-
+         
         return entity;
     }
 

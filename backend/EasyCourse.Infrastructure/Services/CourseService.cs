@@ -45,15 +45,28 @@ public class CourseService(ICourseRepository courseRepo) : ICourseService
         return new PagedResponse<CourseResponse>(response, totalCount, query.Page, query.PageSize);
     }
 
-    public async Task<IEnumerable<CourseResponse>> GetCoursesByUserId(Guid userId)
+    public async Task<IEnumerable<CourseResponse>> GetCoursesByUserId(Guid userId, Guid? requestId)
     {
         var courses = await courseRepo.GetCoursesByUserId(userId);
 
-        return courses == null || !courses.Any() ? throw new InvalidOperationException("No courses found for this user.") : courses.ToResponseDto();
+        if (courses == null || !courses.Any())
+            throw new InvalidOperationException("No courses found for this user.");
+
+        if (requestId != userId)
+        {
+            courses = courses.Where(c => c.IsPublic == true).ToList();
+        }
+
+        return courses.ToResponseDto();
     }
 
     public async Task<CourseResponse> UpdateCourse(CourseRequest updatedCourse, Guid userId, Guid courseId)
     {
+        var course = await courseRepo.GetCourseById(courseId);
+
+        if (course == null || course.CreatedByUserId != userId)
+            throw new InvalidOperationException($"Course not found for user with ID {userId}");
+
         var result = await courseRepo.UpdateCourse(updatedCourse.ToEntity(userId, courseId));
 
         return result.ToResponseDto() ?? throw new InvalidOperationException("Error updating course");

@@ -8,8 +8,6 @@ import { AuthProvider } from './providers/AuthProvider.tsx'
 import { HomePage } from './features/home/HomePage.tsx'
 import { CoursePage } from './features/course/CourseBrowser.tsx'
 import { CourseLayout } from './features/course/learn-view/CourseLayout.tsx'
-import { CourseDashboard } from './features/course/dashboard/CourseDashboard.tsx'
-import { CourseCreate } from './features/course/CourseCreate.tsx'
 import { CourseEditor } from './features/course/editor-view/CourseEditor.tsx'
 import { Layout } from './features/Layout.tsx'
 import { EditorLayout } from './features/course/editor-view/EditorLayout.tsx'
@@ -19,6 +17,7 @@ import './styles/_keyframe-animations.scss';
 import './index.css';
 import { CourseInfo } from './features/course/learn-view/CourseInfo.tsx';
 import { SectionView } from './features/course/learn-view/SectionView.tsx';
+import CourseCreateBrowser from './features/course/create/CourseCreate.tsx';
 const queryClient = new QueryClient();
 
 export default function ScrollToTop() {
@@ -27,7 +26,7 @@ export default function ScrollToTop() {
   useEffect(() => {
     window.scrollTo({
       top: 0,
-      behavior: "instant", // safest for route changes
+      behavior: "instant",
     });
   }, [pathname]);
 
@@ -48,8 +47,7 @@ createRoot(document.getElementById('root')!).render(
                 <Route index element={<CourseInfo/>}></Route>
                 <Route path="section/:sectionId" element={<SectionView/>}/>
               </Route>
-              <Route path="dashboard" element={<CourseDashboard />} />
-              <Route path="course/create" element={<CourseCreate />} />
+              <Route path="course/create" element={<CourseCreateBrowser />} />
               <Route path="course/editor/:courseId" element={<EditorLayout />} >
                 <Route index element={<CourseEditor />} />
                 <Route path="section/:sectionId" element={<SectionEditor/>}/>
