@@ -16,7 +16,7 @@ public class Course
     public User? CreatedByUser { get; set; }
     public ICollection<Section> Sections { get; set; } = [];
     [JsonIgnore]
-    public ICollection<EnrolledCourse> Participants { get; set; } = [];
+    public ICollection<CourseParticipant> Participants { get; set; } = [];
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public bool? IsPublic { get; set; }
 }
