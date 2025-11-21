@@ -8,7 +8,6 @@ import { useUpdateSection } from '../hooks/section/useUpdateSection';
 import { AlertDialog, AlertDialogDescription, AlertDialogTitle } from '@radix-ui/react-alert-dialog';
 import { AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from '@/components/ui/alert-dialog';
 import { QuizEditor } from './QuizEditor';
-import { ChevronDown } from 'lucide-react';
 import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from '@/components/animate-ui/primitives/base/collapsible';
 
 export const SectionEditor = () => {

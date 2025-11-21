@@ -3,6 +3,8 @@ import { useParams } from "react-router";
 import { useSection } from "../hooks/section/useGetSection";
 import type { Content } from "@tiptap/react";
 import { useEffect, useState } from "react";
+import { QuizView } from "./QuizView";
+import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "@/components/animate-ui/primitives/base/collapsible";
 
 export const SectionView = () => {
   const { sectionId, courseId } = useParams<{ sectionId: string; courseId: string }>();
@@ -17,7 +19,7 @@ export const SectionView = () => {
 
     let parsedContent: Content = "";
     if (loadedSection.data.sectionData) {
-      try { parsedContent = JSON.parse(loadedSection.data.sectionData); } catch {}
+      try { parsedContent = JSON.parse(loadedSection.data.sectionData); } catch { }
     }
 
     setContent(parsedContent);
@@ -25,8 +27,18 @@ export const SectionView = () => {
     setIsContentLoaded(true);
   }, [sectionId, loadedSection.data]);
 
+  const parsedQuizData = (() => {
+    const raw = loadedSection.data?.sectionQuestions;
+    if (!raw) return [];
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return [];
+    }
+  })();
+
   return (
-    <div className="flex flex-col md:flex-row p-0 m-0 text-white w-full bg-stone-950 h-full">
+    <div className="h-full flex xl:flex-row flex-col p-0 m-0 text-white w-full bg-stone-950">
       <div className="md:w-4/5 overflow-y-scroll h-full">
         {isContentLoaded && loadedForSection === sectionId ? (
           <SimpleEditor key={sectionId} content={content} editable={false} />
@@ -37,8 +49,21 @@ export const SectionView = () => {
         )}
       </div>
 
-      <div className="md:w-1/5 md:block border-l p-8">
-        <h1 className="font-semibold pb-4">Questions</h1>
+      <div className="xl:w-1/5 border-l xl:border-t-0 border-t">
+        <div className="hidden xl:block p-2">
+          <QuizView key={sectionId} quizData={parsedQuizData}></QuizView>
+        </div>
+
+        <div className="xl:hidden block border-b">
+          <Collapsible>
+            <CollapsibleTrigger className={'w-full p-2 border-y hover:bg-stone-900 transition cursor-pointer font-semibold bg-stone-900/30'}>
+              Questions
+            </CollapsibleTrigger>
+            <CollapsiblePanel>
+              <QuizView quizData={parsedQuizData} />
+            </CollapsiblePanel>
+          </Collapsible>
+        </div>
       </div>
     </div>
   );
