@@ -37,7 +37,14 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
     [ProducesResponseType(typeof(ApiResponse<List<CourseResponse>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCoursesByUser(Guid userId)
     {
-        var requestId = GetUserId();
+        var requestString = GetUserId();
+
+        Guid? requestId = null;
+
+        if (Guid.TryParse(requestString, out var parsed))
+        {
+            requestId = parsed;
+        }
 
         var courses = await courseService.GetCoursesByUserId(userId, requestId);
         return HandleResult(courses);

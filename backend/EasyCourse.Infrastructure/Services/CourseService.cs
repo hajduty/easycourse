@@ -45,7 +45,7 @@ public class CourseService(ICourseRepository courseRepo) : ICourseService
         return new PagedResponse<CourseResponse>(response, totalCount, query.Page, query.PageSize);
     }
 
-    public async Task<IEnumerable<CourseResponse>> GetCoursesByUserId(Guid userId, Guid requestId)
+    public async Task<IEnumerable<CourseResponse>> GetCoursesByUserId(Guid userId, Guid? requestId)
     {
         var courses = await courseRepo.GetCoursesByUserId(userId);
 
