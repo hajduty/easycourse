@@ -32,7 +32,7 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
         }
         catch (UnauthorizedAccessException ex)
         {
-            context.Response.StatusCode = 401;
+            context.Response.StatusCode = 403;
             await context.Response.WriteAsJsonAsync(ApiResponse<object>.Fail(ex.Message));
         }
         catch (Exception ex)

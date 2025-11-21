@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FC } from "react";
 import type { Section } from "@/types/section";
 import { Spinner } from "@/components/ui/spinner";
 import { CourseContent } from "../components/CourseContent";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useDeleteSection } from "../hooks/section/useDeleteSection";
 import { useUpdateSection } from "../hooks/section/useUpdateSection";
 import { PlusCircle, GripVertical, Home } from "lucide-react";
@@ -35,11 +35,37 @@ export const SectionList: FC<SectionListProps> = ({
     });
   };
 
-  if (!sections) return <Spinner />;
+  if (!sections || sections.length === 0) {
+    return (
+      <div className="flex flex-col lg:flex-row text-white lg:w-1/5">
+        <div className="hidden lg:flex flex-col border-b lg:border-b-0 lg:border-r p-6 lg:p-8 w-full">
+          <h1 className="font-semibold text-lg">Course content</h1>
+          <Link to={`/course/editor/${courseId}`}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full my-4 cursor-pointer"
+            >
+              <Home/>
+              <p className="w-fit line-clamp-1">{courseTitle}</p>
+            </Button>
+          </Link>
+          <Button
+            className="cursor-pointer mt-4"
+            variant="default"
+            onClick={onAdd}
+          >
+            {createSection.isPending && <Spinner />}
+            <PlusCircle />
+            Add new section
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col lg:flex-row text-white lg:w-1/5">
-
       {/* Desktop sidebar */}
       <div className="hidden lg:flex flex-col border-b lg:border-b-0 lg:border-r p-6 lg:p-8 w-full">
         <h1 className="font-semibold text-lg">Course content</h1>
@@ -91,6 +117,16 @@ export const SectionList: FC<SectionListProps> = ({
               </div>
             </Link>
           ))}
+          <Button
+            className="cursor-pointer"
+            variant="outline"
+            onClick={onAdd}
+            size={'sm'}
+          >
+            {createSection.isPending && <Spinner />}
+            <PlusCircle />
+            Add new section
+          </Button>
         </div>
       </div>
     </div>
@@ -237,12 +273,14 @@ function SortableSection({
   onDelete: (id: string) => void;
   onEdit: (newTitle: string, sectionId: string, courseId: string) => void;
 }) {
-  if (!section) {
-    return <Spinner />
-  }
+  const navigate = useNavigate();
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
-    id: section.sectionId!,
+    id: section?.sectionId!,
   });
+
+  if (!section) {
+    return <Spinner />;
+  }
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -255,14 +293,14 @@ function SortableSection({
         <GripVertical className="w-4 h-4 text-gray-400" />
       </div>
 
-      <Link to={`section/${section.sectionId}`} className="flex-1">
+      <div onClick={() => navigate(`section/${section.sectionId}`)} className="flex-1">
         <CourseContent
           {...section}
           canDelete={true}
           onDelete={() => onDelete(section.sectionId!)}
           onEdit={(newTitle) => onEdit(newTitle, section.sectionId!, section.courseId!)}
         />
-      </Link>
+      </div>
     </div>
   );
 }

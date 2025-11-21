@@ -56,8 +56,8 @@ createRoot(document.getElementById('root')!).render(
             <Route element={<AuthPage />} path="auth"></Route>
           </Routes>
         </BrowserRouter>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+{/*         <ReactQueryDevtools initialIsOpen={false} />
+ */}      </QueryClientProvider>
     </AuthProvider>
   </StrictMode>,
 )

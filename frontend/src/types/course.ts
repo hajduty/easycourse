@@ -15,4 +15,4 @@ export interface CourseRequest {
   courseDescription: string;
   sections: any[];
   isPublic: boolean;
-}
+} 

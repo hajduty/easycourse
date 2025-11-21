@@ -45,6 +45,7 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
         return await _context.Courses
             .Where(c => c.CreatedByUserId == userId)
             .Include(c => c.CreatedByUser)
+            .Include(c => c.Participants)
             .ToListAsync();
     }
 

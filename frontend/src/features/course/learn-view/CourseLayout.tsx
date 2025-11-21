@@ -5,6 +5,7 @@ import { useCourseData } from "../hooks/course/useCourseData";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useParticipantInfo } from "../hooks/participant/useGetParticipant";
 
 export const CourseLayout = () => {
   const { user } = useAuth();
@@ -13,6 +14,8 @@ export const CourseLayout = () => {
   const [showTop, setShowTop] = useState(false);
   const [showBottom, setShowBottom] = useState(false);
   const { sectionId } = useParams();
+
+  const participantInfo = useParticipantInfo(course?.courseId!, user?.id!);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -32,7 +35,7 @@ export const CourseLayout = () => {
   }, [sections]);
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen h-full text-white">
+    <div className="flex flex-col lg:flex-row h-full text-white">
       {/* Desktop sidebar */}
       <div className="lg:w-1/5 w-1/4 hidden lg:flex flex-col border-b md:border-b-0 md:border-r p-6 md:p-8">
         <h1 className="font-semibold text-lg">Course content</h1>
@@ -42,7 +45,7 @@ export const CourseLayout = () => {
             <Button variant={'outline'} size={'sm'} className="w-full cursor-pointer">
               <Home />
               <p className="w-fit line-clamp-1">
-              {course?.courseName}
+                {course?.courseName}
               </p>
             </Button>
           </Link>
@@ -56,11 +59,22 @@ export const CourseLayout = () => {
               ref={scrollRef}
               className="flex flex-col gap-2 max-h-[600px] overflow-y-scroll scrollbar-hide"
             >
-              {sections.map((val, index) => (
-                <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`}>
-                  <CourseContent {...val} canDelete={false} onDelete={() => { }} onEdit={() => { }} />
-                </Link>
-              ))}
+              {sections.map((val, index) => {
+                const completedSections = participantInfo.data?.data.completedSectionIds || [];
+                const isCompleted = completedSections.includes(val.sectionId!);
+
+                return (
+                  <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`}>
+                    <CourseContent
+                      {...val}
+                      canDelete={false}
+                      onDelete={() => { }}
+                      onEdit={() => { }}
+                      isCompleted={isCompleted}
+                    />
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Bottom gradient overlay */}
@@ -80,11 +94,22 @@ export const CourseLayout = () => {
               Course page
             </Button>
           </Link>
-          {sections.map((val, index) => (
-            <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`} className="shrink-0">
-              <CourseContent {...val} canDelete={false} onDelete={() => { }} onEdit={() => { }} />
-            </Link>
-          ))}
+          {sections.map((val, index) => {
+            const completedSections = participantInfo.data?.data.completedSectionIds || [];
+            const isCompleted = completedSections.includes(val.sectionId!);
+
+            return (
+              <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`} className="shrink-0">
+                <CourseContent
+                  {...val}
+                  canDelete={false}
+                  onDelete={() => { }}
+                  onEdit={() => { }}
+                  isCompleted={isCompleted}
+                />
+              </Link>
+            );
+          })}
         </div>
       </div>
 
@@ -106,13 +131,22 @@ export const CourseLayout = () => {
       {sectionId &&
         <div className="md:hidden w-full p-2 overflow-x-auto bg-stone-950">
           <div className="flex gap-2">
-            {sections.map((val, index) => (
-              <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`} className="shrink-0">
-                <div className="p-2">
-                  <CourseContent {...val} canDelete={false} onDelete={() => { }} onEdit={() => { }} />
-                </div>
-              </Link>
-            ))}
+            {sections.map((val, index) => {
+              const completedSections = participantInfo.data?.data.completedSectionIds || [];
+              const isCompleted = completedSections.includes(val.sectionId!);
+
+              return (
+                <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`}>
+                  <CourseContent
+                    {...val}
+                    canDelete={false}
+                    onDelete={() => { }}
+                    onEdit={() => { }}
+                    isCompleted={isCompleted}
+                  />
+                </Link>
+              );
+            })}
           </div>
         </div>
       }
