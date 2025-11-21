@@ -50,7 +50,7 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
 
     public async Task<(IEnumerable<Course> Courses, int TotalCount)> GetAndFilterCoursesAsync(CourseQuery query)
     {
-        var baseQuery = _context.Courses.AsQueryable();
+        var baseQuery = _context.Courses.Where(c => c.IsPublic == true).AsQueryable();
 
         if (!string.IsNullOrEmpty(query.Query))
         {
@@ -105,6 +105,9 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
             getCourse.CourseName = updatedCourse.CourseName;
             getCourse.CourseDescription = updatedCourse.CourseDescription;
         }
+
+        if (updatedCourse.IsPublic != null)
+            getCourse.IsPublic = updatedCourse.IsPublic;
 
         if (updatedCourse.Sections != null)
             getCourse.Sections = updatedCourse.Sections;

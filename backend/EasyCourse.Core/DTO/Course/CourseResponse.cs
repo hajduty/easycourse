@@ -12,4 +12,5 @@ public class CourseResponse
     public ICollection<SectionDto> Sections { get; set; } = [];
     public int ParticipantCount { get; set; }
     public DateTime CreatedAt { get; set; }
+    public bool IsPublic { get; set; } = false;
 }
