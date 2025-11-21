@@ -4,12 +4,19 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import type { Question } from "@/types/section";
 import { useEffect, useRef } from "react";
+import { useParams } from "react-router";
+import { useUpdateParticipant } from "../hooks/participant/useUpdateParticipant";
+import { useParticipantInfo } from "../hooks/participant/useGetParticipant";
+import { useAuth } from "@/providers/AuthProvider";
 
 interface QuizViewProps {
   quizData: Question[];
 }
 
 export const QuizView = ({ quizData }: QuizViewProps) => {
+  const { sectionId, courseId } = useParams<{ sectionId: string; courseId: string }>();
+  const { user } = useAuth();
+
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState<number | null>(null);
@@ -17,6 +24,9 @@ export const QuizView = ({ quizData }: QuizViewProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showTop, setShowTop] = useState(false);
   const [showBottom, setShowBottom] = useState(false);
+
+  const updateParticipant = useUpdateParticipant();
+  const participantInfo = useParticipantInfo(courseId!, user?.id!);
 
   const toggleOption = (qId: string, optionId: string) => {
     setAnswers(prev => {
@@ -57,6 +67,24 @@ export const QuizView = ({ quizData }: QuizViewProps) => {
 
     setScore(total);
     setSubmitted(true);
+
+    if (total === quizData.length) {
+      const currentCompletedSections = participantInfo.data?.data.completedSectionIds || [];
+
+      const newCompletedSections = currentCompletedSections.includes(sectionId!)
+        ? currentCompletedSections
+        : [...currentCompletedSections, sectionId!];
+
+      updateParticipant.mutate({
+        courseId: courseId!,
+        userId: user?.id!,
+        participantInfo: {
+          ...participantInfo.data?.data!,
+          completedSectionIds: newCompletedSections,
+          lastCompletedSectionId: sectionId!,
+        },
+      });
+    }
   };
 
   useEffect(() => {

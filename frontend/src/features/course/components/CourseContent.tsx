@@ -11,9 +11,10 @@ export interface SectionItem extends Section {
   onDelete: () => void;
   canDelete: boolean;
   onEdit: (newTitle: string) => void;
+  isCompleted?: boolean;
 }
 
-export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, readingTime, canDelete, sectionId, onEdit }) => {
+export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, readingTime, canDelete, sectionId, onEdit, isCompleted }) => {
   const {sectionId: paramSectionId} = useParams();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editing, setEditing] = useState<boolean>();
@@ -23,7 +24,11 @@ export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, reading
     ? "text-white"
     : "text-stone-500";
 
-  const bgClass = sectionId === paramSectionId ? "bg-stone-900" : "bg-stone-900/40";
+  const bgClass = sectionId === paramSectionId
+    ? "bg-stone-900"
+    : isCompleted
+      ? "bg-green-600/20"
+      : "bg-stone-900/40";
 
   const finishEditing = () => {
     setEditing(false);

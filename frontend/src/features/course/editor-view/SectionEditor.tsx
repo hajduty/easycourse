@@ -184,9 +184,13 @@ export const SectionEditor = () => {
     }
   };
 
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+
   const handleQuizChange = useCallback(
     (newQuizData: any) => {
       if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+
+      setSaveStatus("saving");
 
       saveTimeoutRef.current = setTimeout(async () => {
         if (!loadedSection.data) return;
@@ -199,10 +203,15 @@ export const SectionEditor = () => {
               lastUpdated: new Date(),
             },
           });
+
+          setSaveStatus("saved");
+
+          setTimeout(() => setSaveStatus("idle"), 1500);
         } catch (error) {
           console.error("Failed to save quiz data:", error);
+          setSaveStatus("error");
         }
-      }, 1000);
+      }, 800);
     },
     [sectionId, loadedSection.data, updateSection]
   );
@@ -265,6 +274,7 @@ export const SectionEditor = () => {
                 key={sectionId}
                 quizData={parsedQuizData}
                 onSave={handleQuizChange}
+                saveStatus={saveStatus}
               />
             </CollapsiblePanel>
           </Collapsible>
@@ -275,6 +285,7 @@ export const SectionEditor = () => {
             key={sectionId}
             quizData={parsedQuizData}
             onSave={handleQuizChange}
+            saveStatus={saveStatus}
           />
         </div>
       </div>

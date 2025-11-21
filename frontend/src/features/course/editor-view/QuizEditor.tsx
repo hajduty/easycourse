@@ -8,9 +8,10 @@ import { useEffect, useRef, useState } from "react";
 interface QuizEditorProps {
   quizData: Question[];
   onSave: (updatedQuiz: Question[]) => void;
+  saveStatus?: "idle" | "saving" | "saved" | "error";
 }
 
-export const QuizEditor = ({ quizData, onSave }: QuizEditorProps) => {
+export const QuizEditor = ({ quizData, onSave, saveStatus }: QuizEditorProps) => {
   const [questions, setQuestions] = useState<Question[]>(quizData || []);
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -190,8 +191,15 @@ export const QuizEditor = ({ quizData, onSave }: QuizEditorProps) => {
       </div>
 
       <div className="mt-auto">
-        <Button size="sm" onClick={() => handleSave()} className="w-full">
-          Save
+        <Button
+          size="sm"
+          onClick={() => handleSave()}
+          className={`
+            "w-full cursor-pointer active:bg-stone-500 transition-colors
+            ${saveStatus === "saved" && "bg-green-500 hover:bg-green-600"}
+            `}
+        >
+          {saveStatus === "saving" ? "Saving…" : saveStatus === "saved" ? "Saved" : "Save"}
         </Button>
       </div>
     </div>

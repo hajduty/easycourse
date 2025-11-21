@@ -13,7 +13,7 @@ export const SectionView = () => {
   const [content, setContent] = useState<Content>("");
   const [isContentLoaded, setIsContentLoaded] = useState(false);
   const [loadedForSection, setLoadedForSection] = useState<string | null>(null);
-
+  
   useEffect(() => {
     if (!loadedSection.data || loadedSection.data.sectionId !== sectionId) return;
 

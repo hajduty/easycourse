@@ -3,6 +3,7 @@ import type { ApiResponse } from "@/types/apiResponse";
 import type { CourseRequest, CourseResponse } from "@/types/course";
 import type { CourseQuery } from "@/types/courseQuery";
 import type { PagedResponse } from "@/types/pagedResponse";
+import type { Participant } from "@/types/participant";
 import type { Section } from "@/types/section";
 
 export const GetCourses = async (query?: CourseQuery): Promise<ApiResponse<PagedResponse<CourseResponse>>> => {
@@ -54,5 +55,25 @@ export const UpdateSection = async (section: Section, courseId: string): Promise
 
 export const DeleteSection = async (sectionId: string, courseId: string): Promise<ApiResponse<Section>> => {
   const {data} = await apiClient.delete<ApiResponse<Section>>(`/course/${courseId}/section/${sectionId}`);
+  return data;
+}
+
+export const RegisterUserAsParticipant = async (courseId: string, userId: string, participantInfo: Participant): Promise<ApiResponse<Participant>> => {
+  const {data} = await apiClient.post<ApiResponse<Participant>>(`/course/${courseId}/participant/${userId}`, participantInfo);
+  return data;
+}
+
+export const RemoveUserAsParticipant = async (courseId: string, userId: string): Promise<ApiResponse<boolean>> => {
+  const {data} = await apiClient.delete<ApiResponse<boolean>>(`/course/${courseId}/participant/${userId}`);
+  return data;
+}
+
+export const GetParticipantInfo = async (courseId: string, userId: string): Promise<ApiResponse<Participant>> => {
+  const {data} = await apiClient.get<ApiResponse<Participant>>(`/course/${courseId}/participant/${userId}`);
+  return data;
+}
+
+export const UpdateParticipantInfo = async (courseId: string, userId: string, participantInfo: Participant): Promise<ApiResponse<Participant>> => {
+  const { data } = await apiClient.put<ApiResponse<Participant>>(`/course/${courseId}/participant/${userId}`, participantInfo);
   return data;
 }

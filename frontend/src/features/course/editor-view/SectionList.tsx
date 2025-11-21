@@ -21,6 +21,9 @@ export const SectionList: FC<SectionListProps> = ({
   courseTitle,
 }) => {
   const createSection = useCreateSection();
+  const deleteSection = useDeleteSection(sections?.[0]?.courseId!);
+  const updateSection = useUpdateSection();
+  const updateCourse = useUpdateCourse();
 
   const onAdd = () => {
     const maxOrder =
@@ -35,11 +38,37 @@ export const SectionList: FC<SectionListProps> = ({
     });
   };
 
-  if (!sections) return <Spinner />;
+  if (!sections || sections.length === 0) {
+    return (
+      <div className="flex flex-col lg:flex-row text-white lg:w-1/5">
+        <div className="hidden lg:flex flex-col border-b lg:border-b-0 lg:border-r p-6 lg:p-8 w-full">
+          <h1 className="font-semibold text-lg">Course content</h1>
+          <Link to={`/course/editor/${courseId}`}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full my-4 cursor-pointer"
+            >
+              <Home/>
+              <p className="w-fit line-clamp-1">{courseTitle}</p>
+            </Button>
+          </Link>
+          <Button
+            className="cursor-pointer mt-4"
+            variant="default"
+            onClick={onAdd}
+          >
+            {createSection.isPending && <Spinner />}
+            <PlusCircle />
+            Add new section
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col lg:flex-row text-white lg:w-1/5">
-
       {/* Desktop sidebar */}
       <div className="hidden lg:flex flex-col border-b lg:border-b-0 lg:border-r p-6 lg:p-8 w-full">
         <h1 className="font-semibold text-lg">Course content</h1>
@@ -248,12 +277,13 @@ function SortableSection({
   onEdit: (newTitle: string, sectionId: string, courseId: string) => void;
 }) {
   const navigate = useNavigate();
-  if (!section) {
-    return <Spinner />
-  }
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
-    id: section.sectionId!,
+    id: section?.sectionId!,
   });
+
+  if (!section) {
+    return <Spinner />;
+  }
 
   const style = {
     transform: CSS.Transform.toString(transform),

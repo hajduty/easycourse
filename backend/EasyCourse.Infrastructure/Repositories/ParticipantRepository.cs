@@ -38,18 +38,27 @@ public class ParticipantRepository(AppDbContext _context) : IParticipantReposito
 
     public async Task<CourseParticipant> UpdateByIdAsync(Guid courseId, Guid userId, CourseParticipant participant)
     {
-        var oldParticipant = await _context.CourseParticipant.FindAsync(userId, courseId) ?? throw new KeyNotFoundException($"Participant with id {userId} for course {courseId} not found");
+        var existing = await _context.CourseParticipant
+            .FindAsync(userId, courseId);
 
-        if (participant.CompletedSectionIds.Any()) {
-            oldParticipant.CompletedSectionIds = participant.CompletedSectionIds;
+        if (existing == null)
+        {
+            existing = new CourseParticipant
+            {
+                UserId = userId,
+                CourseId = courseId
+            };
+            _context.CourseParticipant.Add(existing);
         }
 
-        if (participant.LastCompletedSectionId != null) {
-            oldParticipant.LastCompletedSectionId = participant.LastCompletedSectionId;
-        }
+        existing.CompletedSectionIds = participant.CompletedSectionIds?.Any() == true
+            ? participant.CompletedSectionIds
+            : existing.CompletedSectionIds;
+
+        existing.LastCompletedSectionId = participant.LastCompletedSectionId ?? existing.LastCompletedSectionId;
 
         await _context.SaveChangesAsync();
 
-        return oldParticipant;
+        return existing;
     }
 }
