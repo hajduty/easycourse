@@ -67,14 +67,14 @@ export const CourseInfo = () => {
               draggable={false}
               src="https://picsum.photos/600/400"
               alt="Course cover"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover select-none"
             />
           </div>
 
           <div className="absolute bottom-6 right-6">
             <Button
-              className={`${isParticipant ? "bg-red-600 hover:bg-red-700" : "bg-green-700 hover:bg-green-800"
-                } text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition-transform duration-200 hover:-translate-y-0.5`}
+              className={`${isParticipant ? "bg-red-600 hover:bg-red-700 w-32" : "bg-green-700 hover:bg-green-800 w-42"
+                } text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition-all duration-200 hover:-translate-y-0.5`}
               onClick={handleParticipateToggle}
               disabled={isLoading}
             >
@@ -100,7 +100,7 @@ export const CourseInfo = () => {
 
         {course?.createdById === user?.id && (
           <Link to={`/course/editor/${course?.courseId}`} className="self-start">
-            <Button variant="secondary" className="flex items-center gap-2 cursor-pointer">
+            <Button variant="secondary" className="flex items-center gap-2">
               <Pencil /> Go to editor
             </Button>
           </Link>

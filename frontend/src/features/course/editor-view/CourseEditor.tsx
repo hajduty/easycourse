@@ -1,20 +1,24 @@
-import { useOutletContext } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useUpdateCourse } from "../hooks/course/useUpdateCourse";
-import { Eye, EyeOff, Pencil } from "lucide-react";
+import { Eye, EyeOff, Pencil, Trash } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { useDeleteCourse } from "../hooks/course/useDeleteCourse";
 
 export const CourseEditor = () => {
   const { course } = useOutletContext<any>();
-  const updateCourse = useUpdateCourse();
-
+  const navigate = useNavigate();
+  
   const [title, setTitle] = useState(course.courseName);
   const [description, setDescription] = useState(course.courseDescription);
   const [isEditing, setIsEditing] = useState(false);
   const [isPublic, setIsPublic] = useState(course.isPublic);
+  
+  const updateCourse = useUpdateCourse();
 
   const save = () => {
     updateCourse.mutate({
@@ -26,6 +30,13 @@ export const CourseEditor = () => {
       },
     });
     setIsEditing(false);
+  };
+
+  const deleteCourse = useDeleteCourse();
+
+  const handleDeleteCourse = async () => {
+    await deleteCourse.mutateAsync({ courseId: course.courseId });
+    navigate("/course/create");
   };
 
   return (
@@ -57,9 +68,30 @@ export const CourseEditor = () => {
 
       {/* BUTTONS + VISIBILITY */}
       {!isEditing ? (
-        <Button onClick={() => setIsEditing(true)} className="w-fit self-end">
-          <Pencil /> Edit
-        </Button>
+        <div className="flex gap-2 justify-end">
+          <AlertDialog>
+            <AlertDialogTrigger className="bg-red-400/60 hover:bg-red-400/50 transition px-2 rounded-md text-sm flex align-middle items-center gap-1 cursor-pointer">
+            <Trash size={17}/>
+            Delete
+            </AlertDialogTrigger>
+            <AlertDialogContent className="text-white">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete course?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete this course
+                  and all sections related to it.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => {handleDeleteCourse()}}>Continue</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+          <Button onClick={() => setIsEditing(true)} className="w-fit cursor-pointer">
+            <Pencil /> Edit
+          </Button>
+        </div>
       ) : (
         <div className="flex gap-2 items-center">
           {/* PUBLIC/PRIVATE SELECT */}
