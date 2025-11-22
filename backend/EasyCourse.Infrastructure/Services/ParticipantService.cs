@@ -15,6 +15,13 @@ public class ParticipantService(IParticipantRepository _repo) : IParticipantServ
         return ParticipantMapping.ToDto(participant);
     }
 
+    public async Task<List<CourseParticipantDto>> GetUserParticipations(Guid userId)
+    {
+        var participations = await _repo.GetUserParticipations(userId) ?? throw new KeyNotFoundException("User has not participated in any courses");
+
+        return ParticipantMapping.ToDto(participations);
+    }
+
     public async Task<CourseParticipantDto> RegisterParticipant(CourseParticipantDto courseParticipant, Guid userId)
     {
         if (!courseParticipant.UserId.Equals(userId))

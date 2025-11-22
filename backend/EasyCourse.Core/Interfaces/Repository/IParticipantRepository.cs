@@ -9,4 +9,5 @@ public interface IParticipantRepository
     //Task<CourseParticipant> GetByUserId(Guid userId);
     Task<CourseParticipant> UpdateByIdAsync(Guid courseId, Guid userId, CourseParticipant participant);
     Task<bool> DeleteByIdAsync(Guid courseId, Guid userId);
+    Task<List<CourseParticipant>> GetUserParticipations(Guid userId);
 }

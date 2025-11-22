@@ -35,13 +35,7 @@ public static class SectionMappings
         };
     }
 
-    public static List<Section> ToEntity(this IEnumerable<SectionDto> sectionDtos)
-    {
-        return sectionDtos.Select(s => s.ToEntity()).ToList();
-    }
+    public static List<Section> ToEntity(this IEnumerable<SectionDto> sectionDtos) => [.. sectionDtos.Select(s => s.ToEntity())];
 
-    public static List<SectionDto> ToDto(this IEnumerable<Section> sections)
-    {
-        return sections.Select(s => s.ToDto()).ToList();
-    }
+    public static List<SectionDto> ToDto(this IEnumerable<Section> sections) => [.. sections.Select(s => s.ToDto())];
 }

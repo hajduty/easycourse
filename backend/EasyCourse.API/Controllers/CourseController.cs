@@ -33,6 +33,7 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
         return HandleResult(course);
     }
 
+    /*
     [HttpGet("user/{userId}")]
     [ProducesResponseType(typeof(ApiResponse<List<CourseResponse>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCoursesByUser(Guid userId)
@@ -49,6 +50,7 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
         var courses = await courseService.GetCoursesByUserId(userId, requestId);
         return HandleResult(courses);
     }
+    */
 
     [HttpGet]
     [ProducesResponseType(typeof(ApiResponse<List<CourseResponse>>), StatusCodes.Status200OK)]

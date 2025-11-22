@@ -23,7 +23,11 @@ public static class ParticipantMapping
             UserId = entity.UserId,
             LastCompletedSectionId = entity.LastCompletedSectionId,
             CourseId = entity.CourseId,
-            CompletedSectionIds = entity.CompletedSectionIds,
+            CompletedSectionIds = entity.CompletedSectionIds ?? []
         };
     }
+
+    public static List<CourseParticipant> ToEntity(this IEnumerable<CourseParticipantDto> participantDtos) => [.. participantDtos.Select(s => s.ToEntity())];
+
+    public static List<CourseParticipantDto> ToDto(this IEnumerable<CourseParticipant> participantDtos) => [.. participantDtos.Select(s => s.ToDto())];
 }
