@@ -61,6 +61,8 @@ public class ParticipantRepository(AppDbContext _context) : IParticipantReposito
 
         existing.LastCompletedSectionId = participant.LastCompletedSectionId ?? existing.LastCompletedSectionId;
 
+        existing.LastCompletedDate = DateTime.UtcNow;
+
         await _context.SaveChangesAsync();
 
         return existing;

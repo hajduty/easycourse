@@ -11,30 +11,24 @@ namespace EasyCourse.API.Controllers;
 [ApiController]
 public class UserController(ICourseService courseService, IParticipantService participantService) : ApiControllerBase
 {
-    [HttpGet("/participations")]
+    [HttpGet("participations")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResponse<CourseParticipantDto[]>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUserParticipations()
     {
         var userId = GetUserId();
-
-        if (userId == null)
-            return Unauthorized("User is not authenticated.");
-
         var result = await participantService.GetUserParticipations(new Guid(userId));
+
         return HandleResult(result);
     }
 
-    [HttpGet("/courses")]
+    [HttpGet("courses")]
     [ProducesResponseType(typeof(ApiResponse<List<CourseResponse>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCoursesByUser()
     {
         var userId = GetUserId();
-
-        if (userId == null)
-            return Unauthorized("User is not authenticated.");
-
         var courses = await courseService.GetCoursesByUserId(new Guid(userId), new Guid(userId));
+
         return HandleResult(courses);
     }
 }

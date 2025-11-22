@@ -25,7 +25,6 @@ public class SectionController(ISectionService sectionService) : ApiControllerBa
     public async Task<IActionResult> CreateSection([FromBody] SectionDto section)
     {
         var userId = GetUserId();
-
         var createdSection = await sectionService.CreateSection(section, new Guid(userId));
 
         return HandleResult(createdSection);
@@ -37,7 +36,6 @@ public class SectionController(ISectionService sectionService) : ApiControllerBa
     public async Task<IActionResult> UpdateSection([FromBody] SectionDto section)
     {
         var userId = GetUserId();
-
         var updatedSection = await sectionService.UpdateSection(section, new Guid(userId));
 
         return HandleResult(updatedSection);
@@ -49,7 +47,6 @@ public class SectionController(ISectionService sectionService) : ApiControllerBa
     public async Task<IActionResult> DeleteSection(Guid id)
     {
         var userId = GetUserId();
-
         var result = await sectionService.DeleteSectionById(id, new Guid(userId));
 
         return result ? HandleBoolResult(result, "Course updated successfully") : HandleBoolResult(result, "Failed to update course");
@@ -60,7 +57,6 @@ public class SectionController(ISectionService sectionService) : ApiControllerBa
     public async Task<IActionResult> GetSectionById(Guid id)
     {
         var userId = GetUserId();
-
         var result = await sectionService.GetSectionById(id);
 
         return HandleResult(result);

@@ -15,11 +15,8 @@ public class ParticipantController(IParticipantService service) : ApiControllerB
     public async Task<IActionResult> RegisterParticipant([FromBody]CourseParticipantDto participant)
     {
         var userId = GetUserId();
-
-        if (userId == null)
-            return Unauthorized("User is not authenticated.");
-
         var result = await service.RegisterParticipant(participant, new Guid(userId));
+
         return HandleResult(result);
     }
 
@@ -29,11 +26,8 @@ public class ParticipantController(IParticipantService service) : ApiControllerB
     public async Task<IActionResult> GetParticipantInfo(Guid courseId, Guid userId)
     {
         var uid = GetUserId();
-
-        if (uid == null)
-            return Unauthorized("User is not authenticated");
-
         var result = await service.GetParticipantInfo(courseId, new Guid(uid));
+
         return HandleResult(result);
     }
 
@@ -43,9 +37,6 @@ public class ParticipantController(IParticipantService service) : ApiControllerB
     public async Task<IActionResult> UpdateParticipantInfo([FromBody] CourseParticipantDto participant)
     {
         var userId = GetUserId();
-
-        if (userId == null) return Unauthorized("User is not authenticated");
-
         var result = await service.UpdateParticipantInfo(participant, new Guid(userId));
 
         return HandleResult(result);
@@ -57,9 +48,6 @@ public class ParticipantController(IParticipantService service) : ApiControllerB
     public async Task<IActionResult> DeleteParticipantInfo(Guid courseId, Guid userId)
     {
         var requestUserId = GetUserId();
-
-        if (requestUserId == null) return Unauthorized("User is not authenticated");
-
         var result = await service.UnregisterParticipant(userId, courseId, new Guid(requestUserId));
 
         return HandleBoolResult(result);

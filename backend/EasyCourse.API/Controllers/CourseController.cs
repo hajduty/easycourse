@@ -17,8 +17,6 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
     public async Task<IActionResult> CreateCourse([FromBody] CourseRequest newCourse)
     {
         var userId = GetUserId(); 
-        if (userId == null)
-            return Unauthorized("User is not authenticated.");
 
         var createdCourse = await courseService.CreateCourse(newCourse, new Guid(userId));
 
@@ -66,8 +64,6 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
     public async Task<IActionResult> UpdateCourse([FromBody] CourseRequest updatedCourse, Guid id)
     {
         var userId = GetUserId();
-        if (userId == null)
-            return Unauthorized("User is not authenticated.");
 
         var result = await courseService.UpdateCourse(updatedCourse, new Guid(userId), id);
         return HandleResult(result);
@@ -79,9 +75,6 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
     public async Task<IActionResult> DeleteCourse(Guid id)
     {
         var userId = GetUserId();
-
-        if (userId == null)
-            return Unauthorized("User is not authenticated.");
 
         var result = await courseService.DeleteCourseById(id, new Guid(userId));
         return HandleBoolResult(result);
