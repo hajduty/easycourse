@@ -4,6 +4,7 @@ import { Link, useOutletContext, useParams } from "react-router";
 import { useRegisterParticipant } from "../hooks/participant/useCreateParticipant";
 import { useAuth } from "@/providers/AuthProvider";
 import { useParticipantInfo } from "../hooks/participant/useGetParticipant";
+import { useRemoveParticipant } from "../hooks/participant/useDeleteParticipant";
 
 interface CourseInfoContext {
   course: any;
@@ -28,28 +29,37 @@ export const CourseInfo = () => {
 
   const participantInfo = useParticipantInfo(courseId!, userInfo?.id!);
   const registerParticipant = useRegisterParticipant();
+  const unregisterParticipant = useRemoveParticipant();
 
-  const handleParticipate = () => {
-    if (!course.courseId || !userInfo?.id) { console.log(userInfo?.id); return };
+  const handleParticipateToggle = () => {
+    if (!courseId || !userInfo?.id) return;
 
-    registerParticipant.mutate({
-      courseId: courseId!,
-      userId: userInfo?.id!,
-      participantInfo: {
-        completedSectionIds: [],
-        lastCompletedSectionId: courseId,
-        userId: userInfo?.id!,
-        courseId: courseId!
-      },
-    });
+    if (isParticipant) {
+      // Unregister
+      unregisterParticipant.mutate({
+        courseId: courseId!,
+        userId: userInfo.id,
+      });
+    } else {
+      // Register
+      registerParticipant.mutate({
+        courseId: courseId!,
+        userId: userInfo.id,
+        participantInfo: {
+          completedSectionIds: [],
+          lastCompletedSectionId: courseId,
+          userId: userInfo.id,
+          courseId: courseId,
+        },
+      });
+    }
   };
-
   const isParticipant = !!participantInfo.data?.data;
   const isLoading = registerParticipant.isPending;
 
   return (
     <div className="flex md:flex-row flex-col h-full">
-      <div className="md:w-4/5 w-full border-b md:border-b-0 md:border-r p-6 xl:p-8 flex flex-col gap-6">
+      <div className="md:w-5/7 xl:w-4/5 w-full border-b md:border-b-0 p-6 xl:p-8 flex flex-col gap-6">
         <div className="relative w-full rounded-xl overflow-visible pb-12">
           {/* Image with smaller height */}
           <div className="h-60 overflow-hidden rounded-xl">
@@ -63,18 +73,21 @@ export const CourseInfo = () => {
 
           <div className="absolute bottom-6 right-6">
             <Button
-              className={`${isParticipant ? "bg-stone-800 cursor-not-allowed" : "bg-green-700 hover:bg-green-800"
+              className={`${isParticipant ? "bg-red-600 hover:bg-red-700" : "bg-green-700 hover:bg-green-800"
                 } text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition-transform duration-200 hover:-translate-y-0.5`}
-              onClick={handleParticipate}
-              disabled={isParticipant || isLoading}
+              onClick={handleParticipateToggle}
+              disabled={isLoading}
             >
-              {isParticipant
-                ? "Already Joined"
-                : isLoading
-                  ? "Joining..."
+              {isLoading
+                ? isParticipant
+                  ? "Leaving..."
+                  : "Joining..."
+                : isParticipant
+                  ? "Leave course"
                   : "Join this course"}
             </Button>
           </div>
+
         </div>
 
         <h1 className="text-3xl font-bold -mt-12">{course?.courseName}</h1>
@@ -94,7 +107,7 @@ export const CourseInfo = () => {
         )}
       </div>
 
-      <div className="md:w-1/5 w-full px-2 py-6 xl:p-8 flex flex-col gap-6 bg-stone-950">
+      <div className="md:w-2/7 xl:w-1/5 w-full px-2 py-6 xl:pr-8 flex flex-col gap-6 bg-stone-950">
         <div>
           <p className="font-semibold mb-2">Created by</p>
 

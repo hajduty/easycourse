@@ -54,13 +54,13 @@ public class ParticipantController(IParticipantService service) : ApiControllerB
     [HttpDelete("{userId}")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> DeleteParticipantInfo(CourseParticipantDto participant)
+    public async Task<IActionResult> DeleteParticipantInfo(Guid courseId, Guid userId)
     {
-        var userId = GetUserId();
+        var requestUserId = GetUserId();
 
-        if (userId == null) return Unauthorized("User is not authenticated");
+        if (requestUserId == null) return Unauthorized("User is not authenticated");
 
-        var result = await service.UnregisterParticipant(participant, new Guid(userId));
+        var result = await service.UnregisterParticipant(userId, courseId, new Guid(requestUserId));
 
         return HandleBoolResult(result);
     }
