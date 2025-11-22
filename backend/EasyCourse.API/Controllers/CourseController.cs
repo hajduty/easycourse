@@ -70,4 +70,18 @@ public class CourseController(ICourseService courseService) : ApiControllerBase
         var result = await courseService.UpdateCourse(updatedCourse, new Guid(userId), id);
         return HandleResult(result);
     }
+
+    [HttpDelete("{id}")]
+    [Authorize]
+    [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> DeleteCourse(Guid id)
+    {
+        var userId = GetUserId();
+
+        if (userId == null)
+            return Unauthorized("User is not authenticated.");
+
+        var result = await courseService.DeleteCourseById(id, new Guid(userId));
+        return HandleBoolResult(result);
+    }
 }

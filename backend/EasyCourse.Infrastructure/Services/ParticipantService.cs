@@ -29,14 +29,14 @@ public class ParticipantService(IParticipantRepository _repo) : IParticipantServ
         return participant.ToDto();
     }
 
-    public async Task<bool> UnregisterParticipant(CourseParticipantDto courseParticipant, Guid userId)
+    public async Task<bool> UnregisterParticipant(Guid userId, Guid courseId, Guid requestUserId)
     {
-        if (!courseParticipant.UserId.Equals(userId))
+        if (!userId.Equals(requestUserId))
         {
             throw new UnauthorizedAccessException("UserId mismatch");
         }
 
-        var participant = await _repo.DeleteByIdAsync(courseParticipant.CourseId, userId);
+        var participant = await _repo.DeleteByIdAsync(courseId, requestUserId);
 
         return participant;
     }

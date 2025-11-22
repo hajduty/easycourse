@@ -15,6 +15,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<CourseParticipant>()
             .HasKey(e => new { e.UserId, e.CourseId });
 
+        modelBuilder.Entity<Section>()
+            .HasOne(s => s.Course)
+            .WithMany(s => s.Sections)
+            .HasForeignKey(s => s.CourseId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         base.OnModelCreating(modelBuilder);
     }
 }
