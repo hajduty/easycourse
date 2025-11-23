@@ -8,6 +8,7 @@ export interface CourseResponse {
   participantCount: number;
   createdAt: Date;
   isPublic: boolean;
+  views: number;
 }
 
 export interface CourseRequest {

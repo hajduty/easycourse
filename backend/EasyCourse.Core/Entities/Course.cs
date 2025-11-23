@@ -19,4 +19,5 @@ public class Course
     public ICollection<CourseParticipant> Participants { get; set; } = [];
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public bool? IsPublic { get; set; }
+    public int Views { get; set; } = 0;
 }

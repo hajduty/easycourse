@@ -6,18 +6,18 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthProvider } from './providers/AuthProvider.tsx'
 import { HomePage } from './features/home/HomePage.tsx'
-import { CoursePage } from './features/course/learn/CourseBrowser.tsx'
+import { CoursePage } from './features/course/learn/CourseBrowserPage.tsx'
 import { CourseEditor } from './features/course/create/editor-view/CourseEditor.tsx'
 import { Layout } from './features/Layout.tsx'
-import { EditorLayout } from './features/course/create/editor-view/EditorLayout.tsx'
+import { EditorLayout } from './features/course/create/editor-view/EditorLayoutPage.tsx'
 import { SectionEditor } from './features/course/create/editor-view/SectionEditor.tsx'
 import './styles/_variables.scss';
 import './styles/_keyframe-animations.scss';
 import './index.css';
-import CourseCreateBrowser from './features/course/create/CourseCreate.tsx';
+import CourseCreateBrowser from './features/course/create/CourseCreatePage.tsx';
 import { SectionView } from './features/course/learn/learn-view/SectionView.tsx';
 import { CourseInfo } from './features/course/learn/learn-view/CourseInfo.tsx';
-import { CourseLayout } from './features/course/learn/learn-view/CourseLayout.tsx';
+import { CourseLayout } from './features/course/learn/learn-view/CourseLayoutPage.tsx';
 const queryClient = new QueryClient();
 
 export default function ScrollToTop() {

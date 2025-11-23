@@ -5,6 +5,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { useRegisterParticipant } from "../../hooks/participant/useCreateParticipant";
 import { useRemoveParticipant } from "../../hooks/participant/useDeleteParticipant";
 import { useParticipantInfo } from "../../hooks/participant/useGetParticipant";
+import { Separator } from "@/components/ui/separator";
 
 interface CourseInfoContext {
   course: any;
@@ -59,7 +60,6 @@ export const CourseInfo = () => {
     <div className="flex md:flex-row flex-col h-full">
       <div className="md:w-5/7 xl:w-4/5 w-full border-b md:border-b-0 p-6 xl:p-8 flex flex-col gap-6">
         <div className="relative w-full rounded-xl overflow-visible pb-12">
-          {/* Image with smaller height */}
           <div className="h-60 overflow-hidden rounded-xl">
             <img
               draggable={false}
@@ -71,7 +71,7 @@ export const CourseInfo = () => {
 
           <div className="absolute bottom-6 right-6">
             <Button
-              className={`${isParticipant ? "bg-red-600 hover:bg-red-700 w-32" : "bg-green-700 hover:bg-green-800 w-42"
+              className={`${isParticipant ? "bg-red-500 hover:bg-red-700 w-32" : "bg-green-700 hover:bg-green-800 w-42"
                 } text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition-all duration-200 hover:-translate-y-0.5`}
               onClick={handleParticipateToggle}
               disabled={isLoading}
@@ -89,12 +89,17 @@ export const CourseInfo = () => {
         </div>
 
         <h1 className="text-3xl font-bold -mt-12">{course?.courseName}</h1>
-
         <p className="text-stone-300 leading-relaxed">{course?.courseDescription}</p>
 
-        <p className="text-sm text-stone-500">
-          Published: {date?.toLocaleDateString()}
-        </p>
+        <span className="flex gap-2">
+          <p className="text-sm text-stone-500">
+            Published: {date?.toLocaleDateString()}
+          </p>
+          <Separator orientation="vertical"></Separator>
+          <p className="text-sm text-stone-500">
+            {course?.views} Views
+          </p>
+        </span>
 
         {course?.createdById === user?.id && (
           <Link to={`/course/editor/${course?.courseId}`} className="self-start">

@@ -19,6 +19,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { CourseStats } from "../components/CourseStats";
 
 export default function CourseCreateBrowser() {
   const { user } = useAuth();
@@ -56,9 +57,11 @@ export default function CourseCreateBrowser() {
 
   return (
     <div className="relative flex flex-col gap-8 pt-12 pb-12 items-center dark w-full">
-      <h1 className="text-white text-2xl sm:text-3xl font-medium pb-6 text-center">
+      <div className="w-full lg:max-w-6xl md:max-w-3xl sm:max-w-xl max-w-xs text-white mt-12 dark">
+        <h2 className="text-white text-xl sm:text-2xl font-medium pb-4 text-start dark">
         Your courses
-      </h1>
+        </h2>
+      </div>
 
       <Carousel className="w-full lg:max-w-6xl md:max-w-3xl sm:max-w-xl max-w-xs text-white">
         <CarouselContent className="-ml-2 md:ml-0 flex gap-4 sm:gap-6">
@@ -90,6 +93,12 @@ export default function CourseCreateBrowser() {
         <CarouselNext className="hidden sm:flex" />
       </Carousel>
 
+      {myCourses.length > 0 && (
+        <div className="w-full lg:max-w-6xl md:max-w-3xl sm:max-w-xl max-w-xs text-white mt-12 dark h-fit">
+          <CourseStats courses={myCourses} />
+        </div>
+      )}
+      
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="text-white max-w-lg">
           <DialogHeader>
