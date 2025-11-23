@@ -1,4 +1,5 @@
 ﻿using EasyCourse.Core.DTO;
+using EasyCourse.Core.DTO.Participant;
 using EasyCourse.Core.Interfaces.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +12,8 @@ public class ParticipantController(IParticipantService service) : ApiControllerB
 {
     [HttpPost]
     [Authorize]
-    [ProducesResponseType(typeof(ApiResponse<CourseParticipantDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> RegisterParticipant([FromBody]CourseParticipantDto participant)
+    [ProducesResponseType(typeof(ApiResponse<CourseParticipantResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> RegisterParticipant([FromBody]CourseParticipantRequest participant)
     {
         var userId = GetUserId();
         var result = await service.RegisterParticipant(participant, new Guid(userId));
@@ -22,19 +23,19 @@ public class ParticipantController(IParticipantService service) : ApiControllerB
 
     [HttpGet("{userId}")]
     [Authorize]
-    [ProducesResponseType(typeof(ApiResponse<CourseParticipantDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetParticipantInfo(Guid courseId, Guid userId)
+    [ProducesResponseType(typeof(ApiResponse<CourseParticipantResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetParticipantInfo(Guid courseId)
     {
         var uid = GetUserId();
-        var result = await service.GetParticipantInfo(courseId, new Guid(uid));
+        var result = await service.GetParticipantInfo(new Guid(uid), courseId);
 
         return HandleResult(result);
     }
 
     [HttpPut("{userId}")]
     [Authorize]
-    [ProducesResponseType(typeof(ApiResponse<CourseParticipantDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> UpdateParticipantInfo([FromBody] CourseParticipantDto participant)
+    [ProducesResponseType(typeof(ApiResponse<CourseParticipantResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> UpdateParticipantInfo([FromBody] CourseParticipantRequest participant)
     {
         var userId = GetUserId();
         var result = await service.UpdateParticipantInfo(participant, new Guid(userId));

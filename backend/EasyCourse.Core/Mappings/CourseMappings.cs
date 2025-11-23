@@ -23,7 +23,7 @@ public static class CourseMappings
 
     public static List<CourseResponse> ToResponseDto(this IEnumerable<Course> courses)
     {
-        return courses.Select(c => c.ToResponseDto()).ToList();
+        return [.. courses.Select(c => c.ToResponseDto())];
     }
 
     public static Course ToEntity(this CourseRequest courseRequest, Guid userId, Guid? courseId)
@@ -47,6 +47,6 @@ public static class CourseMappings
 
     public static List<Course> ToEntity(this IEnumerable<CourseRequest> courseRequests, Guid userId)
     {
-        return courseRequests.Select(cr => cr.ToEntity(userId, null)).ToList();
+        return [.. courseRequests.Select(cr => cr.ToEntity(userId, null))];
     }
 }

@@ -1,4 +1,4 @@
-﻿using EasyCourse.Core.DTO;
+﻿using EasyCourse.Core.DTO.Participant;
 using EasyCourse.Core.Interfaces.Repository;
 using EasyCourse.Core.Interfaces.Service;
 using EasyCourse.Core.Mappings;
@@ -8,21 +8,21 @@ namespace EasyCourse.Infrastructure.Services;
 
 public class ParticipantService(IParticipantRepository _repo) : IParticipantService
 {
-    public async Task<CourseParticipantDto> GetParticipantInfo(Guid userId, Guid courseId)
+    public async Task<CourseParticipantResponse> GetParticipantInfo(Guid userId, Guid courseId)
     {
         var participant = await _repo.GetParticipant(userId, courseId) ?? throw new KeyNotFoundException("Participant info not found for this user and course");
 
         return ParticipantMapping.ToDto(participant);
     }
 
-    public async Task<List<CourseParticipantDto>> GetUserParticipations(Guid userId)
+    public async Task<List<CourseParticipantResponse>> GetUserParticipations(Guid userId)
     {
         var participations = await _repo.GetUserParticipations(userId) ?? throw new KeyNotFoundException("User has not participated in any courses");
 
         return ParticipantMapping.ToDto(participations);
     }
 
-    public async Task<CourseParticipantDto> RegisterParticipant(CourseParticipantDto courseParticipant, Guid userId)
+    public async Task<CourseParticipantResponse> RegisterParticipant(CourseParticipantRequest courseParticipant, Guid userId)
     {
         if (!courseParticipant.UserId.Equals(userId))
         {
@@ -48,7 +48,7 @@ public class ParticipantService(IParticipantRepository _repo) : IParticipantServ
         return participant;
     }
 
-    public async Task<CourseParticipantDto> UpdateParticipantInfo(CourseParticipantDto courseParticipant, Guid userId)
+    public async Task<CourseParticipantResponse> UpdateParticipantInfo(CourseParticipantRequest courseParticipant, Guid userId)
     {
         if (!courseParticipant.UserId.Equals(userId)) { throw new UnauthorizedAccessException("UserId mismatch"); }
 
