@@ -27,7 +27,7 @@ export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, reading
   const bgClass = sectionId === paramSectionId
     ? "bg-stone-900"
     : isCompleted
-      ? "bg-green-600/20"
+      ? "bg-[#22c55e]/40"
       : "bg-stone-900/40";
 
   const finishEditing = () => {

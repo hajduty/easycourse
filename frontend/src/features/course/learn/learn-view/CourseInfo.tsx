@@ -71,7 +71,7 @@ export const CourseInfo = () => {
 
           <div className="absolute bottom-6 right-6">
             <Button
-              className={`${isParticipant ? "bg-red-600 hover:bg-red-700 w-32" : "bg-green-700 hover:bg-green-800 w-42"
+              className={`${isParticipant ? "bg-red-500 hover:bg-red-700 w-32" : "bg-green-700 hover:bg-green-800 w-42"
                 } text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition-all duration-200 hover:-translate-y-0.5`}
               onClick={handleParticipateToggle}
               disabled={isLoading}
