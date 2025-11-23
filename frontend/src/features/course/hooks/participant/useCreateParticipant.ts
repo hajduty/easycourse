@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Participant } from "@/types/participant";
+import type { ParticipateRequest } from "@/types/participant";
 import { RegisterUserAsParticipant } from "../../api";
 import { participantKeys } from "./useGetParticipant";
 
@@ -14,13 +14,17 @@ export const useRegisterParticipant = () => {
     }: {
       courseId: string;
       userId: string;
-      participantInfo: Participant;
-    }) =>
-      RegisterUserAsParticipant(courseId, userId, participantInfo),
+      participantInfo: ParticipateRequest;
+    }) => RegisterUserAsParticipant(courseId, userId, participantInfo),
 
-    onSuccess: (_, { courseId, userId }) =>
+    onSuccess: (_, { courseId, userId }) => {
       queryClient.invalidateQueries({
         queryKey: participantKeys.byCourseUser(courseId, userId),
-      }),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["participations"],
+      });
+    },
   });
 };
