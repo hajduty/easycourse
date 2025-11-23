@@ -82,7 +82,7 @@ export const CoursePage = () => {
 
   const participatedCourses = participations.data?.data ?? [];
   
-  console.log(participatedCourses);
+/*   console.log(participatedCourses); */
 
   return (
     <div className="relative flex flex-col gap-8 justify-center items-center pt-8 dark pb-8 h-full">

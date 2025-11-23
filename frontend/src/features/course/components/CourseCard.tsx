@@ -14,10 +14,10 @@ export const CourseCard: FC<CourseCardResponse> = ({ courseName, courseDescripti
   const navigate = useNavigate();
   const imageUrl = ""
 
-  if (completedSections != null) {
+/*   if (completedSections != null) {
     console.log(completedSections);
     console.log(totalSections);
-  }
+  } */
 
   return (
     <Card
@@ -55,11 +55,10 @@ export const CourseCard: FC<CourseCardResponse> = ({ courseName, courseDescripti
           </CardContent>
 
           <CardFooter className="p-0 mt-2 text-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <p>Created by {createdBy}</p>
+            <p className="text-sm">Created by {createdBy}</p>
           </CardFooter>
         </div>
       </div>
-      
     </Card>
   );
 };
