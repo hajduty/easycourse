@@ -17,7 +17,8 @@ public static class CourseMappings
             Sections = course.Sections.ToDto(),
             ParticipantCount = course.Participants?.Count ?? 0,
             CreatedAt = course.CreatedAt,
-            IsPublic = course.IsPublic ?? false
+            IsPublic = course.IsPublic ?? false,
+            Views = course.Views
         };
     }
 

@@ -37,6 +37,9 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
 
     public async Task<Course?> GetCourseById(Guid courseId)
     {
+        await _context.Database.ExecuteSqlInterpolatedAsync(
+            $"UPDATE Courses SET Views = Views + 1 WHERE CourseId = {courseId}");
+
         return await _context.Courses.Include(c => c.CreatedByUser).FirstOrDefaultAsync(c => c.CourseId == courseId);
     }
 
