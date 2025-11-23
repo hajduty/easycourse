@@ -1,14 +1,15 @@
 import type { CourseQuery } from "@/types/courseQuery";
-import { CourseCard } from "./components/CourseCard";
-import { CourseFilter } from "./components/CourseFilter";
-import { CoursePagination } from "./components/CoursePagination";
-import { CourseSearch } from "./components/CourseSearch";
+import { CourseCard } from "../components/CourseCard";
+import { CourseFilter } from "../components/CourseFilter";
+import { CoursePagination } from "../components/CoursePagination";
+import { CourseSearch } from "../components/CourseSearch";
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { GetCourses } from "./api";
+import { GetCourses } from "../api";
 import { useDebounce } from "use-debounce";
 import { useSearchParams } from "react-router";
-import { CourseCardSkeleton } from "./components/CourseCardSkeleton";
+import { CourseCardSkeleton } from "../components/CourseCardSkeleton";
+import { useGetParticipationsByUser } from "../hooks/participant/useGetParticipationsByUser";
 
 export const CoursePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -76,9 +77,26 @@ export const CoursePage = () => {
 
   const isGridLoading = isLoading || isFetching;
 
+  const participations = useGetParticipationsByUser();
+
+  const participatedCourses = participations.data?.data ?? [];
+  console.log(participatedCourses);
+
   return (
     <div className="relative flex flex-col gap-8 justify-center items-center pt-8 dark pb-8 h-full">
       <div className="w-full max-w-6xl mx-auto px-4">
+        
+        {participations && participatedCourses.length > 0 && (
+          <div className="mb-12">
+            <h2 className="text-white text-2xl font-medium pb-4">Continue where you left off</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+              {participatedCourses.map((course, index) => (
+                <CourseCard key={index} {...course.course!} />
+              ))}
+            </div>
+          </div>
+        )}
+
         <h1 className="text-white text-2xl font-medium pb-8">Browse courses created by other users</h1>
         <div className="flex flex-col w-full text-stone-200 gap-2 md:flex-row md:justify-center items-start transition-all duration-300 ease-in-out">
           <CourseSearch

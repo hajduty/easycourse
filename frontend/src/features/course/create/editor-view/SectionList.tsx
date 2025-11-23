@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { useCreateSection } from "../hooks/section/useCreateSection";
+import { useCreateSection } from "../../hooks/section/useCreateSection";
 import { useEffect, useRef, useState, type FC } from "react";
 import type { Section } from "@/types/section";
 import { Spinner } from "@/components/ui/spinner";
-import { CourseContent } from "../components/CourseContent";
+import { CourseContent } from "../../components/CourseContent";
 import { Link, useNavigate } from "react-router";
-import { useDeleteSection } from "../hooks/section/useDeleteSection";
-import { useUpdateSection } from "../hooks/section/useUpdateSection";
+import { useDeleteSection } from "../../hooks/section/useDeleteSection";
+import { useUpdateSection } from "../../hooks/section/useUpdateSection";
 import { PlusCircle, GripVertical, Home } from "lucide-react";
 
 interface SectionListProps {
@@ -148,7 +148,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useUpdateCourse } from "../hooks/course/useUpdateCourse";
+import { useUpdateCourse } from "../../hooks/course/useUpdateCourse";
 
 export function SectionsGradientList({ sections: initialSections }: { sections: Section[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);

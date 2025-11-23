@@ -5,9 +5,9 @@ import { Input } from "@/components/ui/input";
 import type { Question } from "@/types/section";
 import { useEffect, useRef } from "react";
 import { useParams } from "react-router";
-import { useUpdateParticipant } from "../hooks/participant/useUpdateParticipant";
-import { useParticipantInfo } from "../hooks/participant/useGetParticipant";
 import { useAuth } from "@/providers/AuthProvider";
+import { useParticipantInfo } from "../../hooks/participant/useGetParticipant";
+import { useUpdateParticipant } from "../../hooks/participant/useUpdateParticipant";
 
 interface QuizViewProps {
   quizData: Question[];

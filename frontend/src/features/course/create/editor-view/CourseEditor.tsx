@@ -3,11 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { useUpdateCourse } from "../hooks/course/useUpdateCourse";
+import { useUpdateCourse } from "../../hooks/course/useUpdateCourse";
 import { Eye, EyeOff, Pencil, Trash } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
-import { useDeleteCourse } from "../hooks/course/useDeleteCourse";
+import { useDeleteCourse } from "../../hooks/course/useDeleteCourse";
 
 export const CourseEditor = () => {
   const { course } = useOutletContext<any>();
@@ -35,7 +35,7 @@ export const CourseEditor = () => {
   const deleteCourse = useDeleteCourse();
 
   const handleDeleteCourse = async () => {
-    await deleteCourse.mutateAsync({ courseId: course.courseId });
+    await deleteCourse.mutateAsync(course.courseId);
     navigate("/course/create");
   };
 
