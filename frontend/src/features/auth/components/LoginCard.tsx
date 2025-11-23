@@ -18,7 +18,7 @@ export const LoginCard = () => {
     mutationFn: () => sendLoginRequest(email, password),
     onSuccess: (res) => {
       if (res.success) {
-        login(res.data.token, res.data.user);
+        login(res.data);
       }
     },
     onError: (err) =>{

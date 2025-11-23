@@ -18,6 +18,7 @@ import CourseCreateBrowser from './features/course/create/CourseCreatePage.tsx';
 import { SectionView } from './features/course/learn/learn-view/SectionView.tsx';
 import { CourseInfo } from './features/course/learn/learn-view/CourseInfo.tsx';
 import { CourseLayout } from './features/course/learn/learn-view/CourseLayoutPage.tsx';
+import ProtectedRoute from './features/auth/components/PrivateRoute.tsx';
 const queryClient = new QueryClient();
 
 export default function ScrollToTop() {
@@ -47,10 +48,12 @@ createRoot(document.getElementById('root')!).render(
                 <Route index element={<CourseInfo />}></Route>
                 <Route path="section/:sectionId" element={<SectionView />} />
               </Route>
-              <Route path="course/create" element={<CourseCreateBrowser />} />
-              <Route path="course/editor/:courseId" element={<EditorLayout />} >
-                <Route index element={<CourseEditor />} />
-                <Route path="section/:sectionId" element={<SectionEditor />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="course/create" element={<CourseCreateBrowser />} />
+                <Route path="course/editor/:courseId" element={<EditorLayout />} >
+                  <Route index element={<CourseEditor />} />
+                  <Route path="section/:sectionId" element={<SectionEditor />} />
+                </Route>
               </Route>
             </Route>
             <Route element={<AuthPage />} path="auth"></Route>

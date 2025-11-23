@@ -37,7 +37,7 @@ export const CourseLayout = () => {
   return (
     <div className="flex flex-col lg:flex-row h-full text-white">
       {/* Desktop sidebar */}
-      <div className="lg:w-1/5 w-1/4 hidden lg:flex flex-col border-b md:border-b-0 md:border-r p-6 md:p-8">
+      <div className="lg:w-1/5 w-1/4 hidden lg:flex flex-col border-b md:border-b-0 md:border-r p-6 md:px-0 md:px-2 xl:p-8">
         <h1 className="font-semibold text-lg">Course content</h1>
         <p className="pb-4 text-sm text-stone-300">{totalTime} minutes total</p>
         <div className="flex flex-col gap-2 md:gap-4">

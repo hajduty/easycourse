@@ -1,17 +1,26 @@
+import { useNavigate } from "react-router";
 import { Tabs, TabsContent, TabsContents, TabsList, TabsTrigger } from "../../components/animate-ui/components/animate/tabs"
 import { Card } from "../../components/ui/card"
 import { LoginCard } from "./components/LoginCard"
 import { RegisterCard } from "./components/RegisterCard";
 import { BubbleBackground } from '@/components/animate-ui/components/backgrounds/bubble';
+import { useAuth } from "@/providers/AuthProvider";
 
 function AuthPage() {
+  const {authenticated} = useAuth();
+  const navigate = useNavigate();
+
+  if (authenticated) {
+    navigate("/");
+  }
+
   return (
     <div className="h-screen w-screen flex flex-col justify-center items-center gap-6 bg-stone-950">
-          <BubbleBackground
-      interactive={true}
-      draggable={false}
-      className="absolute inset-0 flex items-center justify-center rounded-xl opacity-10 saturate-0"
-    />
+      <BubbleBackground
+        interactive={true}
+        draggable={false}
+        className="absolute inset-0 flex items-center justify-center rounded-xl opacity-1 saturate-0"
+      />
       <Tabs defaultValue="login" className="w-96">
         <TabsList className="px-4">
           <TabsTrigger value="login">Login</TabsTrigger>

@@ -8,7 +8,7 @@ const ProtectedRoute = () => {
     if (loading) return <div>Loading...</div>;
 
     if (!authenticated) {
-        return <Navigate to="/login" state={{ from: location }} />;
+        return <Navigate to="/auth" replace state={{ from: location }} />
     }
 
     return <Outlet />;
