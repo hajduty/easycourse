@@ -60,7 +60,7 @@ export const SectionView = () => {
               Questions
             </CollapsibleTrigger>
             <CollapsiblePanel>
-              <QuizView quizData={parsedQuizData} />
+              <QuizView quizData={parsedQuizData} key={sectionId}/>
             </CollapsiblePanel>
           </Collapsible>
         </div>

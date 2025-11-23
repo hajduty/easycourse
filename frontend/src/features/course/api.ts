@@ -3,7 +3,7 @@ import type { ApiResponse } from "@/types/apiResponse";
 import type { CourseRequest, CourseResponse } from "@/types/course";
 import type { CourseQuery } from "@/types/courseQuery";
 import type { PagedResponse } from "@/types/pagedResponse";
-import type { Participant } from "@/types/participant";
+import type { ParticipantResponse, ParticipateRequest } from "@/types/participant";
 import type { Section } from "@/types/section";
 
 export const GetCourses = async (query?: CourseQuery): Promise<ApiResponse<PagedResponse<CourseResponse>>> => {
@@ -63,8 +63,8 @@ export const DeleteSection = async (sectionId: string, courseId: string): Promis
   return data;
 }
 
-export const RegisterUserAsParticipant = async (courseId: string, userId: string, participantInfo: Participant): Promise<ApiResponse<Participant>> => {
-  const {data} = await apiClient.post<ApiResponse<Participant>>(`/course/${courseId}/participant`, participantInfo);
+export const RegisterUserAsParticipant = async (courseId: string, userId: string, participantInfo: ParticipateRequest): Promise<ApiResponse<ParticipantResponse>> => {
+  const {data} = await apiClient.post<ApiResponse<ParticipantResponse>>(`/course/${courseId}/participant`, participantInfo);
   return data;
 }
 
@@ -73,17 +73,17 @@ export const RemoveUserAsParticipant = async (courseId: string, userId: string):
   return data;
 }
 
-export const GetParticipantInfo = async (courseId: string, userId: string): Promise<ApiResponse<Participant>> => {
-  const {data} = await apiClient.get<ApiResponse<Participant>>(`/course/${courseId}/participant/${userId}`);
+export const GetParticipantInfo = async (courseId: string, userId: string): Promise<ApiResponse<ParticipantResponse>> => {
+  const {data} = await apiClient.get<ApiResponse<ParticipantResponse>>(`/course/${courseId}/participant/${userId}`);
   return data;
 }
 
-export const UpdateParticipantInfo = async (courseId: string, userId: string, participantInfo: Participant): Promise<ApiResponse<Participant>> => {
-  const { data } = await apiClient.put<ApiResponse<Participant>>(`/course/${courseId}/participant/${userId}`, participantInfo);
+export const UpdateParticipantInfo = async (courseId: string, userId: string, participantInfo: ParticipantResponse): Promise<ApiResponse<ParticipantResponse>> => {
+  const { data } = await apiClient.put<ApiResponse<ParticipantResponse>>(`/course/${courseId}/participant/${userId}`, participantInfo);
   return data;
 }
 
-export const GetParticipationsByUser = async (): Promise<ApiResponse<Participant[]>> => {
-  const {data} = await apiClient.get<ApiResponse<Participant[]>>(`/user/participations`);
+export const GetParticipationsByUser = async (): Promise<ApiResponse<ParticipantResponse[]>> => {
+  const {data} = await apiClient.get<ApiResponse<ParticipantResponse[]>>(`/user/participations`);
   return data;
 }

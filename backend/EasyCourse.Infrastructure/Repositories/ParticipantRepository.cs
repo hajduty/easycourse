@@ -60,7 +60,7 @@ public class ParticipantRepository(AppDbContext _context) : IParticipantReposito
             _context.CourseParticipant.Add(existing);
         }
 
-        existing.CompletedSectionIds = participant.CompletedSectionIds.Count == 0
+        existing.CompletedSectionIds = participant.CompletedSectionIds.Count > 0
             ? participant.CompletedSectionIds
             : existing.CompletedSectionIds;
 

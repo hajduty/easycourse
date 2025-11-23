@@ -14,15 +14,27 @@ export const useGetParticipationsByUser = () => {
 
       participations.data.forEach((p: ParticipantResponse) => {
         if (p.course) {
-          queryClient.setQueryData(["course", p.course.courseId], p.course);
+          queryClient.setQueryData(["course", p.course.courseId], {
+            success: true,
+            message: "",
+            data: p.course,
+          });
 
           p.course.sections?.forEach((section: Section) => {
-            queryClient.setQueryData(["section", section.sectionId], section);
+            queryClient.setQueryData(["section", section.sectionId], {
+              success: true,
+              message: "",
+              data: section,
+            });
           });
 
           queryClient.setQueryData(
             participantKeys.byCourseUser(p.courseId, p.userId),
-            p
+            {
+              success: true,
+              message: "",
+              data: p,
+            }
           );
         }
       });

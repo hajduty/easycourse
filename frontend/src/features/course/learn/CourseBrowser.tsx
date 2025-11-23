@@ -10,6 +10,7 @@ import { useDebounce } from "use-debounce";
 import { useSearchParams } from "react-router";
 import { CourseCardSkeleton } from "../components/CourseCardSkeleton";
 import { useGetParticipationsByUser } from "../hooks/participant/useGetParticipationsByUser";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 export const CoursePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -80,19 +81,28 @@ export const CoursePage = () => {
   const participations = useGetParticipationsByUser();
 
   const participatedCourses = participations.data?.data ?? [];
+  
   console.log(participatedCourses);
 
   return (
     <div className="relative flex flex-col gap-8 justify-center items-center pt-8 dark pb-8 h-full">
       <div className="w-full max-w-6xl mx-auto px-4">
-        
+
         {participations && participatedCourses.length > 0 && (
-          <div className="mb-12">
+          <div className="my-12 mb-24 w-full">
             <h2 className="text-white text-2xl font-medium pb-4">Continue where you left off</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-              {participatedCourses.map((course, index) => (
-                <CourseCard key={index} {...course.course!} />
-              ))}
+            <div className="gap-2 md:gap-4 w-full">
+              <Carousel className="w-full lg:max-w-4xl xl:max-w-5xl md:max-w-2xl sm:max-w-xl max-w-xs mx-auto text-white">
+                <CarouselContent className="-ml-2 md:ml-0 flex">
+                  {participatedCourses.map((course, index) => (
+                    <CarouselItem key={index} className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 select-none">
+                      <CourseCard key={index} {...course.course!} completedSections={course.completedSectionIds?.length} totalSections={course.totalSections} />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
             </div>
           </div>
         )}

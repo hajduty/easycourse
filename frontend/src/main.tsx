@@ -44,20 +44,20 @@ createRoot(document.getElementById('root')!).render(
               <Route index path="/" element={<HomePage />} />
               <Route path="course" element={<CoursePage />} />
               <Route path="course/:courseId" element={<CourseLayout />} >
-                <Route index element={<CourseInfo/>}></Route>
-                <Route path="section/:sectionId" element={<SectionView/>}/>
+                <Route index element={<CourseInfo />}></Route>
+                <Route path="section/:sectionId" element={<SectionView />} />
               </Route>
               <Route path="course/create" element={<CourseCreateBrowser />} />
               <Route path="course/editor/:courseId" element={<EditorLayout />} >
                 <Route index element={<CourseEditor />} />
-                <Route path="section/:sectionId" element={<SectionEditor/>}/>
+                <Route path="section/:sectionId" element={<SectionEditor />} />
               </Route>
             </Route>
             <Route element={<AuthPage />} path="auth"></Route>
           </Routes>
         </BrowserRouter>
-{/*         <ReactQueryDevtools initialIsOpen={false} />
- */}      </QueryClientProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </AuthProvider>
   </StrictMode>,
 )

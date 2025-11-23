@@ -1,10 +1,18 @@
 import type { CourseResponse } from "./course"
 
-export interface Participant {
+export interface ParticipantResponse {
     userId: string,
     courseId: string,
     lastCompletedSectionId?: string,
     completedSectionIds?: string[],
     lastCompletedDate?: Date
-    course?: CourseResponse
+    course?: CourseResponse,
+    totalSections?: number, 
+}
+
+export interface ParticipateRequest {
+    userId: string,
+    courseId: string,
+    lastCompletedSectionId?: string,
+    completedSectionIds?: string[],
 }

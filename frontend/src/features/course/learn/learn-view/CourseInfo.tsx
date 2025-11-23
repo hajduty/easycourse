@@ -46,8 +46,6 @@ export const CourseInfo = () => {
         courseId: courseId!,
         userId: userInfo.id,
         participantInfo: {
-          completedSectionIds: [],
-          lastCompletedSectionId: courseId,
           userId: userInfo.id,
           courseId: courseId,
         },
