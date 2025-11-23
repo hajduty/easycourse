@@ -3,7 +3,6 @@ using EasyCourse.Core.DTO.Auth;
 using EasyCourse.Core.Interfaces.Service;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.InteropServices;
 
 namespace EasyCourse.API.Controllers;
 
@@ -25,6 +24,15 @@ public class AuthController(IAuthService authService) : ApiControllerBase
     public async Task<IActionResult> Register([FromBody] AuthRequest request)
     {
         var result = await authService.RegisterUser(request.Email, request.Password, request.Username);
+
+        return HandleResult(result);
+    }
+
+    [HttpPost("refresh")]
+    [ProducesResponseType(typeof(ApiResponse<AuthResult>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Refresh([FromBody] Core.DTO.Auth.RefreshRequest request)
+    {
+        var result = await authService.RefreshToken(request.RefreshToken, request.RefreshTokenId);
 
         return HandleResult(result);
     }

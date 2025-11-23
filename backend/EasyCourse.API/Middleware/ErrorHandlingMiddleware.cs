@@ -1,5 +1,6 @@
 ﻿using EasyCourse.Core.DTO;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Authentication;
 
 namespace EasyCourse.API.Middleware;
 
@@ -18,6 +19,11 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
         catch (ValidationException ex)
         {
             context.Response.StatusCode = 400;
+            await context.Response.WriteAsJsonAsync(ApiResponse<object>.Fail(ex.Message));
+        }
+        catch (AuthenticationException ex)
+        {
+            context.Response.StatusCode = 401;
             await context.Response.WriteAsJsonAsync(ApiResponse<object>.Fail(ex.Message));
         }
         catch (InvalidOperationException ex)

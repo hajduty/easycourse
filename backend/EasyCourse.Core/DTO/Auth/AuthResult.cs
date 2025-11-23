@@ -2,6 +2,6 @@
 
 public class AuthResult
 {
-    public string Token { get; set; } = string.Empty;
-    public UserResult User { get; set; } = new UserResult();
+    public Tokens Tokens { get; set; } = new();
+    public UserResult User { get; set; } = new();
 }

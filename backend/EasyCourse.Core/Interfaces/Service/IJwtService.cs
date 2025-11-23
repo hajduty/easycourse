@@ -1,8 +1,9 @@
-﻿using EasyCourse.Core.Entities;
+﻿using EasyCourse.Core.DTO.Auth;
+using EasyCourse.Core.Entities;
 
 namespace EasyCourse.Core.Interfaces.Service;
 
 public interface IJwtService
 {
-    string GenerateToken(User user);
+    Tokens GenerateToken(User user);
 }
