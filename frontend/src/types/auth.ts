@@ -8,6 +8,13 @@ export interface AuthRequest {
 }
 
 export interface AuthResponse {
-  token : string;
+  tokens : Tokens;
   user: User;
+}
+
+export interface Tokens {
+  accessToken: string,
+  refreshToken: string,
+  refreshTokenId: string,
+  expiresAt: Date
 }

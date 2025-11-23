@@ -8,6 +8,7 @@ export const HomePage = () => {
     <div className="relative h-screen flex flex-col items-center justify-center text-white -mt-20 p-4">
       <img
         src={demobg}
+        draggable={false}
         alt=""
         className="absolute inset-0 w-full h-full object-cover saturate-0 blur-3xl z-0"
       />
