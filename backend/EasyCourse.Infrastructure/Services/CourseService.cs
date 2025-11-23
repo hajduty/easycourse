@@ -54,7 +54,7 @@ public class CourseService(ICourseRepository courseRepo) : ICourseService
 
         if (requestId != userId)
         {
-            courses = courses.Where(c => c.IsPublic == true).ToList();
+            courses = [.. courses.Where(c => c.IsPublic == true)];
         }
 
         return courses.ToResponseDto();

@@ -26,14 +26,23 @@ public class ParticipantRepository(AppDbContext _context) : IParticipantReposito
         return result > 0;
     }
 
-    public async Task<CourseParticipant> GetParticipant(Guid courseId, Guid userId)
+    public async Task<CourseParticipant> GetParticipant(Guid userId, Guid courseId)
     {
         var result = await _context.CourseParticipant.FindAsync(userId, courseId);
 
-        if (result == null)
-            throw new KeyNotFoundException("Failed to get participant for this course");
+        return result ?? throw new KeyNotFoundException("Failed to get participant for this course");
+    }
 
-        return result;
+    public async Task<List<CourseParticipant>> GetUserParticipations(Guid userId)
+    {
+        var participations = await _context.CourseParticipant
+            .Include(c => c.Course)
+                .ThenInclude(c => c.Sections) // we ball (not optimal) (this is needed to calculate % of course completed)
+            .Where(p => p.UserId == userId)
+            .ToListAsync()
+            ?? throw new KeyNotFoundException("Failed to get participated courses for this user");
+
+        return participations;
     }
 
     public async Task<CourseParticipant> UpdateByIdAsync(Guid courseId, Guid userId, CourseParticipant participant)
@@ -51,11 +60,13 @@ public class ParticipantRepository(AppDbContext _context) : IParticipantReposito
             _context.CourseParticipant.Add(existing);
         }
 
-        existing.CompletedSectionIds = participant.CompletedSectionIds?.Any() == true
+        existing.CompletedSectionIds = participant.CompletedSectionIds.Count > 0
             ? participant.CompletedSectionIds
             : existing.CompletedSectionIds;
 
         existing.LastCompletedSectionId = participant.LastCompletedSectionId ?? existing.LastCompletedSectionId;
+
+        existing.LastCompletedDate = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();
 

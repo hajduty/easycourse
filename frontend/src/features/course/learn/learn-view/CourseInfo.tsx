@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import { Link, useOutletContext, useParams } from "react-router";
-import { useRegisterParticipant } from "../hooks/participant/useCreateParticipant";
 import { useAuth } from "@/providers/AuthProvider";
-import { useParticipantInfo } from "../hooks/participant/useGetParticipant";
-import { useRemoveParticipant } from "../hooks/participant/useDeleteParticipant";
+import { useRegisterParticipant } from "../../hooks/participant/useCreateParticipant";
+import { useRemoveParticipant } from "../../hooks/participant/useDeleteParticipant";
+import { useParticipantInfo } from "../../hooks/participant/useGetParticipant";
 
 interface CourseInfoContext {
   course: any;
@@ -46,8 +46,6 @@ export const CourseInfo = () => {
         courseId: courseId!,
         userId: userInfo.id,
         participantInfo: {
-          completedSectionIds: [],
-          lastCompletedSectionId: courseId,
           userId: userInfo.id,
           courseId: courseId,
         },

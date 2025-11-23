@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Participant } from "@/types/participant";
+import type { ParticipantResponse, ParticipateRequest } from "@/types/participant";
 import { UpdateParticipantInfo } from "../../api";
 import { participantKeys } from "./useGetParticipant";
 
@@ -14,7 +14,7 @@ export const useUpdateParticipant = () => {
     }: {
       courseId: string;
       userId: string;
-      participantInfo: Participant;
+      participantInfo: ParticipateRequest;
     }) =>
       UpdateParticipantInfo(courseId, userId, participantInfo),
 

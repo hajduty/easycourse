@@ -1,11 +1,11 @@
-import { CourseContent } from "../components/CourseContent"
 import { Link, Outlet, useParams } from "react-router";
 import { useAuth } from "@/providers/AuthProvider";
-import { useCourseData } from "../hooks/course/useCourseData";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useParticipantInfo } from "../hooks/participant/useGetParticipant";
+import { useParticipantInfo } from "../../hooks/participant/useGetParticipant";
+import { CourseContent } from "../../components/CourseContent";
+import { useCourseData } from "../../hooks/course/useCourseData";
 
 export const CourseLayout = () => {
   const { user } = useAuth();

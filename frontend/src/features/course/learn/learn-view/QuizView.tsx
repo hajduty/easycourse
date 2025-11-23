@@ -5,9 +5,9 @@ import { Input } from "@/components/ui/input";
 import type { Question } from "@/types/section";
 import { useEffect, useRef } from "react";
 import { useParams } from "react-router";
-import { useUpdateParticipant } from "../hooks/participant/useUpdateParticipant";
-import { useParticipantInfo } from "../hooks/participant/useGetParticipant";
 import { useAuth } from "@/providers/AuthProvider";
+import { useUpdateParticipant } from "../../hooks/participant/useUpdateParticipant";
+import { useParticipantInfo } from "../../hooks/participant/useGetParticipant";
 
 interface QuizViewProps {
   quizData: Question[];
@@ -82,6 +82,8 @@ export const QuizView = ({ quizData }: QuizViewProps) => {
           ...participantInfo.data?.data!,
           completedSectionIds: newCompletedSections,
           lastCompletedSectionId: sectionId!,
+          userId: user?.id!,
+          courseId: courseId!
         },
       });
     }

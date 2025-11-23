@@ -1,10 +1,10 @@
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor"
 import { useParams } from "react-router";
-import { useSection } from "../hooks/section/useGetSection";
 import type { Content } from "@tiptap/react";
 import { useEffect, useState } from "react";
 import { QuizView } from "./QuizView";
 import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "@/components/animate-ui/primitives/base/collapsible";
+import { useSection } from "../../hooks/section/useGetSection";
 
 export const SectionView = () => {
   const { sectionId, courseId } = useParams<{ sectionId: string; courseId: string }>();
@@ -60,7 +60,7 @@ export const SectionView = () => {
               Questions
             </CollapsibleTrigger>
             <CollapsiblePanel>
-              <QuizView quizData={parsedQuizData} />
+              <QuizView quizData={parsedQuizData} key={sectionId}/>
             </CollapsiblePanel>
           </Collapsible>
         </div>

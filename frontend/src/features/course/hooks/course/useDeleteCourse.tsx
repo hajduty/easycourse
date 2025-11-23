@@ -18,18 +18,19 @@
 };
  */
 
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { DeleteCourse } from "../../api";
 
 export const useDeleteCourse = () => {
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({
-      courseId
-    }: {
-      courseId: string;
-    }) => DeleteCourse(courseId)
-  })
-}
+    mutationFn: (courseId: string) => DeleteCourse(courseId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["courses"] });
+    },
+  });
+};
+
 
 /* export const useCreateCourse = () => {
   return useMutation<ApiResponse<CourseResponse>, unknown, CourseRequest>({

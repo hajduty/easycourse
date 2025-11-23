@@ -31,10 +31,16 @@ public class ApiControllerBase : ControllerBase
             BadRequest(ApiResponse<object>.Fail(failureMessage));
     }
 
-    protected string? GetUserId()
+    protected string GetUserId()
     {
-        return User?.FindFirst(ClaimTypes.NameIdentifier)?.Value
-            ?? User?.FindFirst("sub")?.Value
-            ?? User?.FindFirst("UserId")?.Value;
+        var id =
+            User?.FindFirst("sub")?.Value ??
+            User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ??
+            User?.FindFirst("UserId")?.Value;
+
+        if (string.IsNullOrWhiteSpace(id))
+            throw new InvalidOperationException("User ID claim is missing in the token.");
+
+        return id;
     }
 }

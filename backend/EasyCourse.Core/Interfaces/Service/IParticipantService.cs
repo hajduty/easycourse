@@ -1,11 +1,12 @@
-﻿using EasyCourse.Core.DTO;
+﻿using EasyCourse.Core.DTO.Participant;
 
 namespace EasyCourse.Core.Interfaces.Service;
 
 public interface IParticipantService
 {
-    Task<CourseParticipantDto> RegisterParticipant(CourseParticipantDto courseParticipant, Guid userId);
-    Task<CourseParticipantDto> GetParticipantInfo(Guid userId, Guid courseId);
-    Task<CourseParticipantDto> UpdateParticipantInfo(CourseParticipantDto courseParticipant, Guid userId);
+    Task<CourseParticipantResponse> RegisterParticipant(CourseParticipantRequest courseParticipant, Guid userId);
+    Task<CourseParticipantResponse> GetParticipantInfo(Guid userId, Guid courseId);
+    Task<CourseParticipantResponse> UpdateParticipantInfo(CourseParticipantRequest courseParticipant, Guid userId);
     Task<bool> UnregisterParticipant(Guid userId, Guid courseId, Guid requestUserId);
+    Task<List<CourseParticipantResponse>> GetUserParticipations(Guid userId);
 }

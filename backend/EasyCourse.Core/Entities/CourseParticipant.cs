@@ -6,5 +6,6 @@ public class CourseParticipant
     public Guid CourseId { get; set; }
     public Course Course { get; set; } = null!;
     public Guid? LastCompletedSectionId { get; set; }
-    public List<Guid> CompletedSectionIds { get; set; } = new();
+    public List<Guid> CompletedSectionIds { get; set; } = [];
+    public DateTime LastCompletedDate { get; set; } = DateTime.UtcNow;
 }
