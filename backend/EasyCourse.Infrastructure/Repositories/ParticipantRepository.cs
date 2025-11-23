@@ -35,7 +35,7 @@ public class ParticipantRepository(AppDbContext _context) : IParticipantReposito
 
     public async Task<List<CourseParticipant>> GetUserParticipations(Guid userId)
     {
-        var participations = await _context.CourseParticipant.Where(p => p.UserId == userId).ToListAsync() ?? throw new KeyNotFoundException("Failed to get participated courses for this user");
+        var participations = await _context.CourseParticipant.Include(c => c.Course).Where(p => p.UserId == userId).ToListAsync() ?? throw new KeyNotFoundException("Failed to get participated courses for this user");
 
         return participations;
     }

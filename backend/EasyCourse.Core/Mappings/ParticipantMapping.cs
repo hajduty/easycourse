@@ -13,7 +13,8 @@ public static class ParticipantMapping
             CourseId = participant.CourseId,
             UserId = participant.UserId,
             LastCompletedSectionId = participant.LastCompletedSectionId,
-            LastCompletedDate = participant.LastCompletedDate
+            LastCompletedDate = participant.LastCompletedDate,
+            Course = participant.Course
         };
     }
 
@@ -25,7 +26,7 @@ public static class ParticipantMapping
             LastCompletedSectionId = entity.LastCompletedSectionId,
             CourseId = entity.CourseId,
             CompletedSectionIds = entity.CompletedSectionIds ?? [],
-            LastCompletedDate = entity.LastCompletedDate
+            LastCompletedDate = entity.LastCompletedDate,
         };
     }
 

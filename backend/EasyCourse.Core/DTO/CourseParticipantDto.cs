@@ -9,4 +9,5 @@ public class CourseParticipantDto
     public Guid? LastCompletedSectionId { get; set; }
     public List<Guid>? CompletedSectionIds { get; set; } = new();
     public DateTime LastCompletedDate { get; set; } = DateTime.UtcNow;
+    public Entities.Course? Course { get; set; } = null!;
 }
