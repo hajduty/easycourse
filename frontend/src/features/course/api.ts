@@ -14,7 +14,7 @@ export const GetCourses = async (query?: CourseQuery): Promise<ApiResponse<Paged
 };
 
 export const GetCoursesByUserId = async (userId: string): Promise<ApiResponse<CourseResponse[]>> => {
-  const { data } = await apiClient.get<ApiResponse<CourseResponse[]>>(`/user/courses`);
+  const { data } = await apiClient.get<ApiResponse<CourseResponse[]>>(`/user/${userId}/courses`);
   return data;
 }
 
@@ -63,7 +63,7 @@ export const DeleteSection = async (sectionId: string, courseId: string): Promis
   return data;
 }
 
-export const RegisterUserAsParticipant = async (courseId: string, userId: string, participantInfo: ParticipateRequest): Promise<ApiResponse<ParticipantResponse>> => {
+export const RegisterUserAsParticipant = async (courseId: string, participantInfo: ParticipateRequest): Promise<ApiResponse<ParticipantResponse>> => {
   const {data} = await apiClient.post<ApiResponse<ParticipantResponse>>(`/course/${courseId}/participant`, participantInfo);
   return data;
 }

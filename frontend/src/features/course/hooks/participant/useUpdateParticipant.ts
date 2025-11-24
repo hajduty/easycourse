@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { ParticipantResponse, ParticipateRequest } from "@/types/participant";
+import type { ParticipateRequest } from "@/types/participant";
 import { UpdateParticipantInfo } from "../../api";
 import { participantKeys } from "./useGetParticipant";
 

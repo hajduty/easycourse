@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using EasyCourse.Core.DTO.Auth;
+﻿using EasyCourse.Core.DTO.Auth;
 using EasyCourse.Core.Entities;
 using EasyCourse.Core.Interfaces.Repository;
 using EasyCourse.Core.Interfaces.Service;
