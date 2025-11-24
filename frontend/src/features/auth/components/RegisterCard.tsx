@@ -8,20 +8,21 @@ import { sendRegisterRequest } from "../api"
 import { useRef, useState } from "react"
 
 export const RegisterCard = () => {
-  const {login} =  useAuth();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const registerRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
 
   const mutation = useMutation({
-    mutationFn: () => sendRegisterRequest(email, password),
+    mutationFn: () => sendRegisterRequest(email, password, displayName),
     onSuccess: (res) => {
       if (res.success) {
         login(res.data);
       }
     },
-    onError: (err) =>{
+    onError: (err) => {
       console.error(err);
       setPassword("");
       setError("Email already in use, please try again.");
@@ -46,6 +47,18 @@ export const RegisterCard = () => {
         <form>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
+              <Label htmlFor="registerEmail">Display name</Label>
+              <Input
+                ref={registerRef}
+                id="registerName"
+                type="name"
+                placeholder="Name..."
+                required
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
               <Label htmlFor="registerEmail">Email</Label>
               <Input
                 ref={registerRef}
@@ -61,7 +74,7 @@ export const RegisterCard = () => {
               <div className="flex items-center">
                 <Label htmlFor="registerPassword">Password</Label>
               </div>
-              <Input id="registerPassword" type="password" required value={password} onChange={(e) => setPassword(e.target.value)}/>
+              <Input id="registerPassword" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
           </div>
         </form>

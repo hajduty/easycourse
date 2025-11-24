@@ -66,19 +66,24 @@ export function AccountDialog() {
         <DialogHeader>
           <DialogTitle>Your Account</DialogTitle>
           <DialogDescription>
-            Manage your account settings. This action cannot be undone.
+            Manage your account settings.
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-2 py-4">
           <div className="flex justify-between">
             <span className="text-stone-400">Name:</span>
-            <span className="font-medium">{user?.id || "Unknown"}</span>
+            <span className="font-normal">{user?.username || "Unknown"}</span>
           </div>
 
           <div className="flex justify-between">
             <span className="text-stone-400">Email:</span>
-            <span className="font-medium">{user?.email || "Unknown"}</span>
+            <span className="font-normal">{user?.email || "Unknown"}</span>
+          </div>
+
+          <div className="flex justify-between">
+            <span className="text-stone-400">Id:</span>
+            <span className="font-normal">{user?.id || "Unknown"}</span>
           </div>
         </div>
 
@@ -110,7 +115,7 @@ export function AccountDialog() {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
-          <Button onClick={() => { logout; setOpen(false) }}>
+          <Button onClick={() => { logout(); setOpen(false) }}>
             Logout
           </Button>
         </DialogFooter>
