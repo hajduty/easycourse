@@ -16,11 +16,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<CourseParticipant>()
             .HasKey(e => new { e.UserId, e.CourseId });
 
-        modelBuilder.Entity<RefreshToken>()
-            .Property(r => r.Id)
-            .HasDefaultValueSql("NEWID()")
-            .ValueGeneratedOnAdd();
-
         modelBuilder.Entity<Section>()
             .HasOne(s => s.Course)
             .WithMany(s => s.Sections)

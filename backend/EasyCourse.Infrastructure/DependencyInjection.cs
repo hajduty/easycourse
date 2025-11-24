@@ -6,6 +6,7 @@ using EasyCourse.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace EasyCourse.Infrastructure;
 
@@ -16,7 +17,7 @@ public static class DependencyInjection
         services.AddSingleton<IJwtService, JwtService>();
 
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+            options.UseMySql(config.GetConnectionString("DefaultConnection"), ServerVersion.Create(new Version(8, 0, 27), ServerType.MySql)));
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();
