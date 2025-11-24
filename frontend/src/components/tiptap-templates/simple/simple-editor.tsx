@@ -283,7 +283,7 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
   }, [isMobile, mobileView])
 
   return (
-    <div className="bg-stone-950 h-[calc(100vh-160px)] flex flex-col">
+    <div className="bg-stone-950 md:h-[calc(100vh-64)] flex flex-col h-full">
       <EditorContext.Provider value={{ editor }}>
         {editable &&
           <Toolbar

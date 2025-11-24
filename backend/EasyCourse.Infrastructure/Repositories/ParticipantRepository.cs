@@ -37,6 +37,8 @@ public class ParticipantRepository(AppDbContext _context) : IParticipantReposito
     {
         var participations = await _context.CourseParticipant
             .Include(c => c.Course)
+                .ThenInclude(c => c.CreatedByUser)
+            .Include(c => c.Course)
                 .ThenInclude(c => c.Sections) // we ball (not optimal) (this is needed to calculate % of course completed)
             .Where(p => p.UserId == userId)
             .ToListAsync()
