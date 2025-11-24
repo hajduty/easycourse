@@ -78,7 +78,7 @@ import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFoo
 import { Button as ShadButton } from "@/components/ui/button"
 
 const MainToolbarContent = ({
-  
+
   onHighlighterClick,
   onLinkClick,
   isMobile,
@@ -283,7 +283,7 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
   }, [isMobile, mobileView])
 
   return (
-    <div className="bg-stone-950 h-full">
+    <div className="bg-stone-950 h-[calc(100vh-160px)] flex flex-col">
       <EditorContext.Provider value={{ editor }}>
         {editable &&
           <Toolbar
@@ -295,6 +295,7 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
                 }
                 : {}),
             }}
+            className="sticky top-0 z-50"
           >
             <div className=" text-sm text-stone-400">
               {wordCount} words
@@ -339,12 +340,14 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
             </AlertDialog>
           </Toolbar>
         }
+        <div className="flex-1 overflow-auto">
+          <EditorContent
+            editor={editor}
+            role="presentation"
+            className="simple-editor-content min-h-full"
+          />
+        </div>
 
-        <EditorContent
-          editor={editor}
-          role="presentation"
-          className="simple-editor-content h-full"
-        />
       </EditorContext.Provider>
     </div>
   )

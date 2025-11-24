@@ -114,7 +114,7 @@ export const CourseLayout = () => {
       </div>
 
       {/* Main content / Outlet */}
-      <div className="flex-1 overflow-y-scroll  min-h-0">
+      <div className="flex-1 overflow-y-scroll min-h-0">
         <Outlet
           context={{
             course,
