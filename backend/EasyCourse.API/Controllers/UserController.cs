@@ -10,7 +10,7 @@ namespace EasyCourse.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController(ICourseService courseService, IParticipantService participantService) : ApiControllerBase
+public class UserController(ICourseService courseService, IParticipantService participantService, IUserService userService) : ApiControllerBase
 {
     [HttpGet("participations")]
     [Authorize]
@@ -31,5 +31,16 @@ public class UserController(ICourseService courseService, IParticipantService pa
         var courses = await courseService.GetCoursesByUserId(new Guid(userId), new Guid(userId));
 
         return HandleResult(courses);
+    }
+
+    [HttpDelete]
+    [Authorize]
+    [ProducesResponseType(typeof(ApiResponse<bool>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> DeleteUser()
+    {
+        var userId = GetUserId();
+        var result = await userService.DeleteUserById(new Guid(userId));
+
+        return HandleBoolResult(result);
     }
 }

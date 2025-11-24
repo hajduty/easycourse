@@ -6,9 +6,10 @@ import { useRegisterParticipant } from "../../hooks/participant/useCreatePartici
 import { useRemoveParticipant } from "../../hooks/participant/useDeleteParticipant";
 import { useParticipantInfo } from "../../hooks/participant/useGetParticipant";
 import { Separator } from "@/components/ui/separator";
+import type { CourseResponse } from "@/types/course";
 
 interface CourseInfoContext {
-  course: any;
+  course: CourseResponse;
   date: Date | null;
   otherCourses: any[];
   user: any;
@@ -122,7 +123,7 @@ export const CourseInfo = () => {
               className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l"
             />
             <div>
-              <h2 className="font-semibold md:text-xs text-lg text-wrap line-clamp-1">John Doe </h2>
+              <h2 className="font-semibold md:text-xs text-lg text-wrap line-clamp-1">{course?.createdBy} </h2>
               <p className="md:text-xs text-sm text-stone-400">4 courses</p>
               <p className="md:text-xs text-sm text-stone-500">Joined 2025-11-15</p>
             </div>

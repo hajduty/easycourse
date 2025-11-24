@@ -48,10 +48,12 @@ public class UserService(IUserRepository userRepository) : IUserService
         throw new NotImplementedException("Not implemented.");
     }
 
-    public async Task DeleteUserById(Guid id)
+    public async Task<bool> DeleteUserById(Guid id)
     {
         _ = await userRepository.GetUserById(id) ?? throw new KeyNotFoundException($"User with id {id} not found.");
 
         await userRepository.DeleteUserById(id);
+
+        return true;
     }
 }

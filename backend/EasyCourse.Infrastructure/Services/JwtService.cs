@@ -24,7 +24,7 @@ public class JwtService(IConfiguration config) : IJwtService
         
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var expires = DateTime.UtcNow.AddMinutes(int.Parse(config["Jwt:ExpireHours"]!));
+        var expires = DateTime.UtcNow.AddHours(int.Parse(config["Jwt:ExpireHours"]!));
 
         var descriptor = new SecurityTokenDescriptor
         {

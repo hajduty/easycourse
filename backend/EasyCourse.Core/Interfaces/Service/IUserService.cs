@@ -6,5 +6,5 @@ public interface IUserService
 {
     Task<UserResult?> GetUserById(Guid id);
     Task<UserResult?> GetUserByEmail(string email);
-    Task DeleteUserById(Guid id);
+    Task<bool> DeleteUserById(Guid id);
 }

@@ -18,11 +18,13 @@ export const sendLoginRequest = async (
 
 export const sendRegisterRequest = async (
   email: string,
-  password: string
+  password: string,
+  displayName: string
 ): Promise<ApiResponse<AuthResponse>> => {
   const { data } = await apiClient.post<ApiResponse<AuthResponse>>("/auth/register", {
     email,
     password,
+    username: displayName
   });
 
   //console.log("sendRegisterRequest returns:", JSON.stringify(data));
