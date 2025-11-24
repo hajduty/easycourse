@@ -1,7 +1,7 @@
 import type { Tokens } from "@/types/auth";
 import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from "axios";
 
-export const wsUrl = import.meta.env.VITE_API_URL || 'https://localhost:7009/api';
+export const apiUrl = import.meta.env.VITE_API_URL || 'https://localhost:7009/api';
 
 // Queue management
 interface QueuedRequest {
@@ -40,7 +40,7 @@ class RefreshTokenManager {
 const refreshManager = new RefreshTokenManager();
 
 const apiClient = axios.create({
-  baseURL: wsUrl,
+  baseURL: apiUrl,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -113,7 +113,7 @@ apiClient.interceptors.response.use(
         throw new Error("No refresh token available");
       }
 
-      const { data } = await axios.post(`${wsUrl}/auth/refresh`, {
+      const { data } = await axios.post(`${apiUrl}/auth/refresh`, {
         refreshToken: tokens.refreshToken,
         refreshTokenId: tokens.refreshTokenId,
       });

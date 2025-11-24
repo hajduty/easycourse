@@ -17,7 +17,7 @@ public static class DependencyInjection
         services.AddSingleton<IJwtService, JwtService>();
 
         services.AddDbContext<AppDbContext>(options =>
-            options.UseMySql(config.GetConnectionString("DefaultConnection"), ServerVersion.Create(new Version(8, 0, 27), ServerType.MySql)));
+            options.UseMySql(config.GetConnectionString("DefaultConnection"), ServerVersion.Create(new Version(8, 0, 33), ServerType.MySql)));
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();
