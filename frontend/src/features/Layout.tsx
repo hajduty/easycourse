@@ -5,7 +5,7 @@ export const Layout = () => {
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
-      <div className="flex-1">
+      <div className="flex-1 overflow-x-hidden max-w-screen">
         <Outlet />
       </div>
     </div>
