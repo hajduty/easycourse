@@ -38,8 +38,8 @@ export const SectionView = () => {
   })();
 
   return (
-    <div className="h-full flex xl:flex-row flex-col p-0 m-0 text-white w-full bg-stone-950">
-      <div className="md:w-4/5 overflow-y-scroll h-full">
+    <div className="flex xl:flex-row flex-col p-0 m-0 text-white w-full bg-stone-950 h-[calc(100vh-64px)]">
+      <div className="md:w-4/5 overflow-y-auto flex-1 min-h-0">
         {isContentLoaded && loadedForSection === sectionId ? (
           <SimpleEditor key={sectionId} content={content} editable={false} />
         ) : (

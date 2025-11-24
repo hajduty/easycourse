@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router';
 import { Button } from '@/components/ui/button';
 import { SimpleEditor } from '@/components/tiptap-templates/simple/simple-editor';
-import type { Content } from '@tiptap/react';
+import type { Content, Editor } from '@tiptap/react';
 import { useSection } from '../../hooks/section/useGetSection';
 import { useUpdateSection } from '../../hooks/section/useUpdateSection';
 import { AlertDialog, AlertDialogDescription, AlertDialogTitle } from '@radix-ui/react-alert-dialog';
@@ -90,8 +90,8 @@ export const SectionEditor = () => {
   }, [sectionId, loadedSection.data]);
 
   const handleContentChange = useCallback(
-    (newContent: Content) => {
-      setContent(newContent);
+    (newContent: Editor) => {
+      setContent(newContent.getJSON());
 
       // Get the current section at call time (not closure time)
       const targetSectionId = currentSectionRef.current;
@@ -100,7 +100,7 @@ export const SectionEditor = () => {
       localStorage.setItem(
         `editorContent:${targetSectionId}`,
         JSON.stringify({
-          content: newContent,
+          content: newContent.getJSON(),
           lastUpdated: Date.now()
         })
       );
@@ -128,8 +128,9 @@ export const SectionEditor = () => {
             await updateSection.mutateAsync({
               data: {
                 ...loadedSection.data,
-                sectionData: JSON.stringify(newContent),
+                sectionData: JSON.stringify(newContent.getJSON()),
                 lastUpdated: new Date(),
+                readingTime: Math.ceil((newContent.getText().trim().split(/\s+/).filter(Boolean).length) / 150)
               },
             });
 
@@ -227,8 +228,8 @@ export const SectionEditor = () => {
   })();
 
   return (
-    <div className="h-full flex xl:flex-row flex-col-reverse p-0 m-0 text-white w-full bg-stone-950">
-      <div className="xl:w-4/5 overflow-y-scroll h-full">
+    <div className="flex xl:flex-row flex-col p-0 m-0 text-white w-full bg-stone-950 h-[calc(100vh-64px)]">
+      <div className="md:w-4/5 overflow-y-auto flex-1 min-h-0">
         {showConflictAlert && conflictData ? (
           <div className="flex items-center justify-center h-full p-8">
             <AlertDialog defaultOpen={true}>
