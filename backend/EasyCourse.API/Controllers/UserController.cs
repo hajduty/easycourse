@@ -23,12 +23,12 @@ public class UserController(ICourseService courseService, IParticipantService pa
         return HandleResult(result);
     }
 
-    [HttpGet("courses")]
+    [HttpGet("/${userId}/courses")]
     [ProducesResponseType(typeof(ApiResponse<List<CourseResponse[]>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCoursesByUser()
+    public async Task<IActionResult> GetCoursesByUser(Guid userId)
     {
-        var userId = GetUserId();
-        var courses = await courseService.GetCoursesByUserId(new Guid(userId), new Guid(userId));
+        var requestId = GetUserId();
+        var courses = await courseService.GetCoursesByUserId(userId, new Guid(requestId));
 
         return HandleResult(courses);
     }

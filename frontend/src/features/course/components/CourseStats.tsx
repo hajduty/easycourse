@@ -1,4 +1,4 @@
-import { AreaChart, Area, XAxis, Tooltip, CartesianGrid } from "recharts";
+import { AreaChart, Area, XAxis, Tooltip } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { CourseResponse } from "@/types/course";
 import { Activity } from "lucide-react";

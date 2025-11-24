@@ -9,13 +9,12 @@ export const useRegisterParticipant = () => {
   return useMutation({
     mutationFn: ({
       courseId,
-      userId,
       participantInfo,
     }: {
       courseId: string;
       userId: string;
       participantInfo: ParticipateRequest;
-    }) => RegisterUserAsParticipant(courseId, userId, participantInfo),
+    }) => RegisterUserAsParticipant(courseId, participantInfo),
 
     onSuccess: (_, { courseId, userId }) => {
       queryClient.invalidateQueries({

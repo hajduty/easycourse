@@ -12,7 +12,6 @@ interface CourseCardResponse extends CourseResponse {
 export const CourseCard: FC<CourseCardResponse> = ({ courseName, courseDescription, createdBy, courseId, completedSections, totalSections }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const navigate = useNavigate();
-  const imageUrl = ""
 
 /*   if (completedSections != null) {
     console.log(completedSections);

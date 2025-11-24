@@ -25,7 +25,7 @@ export const CourseInfo = () => {
     user,
   } = useOutletContext<CourseInfoContext>();
 
-  const { sectionId, courseId } = useParams<{ sectionId: string; courseId: string }>();
+  const { courseId } = useParams<{ sectionId: string; courseId: string }>();
 
   const { user: userInfo } = useAuth();
 
