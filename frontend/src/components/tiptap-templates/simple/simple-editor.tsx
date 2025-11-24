@@ -81,6 +81,7 @@ import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFoo
 import { Button as ShadButton } from "@/components/ui/button"
 
 const MainToolbarContent = ({
+  
   onHighlighterClick,
   onLinkClick,
   isMobile,
@@ -262,7 +263,7 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
     if (!editor || !onChange) return;
 
     const handleUpdate = () => {
-      const json = editor.getJSON();
+      const json = editor;
       onChange(json);
     };
 

@@ -54,6 +54,7 @@ public class SectionRepository(AppDbContext context) : ISectionRepository
         existing.SectionData = section.SectionData;
         existing.SectionQuestions = section.SectionQuestions;
         existing.Title = section.Title;
+        existing.ReadingTime = section.ReadingTime;
 
         await context.SaveChangesAsync();
         return existing;

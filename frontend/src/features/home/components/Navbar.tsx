@@ -74,7 +74,6 @@ export const Navbar = () => {
               </button>
               <button
                 className="px-4 py-2 rounded hover:bg-stone-800 transition text-left"
-                onClick={() => navigate("/rankings")}
               >
                 Rankings
               </button>
