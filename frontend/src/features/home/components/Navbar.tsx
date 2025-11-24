@@ -2,6 +2,7 @@ import { Notebook, Settings, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate } from "react-router";
+import { AccountDialog } from "./AccountDialog";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -36,17 +37,13 @@ export const Navbar = () => {
         <Button
           variant={'ghost'}
           className="px-4 py-1 rounded transition cursor-pointer"
-          onClick={() => navigate("/rankings")}
         >
           Rankings
         </Button>
       </div>
 
       <div className="ml-auto hidden md:flex items-center gap-2">
-        <Button className="px-4 py-1 roundedtransition flex items-center gap-2 cursor-pointer" variant={'ghost'}>
-          <Settings size={16} />
-          Account
-        </Button>
+        <AccountDialog />
       </div>
 
       <div className="ml-auto md:hidden">
@@ -78,13 +75,8 @@ export const Navbar = () => {
                 Rankings
               </button>
 
-              <button
-                className="px-4 py-2 rounded hover:bg-stone-800 transition flex items-center gap-2"
-                onClick={() => navigate("/account")}
-              >
-                <Settings size={16} />
-                Account
-              </button>
+              <AccountDialog />
+
             </div>
           </SheetContent>
         </Sheet>
@@ -92,4 +84,3 @@ export const Navbar = () => {
     </div>
   );
 };
-

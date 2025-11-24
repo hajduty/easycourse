@@ -87,3 +87,9 @@ export const GetParticipationsByUser = async (): Promise<ApiResponse<Participant
   const {data} = await apiClient.get<ApiResponse<ParticipantResponse[]>>(`/user/participations`);
   return data;
 }
+
+// move to user/api.ts
+export const DeleteAccount = async (): Promise<ApiResponse<boolean>> => { 
+  const { data } = await apiClient.delete<ApiResponse<boolean>>(`/user`);
+  return data;
+}
