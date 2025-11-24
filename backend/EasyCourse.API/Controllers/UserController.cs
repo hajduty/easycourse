@@ -23,7 +23,7 @@ public class UserController(ICourseService courseService, IParticipantService pa
         return HandleResult(result);
     }
 
-    [HttpGet("/${userId}/courses")]
+    [HttpGet("{userId}/courses")]
     [ProducesResponseType(typeof(ApiResponse<List<CourseResponse[]>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCoursesByUser(Guid userId)
     {
