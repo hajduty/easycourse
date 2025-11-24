@@ -31,12 +31,14 @@ public class UserRepository(AppDbContext _context) : IUserRepository
         return entity;
     }
 
-    public async Task DeleteUserById(Guid id)
+    public async Task<bool> DeleteUserById(Guid id)
     {
         var user = await _context.Users.FindAsync(id) ?? throw new KeyNotFoundException("User not found.");
 
         _context.Users.Remove(user);
         await _context.SaveChangesAsync();
+
+        return true;
     }
 
     public async Task<User?> GetUserByEmail(string email)

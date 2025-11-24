@@ -8,6 +8,6 @@ public interface IUserRepository
     Task<User> CreateUser(AuthRequest user);
     Task<User?> GetUserById(Guid id);
     Task<User?> GetUserByEmail(string email);
-    Task DeleteUserById(Guid id);
+    Task<bool> DeleteUserById(Guid id);
     Task<bool> UserExists(string? email);
 }
