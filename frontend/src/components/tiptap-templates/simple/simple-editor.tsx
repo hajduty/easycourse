@@ -76,6 +76,8 @@ import "@/components/tiptap-templates/simple/simple-editor.scss"
 import { TvMinimalPlay } from "lucide-react"
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { Button as ShadButton } from "@/components/ui/button"
+import { useScrolling } from "@/hooks/use-scrolling"
+import { useScrollPosition } from "@/hooks/use-scroll-position"
 
 const MainToolbarContent = ({
 
@@ -89,8 +91,7 @@ const MainToolbarContent = ({
 }) => {
   return (
     <>
-      <Spacer />
-
+      <ToolbarSeparator />
       <ToolbarGroup>
         <UndoRedoButton action="undo" />
         <UndoRedoButton action="redo" />
@@ -142,7 +143,6 @@ const MainToolbarContent = ({
 
       <ToolbarSeparator />
 
-      <Spacer />
 
       {isMobile && <ToolbarSeparator />}
 
@@ -282,22 +282,48 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
     }
   }, [isMobile, mobileView])
 
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const [toolbarStyle, setToolbarStyle] = useState({
+    top: 0,
+    left: 0,
+    width: 0,
+  });
+
+  const scrollY = useScrollPosition()
+
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+
+    const rect = wrapperRef.current.getBoundingClientRect();
+
+    setToolbarStyle({
+      top: Math.max(rect.top, 57),
+      left: rect.left,
+      width: rect.width,
+    });
+    console.log(toolbarStyle.top);
+  }, [scrollY]);
+
   return (
-    <div className="bg-stone-950 md:h-[calc(100vh-64)] flex flex-col h-full">
+    <div className="bg-neutral-950 h-full flex flex-col scrollbar-hide" ref={wrapperRef}>
       <EditorContext.Provider value={{ editor }}>
         {editable &&
           <Toolbar
             ref={toolbarRef}
             style={{
-              ...(isMobile
-                ? {
-                  bottom: `calc(100% - ${height - rect.y}px)`,
-                }
-                : {}),
+              ...({
+                position: 'fixed',
+                top: isMobile ? toolbarStyle.top - 4 : toolbarStyle.top,
+                left: `${toolbarStyle.left}px`,
+                width: `${toolbarStyle.width}px`,
+                border: 0
+              }),
             }}
-            className="sticky top-0 z-50"
+            className="fixed z-2000 bg-neutral-950"
           >
-            <div className=" text-sm text-stone-400">
+            <div className="flex justify-center align-middle items-center w-full gap-2">
+            <div className=" text-sm text-neutral-400">
               {wordCount} words
             </div>
             {mobileView === "main" ? (
@@ -338,15 +364,14 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+            </div>
           </Toolbar>
         }
-        <div className="flex-1 overflow-auto">
-          <EditorContent
-            editor={editor}
-            role="presentation"
-            className="simple-editor-content min-h-full"
-          />
-        </div>
+        <EditorContent
+          editor={editor}
+          role="presentation"
+          className="simple-editor-content min-h-full"
+        />
 
       </EditorContext.Provider>
     </div>
