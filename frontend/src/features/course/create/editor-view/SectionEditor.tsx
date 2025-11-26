@@ -228,7 +228,7 @@ export const SectionEditor = () => {
   })();
 
   return (
-    <div className="flex xl:flex-row flex-col p-0 m-0 text-white bg-stone-950 h-full w-full overflow-x-hidden ">
+    <div className="flex xl:flex-row flex-col p-0 m-0 text-white w-full bg-neutral-950">
       <div className="w-full overflow-auto min-h-0 min-w-0 h-full">
         {showConflictAlert && conflictData ? (
           <div className="flex items-center justify-center h-full p-8">
@@ -263,11 +263,11 @@ export const SectionEditor = () => {
           </div>
         )}
       </div>
-      <div className="xl:w-1/5 border-l xl:border-t-0 border-t xl:block z-50 bg-stone-950">
+      <div className="xl:w-1/5 xl:border-t-0 border-t sticky top-15 h-fit z-50">
         {/* Mobile-only collapse trigger */}
         <div className="xl:hidden border-b">
           <Collapsible>
-            <CollapsibleTrigger className={'w-full p-2 border-y hover:bg-stone-900 transition cursor-pointer font-semibold bg-stone-900/30'}>
+            <CollapsibleTrigger className={'w-full p-2 border-y hover:bg-neutral-900 transition cursor-pointer font-semibold bg-neutral-900/30'}>
               Questions
             </CollapsibleTrigger>
             <CollapsiblePanel>
@@ -290,7 +290,6 @@ export const SectionEditor = () => {
           />
         </div>
       </div>
-
     </div>
   );
 };

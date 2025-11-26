@@ -20,7 +20,7 @@ export const CoursePagination: FC<CoursePaginationProps> = ({ page, pageSize, to
             href="#"
             aria-disabled={!hasPreviousPage}
             className={`transition-colors ${
-              !hasPreviousPage ? "opacity-40 pointer-events-none" : "hover:bg-stone-800"
+              !hasPreviousPage ? "opacity-40 pointer-events-none" : "hover:bg-neutral-800"
             }`}
             onClick={(e) => {
               e.preventDefault();
@@ -39,8 +39,8 @@ export const CoursePagination: FC<CoursePaginationProps> = ({ page, pageSize, to
               }}
               size={"icon-sm"}
               className={` transition-colors ${p === page
-                ? "bg-stone-800 text-white"
-                : "hover:bg-stone-800 text-stone-300 "
+                ? "bg-neutral-800 text-white"
+                : "hover:bg-neutral-800 text-neutral-300 "
                 }`}
             >
               <p className="text-xs">{p}</p>
@@ -52,7 +52,7 @@ export const CoursePagination: FC<CoursePaginationProps> = ({ page, pageSize, to
             href="#"
             aria-disabled={!hasNextPage}
             className={`transition-colors ${
-              !hasNextPage ? "opacity-40 pointer-events-none" : "hover:bg-stone-800"
+              !hasNextPage ? "opacity-40 pointer-events-none" : "hover:bg-neutral-800"
             }`}
             onClick={(e) => {
               e.preventDefault();

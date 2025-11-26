@@ -10,7 +10,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="sticky top-0 z-50 w-full px-4 py-2 bg-transparent border-b backdrop-blur-3xl border-stone-900 text-white flex items-center font-bold dark">
+    <div className="sticky overflow-visible top-0 z-50 w-full px-4 py-2 border-b backdrop-blur-3xl border-neutral-900 text-white flex items-center font-bold dark">
       <div className="flex items-center gap-2">
         <Notebook />
         <button
@@ -48,7 +48,7 @@ export const Navbar = () => {
         {authenticated ?
         <AccountDialog />
         :
-        <button className="px-4 py-2 rounded hover:bg-stone-800 transition flex items-center gap-2 disabled:bg-transparent" onClick={() => navigate('/auth')}>
+        <button className="px-4 py-2 rounded hover:bg-neutral-800 transition flex items-center gap-2 disabled:bg-transparent" onClick={() => navigate('/auth')}>
           <UserIcon/>
           Login
         </button>
@@ -64,22 +64,22 @@ export const Navbar = () => {
             </Button>
           </SheetTrigger>
 
-          <SheetContent side="right" className="bg-stone-950 text-white border-stone-900">
+          <SheetContent side="right" className="bg-neutral-950 text-white border-neutral-900">
             <div className="flex flex-col gap-4 mt-8 font-semibold">
               <button
-                className="px-4 py-2 rounded hover:bg-stone-800 transition text-left"
+                className="px-4 py-2 rounded hover:bg-neutral-800 transition text-left"
                 onClick={() => navigate("/course")}
               >
                 Learn
               </button>
               <button
-                className="px-4 py-2 rounded hover:bg-stone-800 transition text-left"
+                className="px-4 py-2 rounded hover:bg-neutral-800 transition text-left"
                 onClick={() => navigate("/course/create")}
               >
                 Create
               </button>
               <button
-                className="px-4 py-2 rounded hover:bg-stone-800 transition text-left"
+                className="px-4 py-2 rounded hover:bg-neutral-800 transition text-left"
               >
                 Rankings
               </button>

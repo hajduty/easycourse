@@ -34,9 +34,9 @@ export const CourseCard: FC<CourseCardResponse> = ({ courseName, courseDescripti
           }`}
       />
 
-      <div className={`absolute bottom-0 w-full bg-stone-900/80 border backdrop-blur-lg pt-4 transition-all duration-300 ${completedSections != null ? "max-h-[28%] " : "max-h-[18%] "} group-hover:max-h-full overflow-hidden px-4 pb-4`}>
+      <div className={`absolute bottom-0 w-full bg-neutral-900/80 border backdrop-blur-lg pt-4 transition-all duration-300 ${completedSections != null ? "max-h-[28%] " : "max-h-[18%] "} group-hover:max-h-full overflow-hidden px-4 pb-4`}>
         {totalSections != null && completedSections != null && (
-          <div className="absolute top-0 left-0 right-0 h-2 bg-stone-500/20 overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-2 bg-neutral-500/20 overflow-hidden">
             <div
               className="h-full bg-green-500 transition-all duration-300"
               style={{
@@ -47,7 +47,7 @@ export const CourseCard: FC<CourseCardResponse> = ({ courseName, courseDescripti
         )}
 
         <div className="relative">
-          <CardTitle className="text-stone-300 text-wrap">{courseName}</CardTitle>
+          <CardTitle className="text-neutral-300 text-wrap">{courseName}</CardTitle>
 
           <CardContent className="p-0 mt-1 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <CardDescription className="text-pretty">{courseDescription}</CardDescription>

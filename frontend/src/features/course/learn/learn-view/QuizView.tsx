@@ -108,7 +108,7 @@ export const QuizView = ({ quizData }: QuizViewProps) => {
 
   return (
     <div className="flex flex-col p-4 gap-4 text-white w-full h-full">
-      <h2 className="text-xl font-semibold hidden xl:block">Quiz</h2>
+      <h2 className="text-xl font-semibold hidden xl:block">{quizData.length > 0 && "Quiz"}</h2>
 
       <div className="relative flex-1 md:max-h-[620px] max-h-[350px] w-full overflow-clip">
         <div className={`absolute top-0 left-0 right-0 h-16 bg-linear-to-b from-background to-transparent pointer-events-none 
@@ -137,7 +137,7 @@ export const QuizView = ({ quizData }: QuizViewProps) => {
             return (
               <div
                 key={question.id}
-                className="border rounded-md p-4 bg-stone-950 flex flex-col gap-3"
+                className="border rounded-md p-4 bg-neutral-950 flex flex-col gap-3"
               >
                 <div className="flex justify-between items-center">
                   <p className="font-medium">

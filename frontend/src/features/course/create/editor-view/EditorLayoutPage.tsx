@@ -17,11 +17,11 @@ export const EditorLayout = () => {
   const sections = sectionsQuery.data ?? [];
 
   return (
-    <div className="flex flex-col lg:flex-row w-full h-full">
-      <SectionList sections={sections} courseId={courseId!} courseTitle={course?.courseName!}/>
+    <div className="flex flex-col lg:flex-row h-full 2xl:mx-20 mx-0 text-white pt-12">
+      <SectionList sections={sections} courseId={courseId!} courseTitle={course?.courseName!} />
 
       <div className="flex-1 h-full">
-        <Outlet context={{course, sections}}/>
+        <Outlet context={{ course, sections }} />
       </div>
     </div>
   );

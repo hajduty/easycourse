@@ -18,7 +18,7 @@ export const CourseStats = ({ courses }: CourseStatsProps) => {
     if (!active || !payload?.length) return null;
     const { course, views } = payload[0].payload;
     return (
-      <div className="bg-stone-900 border border-stone-700 rounded-md p-2 shadow-lg">
+      <div className="bg-neutral-900 border border-neutral-700 rounded-md p-2 shadow-lg">
         <p className="text-xs font-semibold text-white truncate">{course}</p>
         <p className="text-xs text-green-400">Views: {views}</p>
       </div>
@@ -26,7 +26,7 @@ export const CourseStats = ({ courses }: CourseStatsProps) => {
   };
 
   return (
-    <Card className="bg-stone-950 w-full">
+    <Card className="bg-neutral-950 w-full">
       <CardHeader className="pb-1.5">
         <CardTitle className="text-sm">Course Views</CardTitle>
         <CardDescription className="text-xs">Views per course</CardDescription>

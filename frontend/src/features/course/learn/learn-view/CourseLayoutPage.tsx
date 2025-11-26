@@ -35,11 +35,11 @@ export const CourseLayout = () => {
   }, [sections]);
 
   return (
-<div className="flex flex-col lg:flex-row text-white h-full">
-        {/* Desktop sidebar */}
-      <div className="lg:w-1/5 w-1/4 hidden lg:flex flex-col border-b md:border-b-0 md:border-r p-6 md:px-0 md:px-2 xl:p-8">
+    <div className="flex flex-col lg:flex-row text-white 2xl:mx-20 mx-0">
+      {/* Desktop sidebar */}
+      <div className="lg:w-1/5 w-1/4 hidden lg:flex flex-col p-6 xl:pl-8 sticky pt-20 top-13 h-fit">
         <h1 className="font-semibold text-lg">Course content</h1>
-        <p className="pb-4 text-sm text-stone-300">{totalTime} minutes total</p>
+        <p className="pb-4 text-sm text-neutral-300">{totalTime} minutes total</p>
         <div className="flex flex-col gap-2 md:gap-4">
           <Link to={`/course/${course?.courseId}`}>
             <Button variant={'outline'} size={'sm'} className="w-full cursor-pointer">
@@ -57,7 +57,7 @@ export const CourseLayout = () => {
 
             <div
               ref={scrollRef}
-              className="flex flex-col gap-2 max-h-[600px] overflow-y-scroll scrollbar-hide"
+              className="flex flex-col gap-2 max-h-[600px] overflow-y-auto scrollbar-hide"
             >
               {sections.map((val, index) => {
                 const completedSections = participantInfo.data?.data.completedSectionIds || [];
@@ -88,7 +88,7 @@ export const CourseLayout = () => {
       {/* Mobile / tablet horizontal sections */}
       <div className=" lg:hidden w-full overflow-y-auto p-2">
         <div className="flex gap-2 h-full">
-          <Link to={`/course/${course?.courseId}`}>
+          <Link to={`/course/${course?.courseId}`}> 
             <Button variant={'outline'} size={'sm'}>
               <Home />
               Course page
@@ -114,7 +114,7 @@ export const CourseLayout = () => {
       </div>
 
       {/* Main content / Outlet */}
-      <div className="flex-1 overflow-y-scroll min-h-0">
+      <div className="flex-1 pt-16">
         <Outlet
           context={{
             course,
@@ -126,30 +126,32 @@ export const CourseLayout = () => {
           }}
         />
       </div>
+      <div className=" lg:hidden w-full overflow-y-auto p-2 scrollbar-hide">
+        <div className="flex gap-2 h-full">
+          <Link to={`/course/${course?.courseId}`}>
+            <Button variant={'outline'} size={'sm'}>
+              <Home />
+              Course page
+            </Button>
+          </Link>
+          {sections.map((val, index) => {
+            const completedSections = participantInfo.data?.data.completedSectionIds || [];
+            const isCompleted = completedSections.includes(val.sectionId!);
 
-      {/* Mobile / tablet horizontal sections */}
-      {sectionId &&
-        <div className="md:hidden w-full p-2 overflow-x-auto bg-stone-950">
-          <div className="flex gap-2">
-            {sections.map((val, index) => {
-              const completedSections = participantInfo.data?.data.completedSectionIds || [];
-              const isCompleted = completedSections.includes(val.sectionId!);
-
-              return (
-                <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`}>
-                  <CourseContent
-                    {...val}
-                    canDelete={false}
-                    onDelete={() => { }}
-                    onEdit={() => { }}
-                    isCompleted={isCompleted}
-                  />
-                </Link>
-              );
-            })}
-          </div>
+            return (
+              <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`} className="shrink-0">
+                <CourseContent
+                  {...val}
+                  canDelete={false}
+                  onDelete={() => { }}
+                  onEdit={() => { }}
+                  isCompleted={isCompleted}
+                />
+              </Link>
+            );
+          })}
         </div>
-      }
+      </div>
     </div>
   );
 };

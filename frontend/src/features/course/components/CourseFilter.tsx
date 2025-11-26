@@ -12,27 +12,27 @@ export const CourseFilter = ({value, onChange, descending}:{value: string, onCha
   };
 
   return (
-    <div className="flex gap-2 text-stone-200 text-sm bg-stone-900 p-2 rounded-lg border items-center">
+    <div className="flex gap-2 text-neutral-200 text-sm bg-neutral-900 p-2 rounded-lg border items-center">
       <SlidersHorizontal size={18} />
       <DropdownMenu>
         <DropdownMenuTrigger className="flex flex-row text-nowrap items-center gap-1 focus:outline-none">
           <span className="select-none">Sorting by:</span>
           <span className="font-medium text-white">{value}</span>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="dark bg-stone-900 text-stone-200 border-stone-700">
+        <DropdownMenuContent className="dark bg-neutral-900 text-neutral-200 border-neutral-700">
           {["Popular", "Created"].map((option) => (
             <DropdownMenuItem
               key={option}
               onClick={() => handleSortChange(option)}
               className={cn(
                 "cursor-pointer",
-                option === value && "bg-stone-800 text-white"
+                option === value && "bg-neutral-800 text-white"
               )}
             >
               {option}
             </DropdownMenuItem>
           ))}
-          <DropdownMenuSeparator className="bg-stone-700" />
+          <DropdownMenuSeparator className="bg-neutral-700" />
           <DropdownMenuItem
             onClick={toggleOrder}
             className="flex items-center justify-between cursor-pointer"

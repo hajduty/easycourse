@@ -63,7 +63,7 @@ export const CourseEditor = () => {
       {isEditing ? (
         <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
       ) : (
-        <p className="text-stone-300">{course.courseDescription}</p>
+        <p className="text-neutral-300">{course.courseDescription}</p>
       )}
 
       {/* BUTTONS + VISIBILITY */}

@@ -22,13 +22,13 @@ export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, reading
 
   const textColorClass = !canDelete || sectionId === paramSectionId
     ? "text-white"
-    : "text-stone-500";
+    : "text-neutral-500";
 
   const bgClass = sectionId === paramSectionId
-    ? "bg-stone-900"
+    ? "bg-neutral-900"
     : isCompleted
       ? "bg-[#22c55e]/40"
-      : "bg-stone-900/40";
+      : "bg-neutral-900/40";
 
   const finishEditing = () => {
     setEditing(false);
@@ -39,7 +39,7 @@ export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, reading
 
   return (
     <div
-      className={`w-full h-8 p-2 min-w-56 flex items-center rounded-sm gap-4 justify-around px-4 group relative border hover:bg-stone-800 transition ${textColorClass} ${bgClass}`}
+      className={`w-full h-8 p-2 flex items-center rounded-sm gap-4 justify-around px-4 group relative border hover:bg-neutral-800 transition ${textColorClass} ${bgClass}`}
     >
       <h1 className="text-center justify-self-center">{order}</h1>
       <Separator className="w-8" orientation="vertical" />
@@ -81,7 +81,7 @@ export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, reading
         <Button
           variant="ghost"
           size="icon-sm"
-          className="absolute md:right-8 right-6 text-stone-400 hover:text-stone-200 transition"
+          className="absolute md:right-8 right-6 text-neutral-400 hover:text-neutral-200 transition"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -97,7 +97,7 @@ export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, reading
         <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <AlertDialogTrigger asChild>
             <Button
-              className="absolute right-0 text-stone-500 group-hover:text-red-200 transition-opacity cursor-pointer rounded-sm hover:text-red-500"
+              className="absolute right-0 text-neutral-500 group-hover:text-red-200 transition-opacity cursor-pointer rounded-sm hover:text-red-500"
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
@@ -144,7 +144,7 @@ export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, reading
       {!canDelete && (
         <>
           <Separator className="w-8" orientation="vertical" />
-          <p className="text-xs text-nowrap text-stone-200">
+          <p className="text-xs text-nowrap text-neutral-200">
             {readingTime} Minutes
           </p>
         </>

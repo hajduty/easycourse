@@ -65,9 +65,9 @@ export const SectionList: FC<SectionListProps> = ({
   }
 
   return (
-    <div className="flex flex-col lg:flex-row text-white lg:w-1/5">
+    <>
       {/* Desktop sidebar */}
-      <div className="hidden lg:flex flex-col border-b lg:border-b-0 lg:border-r p-6 lg:p-8 w-full">
+      <div className="hidden lg:flex flex-col p-6 lg:p-8 w-1/5 text-white sticky top-14 pt-2 h-full">
         <h1 className="font-semibold text-lg">Course content</h1>
 
         <Link to={`/course/editor/${courseId}`}>
@@ -129,7 +129,7 @@ export const SectionList: FC<SectionListProps> = ({
           </Button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
