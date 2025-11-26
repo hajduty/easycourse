@@ -306,7 +306,7 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
   }, [scrollY]);
 
   return (
-    <div className="bg-neutral-950 h-full flex flex-col scrollbar-hide" ref={wrapperRef}>
+    <div className=" h-full flex flex-col scrollbar-hide" ref={wrapperRef}>
       <EditorContext.Provider value={{ editor }}>
         {editable &&
           <Toolbar
