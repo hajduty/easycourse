@@ -17,7 +17,7 @@ export const useRemoveParticipant = () => {
     onSuccess: (_, { courseId, userId }) => {
       queryClient.invalidateQueries({
         queryKey: participantKeys.byCourseUser(courseId, userId),
-      }),
+      });
 
       queryClient.invalidateQueries({
         queryKey: ["participations"],

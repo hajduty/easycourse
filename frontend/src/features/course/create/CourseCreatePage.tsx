@@ -70,10 +70,10 @@ export default function CourseCreateBrowser() {
               onClick={() => setOpen(true)}
               role="button"
               tabIndex={0}
-              className="rounded-xl border border-stone-700 bg-stone-900/40 flex flex-col items-center justify-center cursor-pointer hover:bg-stone-800 transition min-w-32 h-full"
+              className="rounded-xl border border-neutral-700 bg-neutral-900/40 flex flex-col items-center justify-center cursor-pointer hover:bg-neutral-800 transition min-w-32 h-full"
             >
-              <Plus className="w-10 h-10 text-stone-300 mb-2" />
-              <p className="text-stone-300 font-medium text-sm sm:text-base text-center">
+              <Plus className="w-10 h-10 text-neutral-300 mb-2" />
+              <p className="text-neutral-300 font-medium text-sm sm:text-base text-center">
                 Create course
               </p>
             </div>
@@ -110,7 +110,7 @@ export default function CourseCreateBrowser() {
 
           <div className="flex flex-col gap-4 py-2 ">
             <div>
-              <p className="font-semibold text-sm text-stone-300 pb-1">Title</p>
+              <p className="font-semibold text-sm text-neutral-300 pb-1">Title</p>
               <Input
                 value={course.courseName}
                 onChange={(e) =>
@@ -120,7 +120,7 @@ export default function CourseCreateBrowser() {
             </div>
 
             <div>
-              <p className="font-semibold text-sm text-stone-300 pb-1">
+              <p className="font-semibold text-sm text-neutral-300 pb-1">
                 Description
               </p>
               <Textarea

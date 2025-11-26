@@ -108,7 +108,7 @@ export const CoursePage = () => {
         )}
 
         <h1 className="text-white text-2xl font-medium pb-8">Browse courses created by other users</h1>
-        <div className="flex flex-col w-full text-stone-200 gap-2 md:flex-row md:justify-center items-start transition-all duration-300 ease-in-out">
+        <div className="flex flex-col w-full text-neutral-200 gap-2 md:flex-row md:justify-center items-start transition-all duration-300 ease-in-out">
           <CourseSearch
             value={query.query!}
             onChange={(val) => setQuery((q) => ({ ...q, query: val, page: 1 }))}

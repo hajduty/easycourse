@@ -56,7 +56,7 @@ export function AccountDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild disabled={!authenticated}>
-        <button disabled={!authenticated} className="px-4 py-2 rounded hover:bg-stone-800 transition flex items-center gap-2 disabled:bg-transparent">
+        <button disabled={!authenticated} className="px-4 py-2 rounded hover:bg-neutral-800 transition flex items-center gap-2 disabled:bg-transparent">
           <Settings size={16} />
           Account
         </button>
@@ -72,17 +72,17 @@ export function AccountDialog() {
 
         <div className="flex flex-col gap-2 py-4">
           <div className="flex justify-between">
-            <span className="text-stone-400">Name:</span>
+            <span className="text-neutral-400">Name:</span>
             <span className="font-normal">{user?.username || "Unknown"}</span>
           </div>
 
           <div className="flex justify-between">
-            <span className="text-stone-400">Email:</span>
+            <span className="text-neutral-400">Email:</span>
             <span className="font-normal">{user?.email || "Unknown"}</span>
           </div>
 
           <div className="flex justify-between">
-            <span className="text-stone-400">Id:</span>
+            <span className="text-neutral-400">Id:</span>
             <span className="font-normal">{user?.id || "Unknown"}</span>
           </div>
         </div>

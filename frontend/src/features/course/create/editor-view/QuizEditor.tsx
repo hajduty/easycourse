@@ -121,7 +121,7 @@ export const QuizEditor = ({ quizData, onSave, saveStatus }: QuizEditorProps) =>
         />
         <div ref={scrollRef} className="flex flex-col gap-2 md:max-h-[620px] max-h-[350px] overflow-y-scroll scrollbar-hide w-full">
           {questions.map(question => (
-            <div key={question.id} className="border rounded-md bg-stone-950">
+            <div key={question.id} className="border rounded-md bg-neutral-950">
               <div className="relative w-full">
                 <Input
                   placeholder="Question text..."
@@ -195,7 +195,7 @@ export const QuizEditor = ({ quizData, onSave, saveStatus }: QuizEditorProps) =>
           size="sm"
           onClick={() => handleSave()}
           className={`
-            "w-full cursor-pointer active:bg-stone-500 transition-colors
+            "w-full cursor-pointer active:bg-neutral-500 transition-colors
             ${saveStatus === "saved" && "bg-green-500 hover:bg-green-600"}
             `}
         >

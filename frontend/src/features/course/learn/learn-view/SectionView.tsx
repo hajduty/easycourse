@@ -38,8 +38,8 @@ export const SectionView = () => {
   })();
 
   return (
-    <div className="flex xl:flex-row flex-col p-0 m-0 text-white w-full bg-stone-950 h-[calc(100vh-64px)]">
-      <div className="md:w-4/5 overflow-y-auto flex-1 min-h-0">
+    <div className="flex xl:flex-row flex-col p-0 m-0 text-white w-full bg-neutral-950">
+      <div className="xl:w-4/5 flex-1">
         {isContentLoaded && loadedForSection === sectionId ? (
           <SimpleEditor key={sectionId} content={content} editable={false} />
         ) : (
@@ -49,14 +49,14 @@ export const SectionView = () => {
         )}
       </div>
 
-      <div className="xl:w-1/5 border-l xl:border-t-0 border-t">
+      <div className="xl:w-1/5 xl:border-t-0 border-t sticky top-30 h-fit">
         <div className="hidden xl:block p-2">
           <QuizView key={sectionId} quizData={parsedQuizData}></QuizView>
         </div>
 
         <div className="xl:hidden block border-b">
           <Collapsible>
-            <CollapsibleTrigger className={'w-full p-2 border-y hover:bg-stone-900 transition cursor-pointer font-semibold bg-stone-900/30'}>
+            <CollapsibleTrigger className={'w-full p-2 border-y hover:bg-neutral-900 transition cursor-pointer font-semibold bg-neutral-900/30'}>
               Questions
             </CollapsibleTrigger>
             <CollapsiblePanel>

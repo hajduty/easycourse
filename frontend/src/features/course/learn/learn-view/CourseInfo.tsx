@@ -90,14 +90,14 @@ export const CourseInfo = () => {
         </div>
 
         <h1 className="text-3xl font-bold -mt-12">{course?.courseName}</h1>
-        <p className="text-stone-300 leading-relaxed">{course?.courseDescription}</p>
+        <p className="text-neutral-300 leading-relaxed">{course?.courseDescription}</p>
 
         <span className="flex gap-2">
-          <p className="text-sm text-stone-500">
+          <p className="text-sm text-neutral-500">
             Published: {date?.toLocaleDateString()}
           </p>
           <Separator orientation="vertical"></Separator>
-          <p className="text-sm text-stone-500">
+          <p className="text-sm text-neutral-500">
             {course?.views} Views
           </p>
         </span>
@@ -111,11 +111,11 @@ export const CourseInfo = () => {
         )}
       </div>
 
-      <div className="md:w-2/7 xl:w-1/5 w-full px-2 py-6 xl:pr-8 flex flex-col gap-6 bg-stone-950">
+      <div className="md:w-2/7 xl:w-1/5 w-full px-2 py-6 xl:pr-8 flex flex-col gap-6">
         <div>
           <p className="font-semibold mb-2">Created by</p>
 
-          <div className="flex items-center gap-4 bg-stone-950 rounded">
+          <div className="flex items-center gap-4 border  bg-neutral-900 rounded">
             <img
               draggable={false}
               src={"https://picsum.photos/150"}
@@ -124,8 +124,8 @@ export const CourseInfo = () => {
             />
             <div>
               <h2 className="font-semibold md:text-xs text-lg text-wrap line-clamp-1">{course?.createdBy} </h2>
-              <p className="md:text-xs text-sm text-stone-400">4 courses</p>
-              <p className="md:text-xs text-sm text-stone-500">Joined 2025-11-15</p>
+              <p className="md:text-xs text-sm text-neutral-400">4 courses</p>
+              <p className="md:text-xs text-sm text-neutral-500">Joined 2025-11-15</p>
             </div>
           </div>
 
@@ -136,7 +136,7 @@ export const CourseInfo = () => {
           <div className="flex flex-col gap-4 md:mt-2 w-full">
             {otherCourses?.slice(0, 6).map((val) => (
               <Link key={val.courseId} to={`/course/${val.courseId}`}>
-                <div className="flex items-center gap-3 rounded bg-stone-900/60 hover:bg-stone-800 transition">
+                <div className="flex items-center gap-3 rounded border hover:bg-neutral-800 transition">
                   <img
                     draggable={false}
                     src={"https://picsum.photos/150"}
@@ -145,10 +145,10 @@ export const CourseInfo = () => {
                   />
                   <div className="flex flex-col overflow-hidden p-1">
                     <h2 className="font-semibold text-xs line-clamp-1 text-wrap">{val.courseName}</h2>
-                    <p className="text-xs text-stone-400 line-clamp-1 text-wrap">
+                    <p className="text-xs text-neutral-400 line-clamp-1 text-wrap">
                       {val.courseDescription}
                     </p>
-                    <p className="text-xs text-stone-500 line-clamp-1">
+                    <p className="text-xs text-neutral-500 line-clamp-1">
                       {val.participantCount} participants
                     </p>
                   </div>
