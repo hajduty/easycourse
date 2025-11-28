@@ -20,4 +20,5 @@ public class Course
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public bool? IsPublic { get; set; }
     public int Views { get; set; } = 0;
+    public Image? CourseImage { get; set; }
 }

@@ -10,6 +10,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<CourseParticipant> CourseParticipant { get; set; }
     public DbSet<Section> Sections { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<Image> Images { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

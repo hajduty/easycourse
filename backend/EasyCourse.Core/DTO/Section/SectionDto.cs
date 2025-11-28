@@ -1,4 +1,4 @@
-﻿namespace EasyCourse.Core.DTO;
+﻿namespace EasyCourse.Core.DTO.Section;
 
 public class SectionDto
 {

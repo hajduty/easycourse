@@ -1,4 +1,5 @@
 ﻿using EasyCourse.Core.DTO;
+using EasyCourse.Core.DTO.Section;
 
 namespace EasyCourse.Core.Interfaces.Service;
 

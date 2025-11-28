@@ -1,4 +1,4 @@
-﻿using EasyCourse.Core.DTO;
+﻿using EasyCourse.Core.DTO.Section;
 using EasyCourse.Core.Entities;
 
 namespace EasyCourse.Core.Mappings;

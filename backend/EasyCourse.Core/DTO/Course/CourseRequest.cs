@@ -1,4 +1,6 @@
-﻿namespace EasyCourse.Core.DTO.Course;
+﻿using EasyCourse.Core.DTO.Section;
+
+namespace EasyCourse.Core.DTO.Course;
 
 public class CourseRequest
 {

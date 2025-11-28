@@ -1,4 +1,5 @@
-﻿using EasyCourse.Core.Entities;
+﻿using EasyCourse.Core.DTO.Section;
+using EasyCourse.Core.Entities;
 
 namespace EasyCourse.Core.DTO.Course;
 
@@ -14,4 +15,5 @@ public class CourseResponse
     public DateTime CreatedAt { get; set; }
     public bool IsPublic { get; set; } = false;
     public int Views {  get; set; }
+    public Guid ImageId { get; set; }
 }
