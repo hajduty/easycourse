@@ -33,6 +33,9 @@ public static class DependencyInjection
         services.AddScoped<IParticipantRepository, ParticipantRepository>();
         services.AddScoped<IParticipantService, ParticipantService>();
 
+        services.AddScoped<IImageRepository, ImageRepository>();
+        services.AddScoped<IImageService, ImageService>();
+
         return services;
     }
 }

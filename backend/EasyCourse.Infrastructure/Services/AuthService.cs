@@ -23,10 +23,7 @@ public class AuthService(IUserRepository userRepository, IJwtService jwtService,
         if (isPasswordValid != PasswordVerificationResult.Success)
             throw new ValidationException("Invalid email or password");
 
-        var tokens = jwtService.GenerateToken(user);
-
-        if (tokens == null)
-            throw new Exception("Failed to generate authentication token");
+        var tokens = jwtService.GenerateToken(user) ?? throw new Exception("Failed to generate authentication token");
 
         var newRefreshEntity = new RefreshToken
         {
@@ -60,10 +57,7 @@ public class AuthService(IUserRepository userRepository, IJwtService jwtService,
             Username = username
         });
 
-        var tokens = jwtService.GenerateToken(user);
-
-        if (tokens == null)
-            throw new Exception("Failed to generate authentication token");
+        var tokens = jwtService.GenerateToken(user) ?? throw new Exception("Failed to generate authentication token");
 
         var newRefreshEntity = new RefreshToken
         {
@@ -97,13 +91,9 @@ public class AuthService(IUserRepository userRepository, IJwtService jwtService,
         if (!BCrypt.Net.BCrypt.Verify(refreshToken, refreshEntity.TokenHash))
             throw new AuthenticationException("Invalid refresh token");
 
-        var user = await userRepository.GetUserById(refreshEntity.UserId);
-        if (user == null)
-            throw new AuthenticationException("User not found");
+        var user = await userRepository.GetUserById(refreshEntity.UserId) ?? throw new AuthenticationException("User not found");
 
-        var newTokens = jwtService.GenerateToken(user);
-        if (newTokens == null)
-            throw new Exception("Failed to generate authentication token");
+        var newTokens = jwtService.GenerateToken(user) ?? throw new Exception("Failed to generate authentication token");
 
         refreshEntity.IsRevoked = true;
         refreshEntity.RevokedAt = DateTime.UtcNow;
