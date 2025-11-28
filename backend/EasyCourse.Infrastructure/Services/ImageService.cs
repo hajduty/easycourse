@@ -11,7 +11,7 @@ namespace EasyCourse.Infrastructure.Services;
 
 public class ImageService(IImageRepository _repo, IWebHostEnvironment _env) : IImageService
 {
-    private string Root => Path.Combine(_env.WebRootPath, "uploads", "images");
+    private string Root => Path.Combine(_env.WebRootPath!, "uploads", "images");
 
     public async Task DeleteAsync(Guid id, Guid userId)
     {

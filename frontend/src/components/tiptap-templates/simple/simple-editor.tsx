@@ -78,6 +78,7 @@ import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFoo
 import { Button as ShadButton } from "@/components/ui/button"
 import { useScrolling } from "@/hooks/use-scrolling"
 import { useScrollPosition } from "@/hooks/use-scroll-position"
+import { ImageUploadButton } from "@/components/tiptap-ui/image-upload-button"
 
 const MainToolbarContent = ({
 
@@ -143,6 +144,9 @@ const MainToolbarContent = ({
 
       <ToolbarSeparator />
 
+      <ToolbarGroup>
+        <ImageUploadButton text="Add" />
+      </ToolbarGroup>
 
       {isMobile && <ToolbarSeparator />}
 
