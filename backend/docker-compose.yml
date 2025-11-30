@@ -2,9 +2,11 @@ services:
   api:
     build: .
     ports:
-      - "8080:8080"
+      - "8020:8080"
     volumes:
       - uploads:/app/wwwroot/uploads/images
+    labels:
+      - traefik.http.services.api.loadbalancer.server.port=8080
 
 volumes:
   uploads:
