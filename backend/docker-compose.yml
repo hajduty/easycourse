@@ -2,7 +2,7 @@ services:
   api:
     build: .
     ports:
-      - "8080:8080"
+      - "8020:8080"
     volumes:
       - uploads:/app/wwwroot/uploads/images
 
