@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { UpdateCourse } from "../../api";
-import type { CourseResponse } from "@/types/course";
+import type { CourseRequest, CourseResponse } from "@/types/course";
 import type { ApiResponse } from "@/types/apiResponse";
 
 type UpdateCourseVariables = {
   courseId: string;
-  data: any;
+  data: CourseRequest;
 };
 
 export const useUpdateCourse = () => {

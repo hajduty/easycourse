@@ -21,4 +21,5 @@ public class Course
     public bool? IsPublic { get; set; }
     public int Views { get; set; } = 0;
     public Image? CourseImage { get; set; }
+    public Guid? CourseImageId { get; set; }
 }

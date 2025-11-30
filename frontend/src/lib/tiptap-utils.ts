@@ -7,7 +7,7 @@ import {
   TextSelection,
 } from "@tiptap/pm/state"
 import type { Editor, NodeWithPos } from "@tiptap/react"
-import apiClient, { apiUrl } from "./apiClient"
+import apiClient, { imageUrl } from "./apiClient"
 import type { Image } from "@/types/image"
 import type { ApiResponse } from "@/types/apiResponse"
 
@@ -383,7 +383,7 @@ export const handleImageUpload = async (
     }
   )
 
-  return apiUrl.slice(0, -3) + data.data.path
+  return imageUrl + data.data.path
 }
 
 type ProtocolOptions = {

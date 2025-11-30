@@ -40,7 +40,10 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
         await _context.Database.ExecuteSqlInterpolatedAsync(
             $"UPDATE Courses SET Views = Views + 1 WHERE CourseId = {courseId}");
 
-        return await _context.Courses.Include(c => c.CreatedByUser).FirstOrDefaultAsync(c => c.CourseId == courseId);
+        return await _context.Courses
+            .Include(c => c.CreatedByUser)
+            .Include(c => c.CourseImage)
+            .FirstOrDefaultAsync(c => c.CourseId == courseId);
     }
 
     public async Task<IEnumerable<Course>> GetCoursesByUserId(Guid userId)
@@ -49,6 +52,7 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
             .Where(c => c.CreatedByUserId == userId)
             .Include(c => c.CreatedByUser)
             .Include(c => c.Participants)
+            .Include(c => c.CourseImage)
             .ToListAsync();
     }
 
@@ -72,7 +76,8 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
 
         IQueryable<Course> courseQuery = baseQuery
             .Include(c => c.Participants)
-            .Include(c => c.CreatedByUser);
+            .Include(c => c.CreatedByUser)
+            .Include(c => c.CourseImage);
 
         courseQuery = query.SortBy?.ToLower() switch
         {
@@ -115,6 +120,9 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
 
         if (updatedCourse.Sections != null)
             getCourse.Sections = updatedCourse.Sections;
+
+        if (updatedCourse.CourseImageId != null)
+            getCourse.CourseImageId = updatedCourse.CourseImageId;
 
         await _context.SaveChangesAsync();
         return getCourse;

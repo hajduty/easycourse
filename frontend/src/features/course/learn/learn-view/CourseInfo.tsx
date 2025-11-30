@@ -7,6 +7,7 @@ import { useRemoveParticipant } from "../../hooks/participant/useDeleteParticipa
 import { useParticipantInfo } from "../../hooks/participant/useGetParticipant";
 import { Separator } from "@/components/ui/separator";
 import type { CourseResponse } from "@/types/course";
+import { imageUrl } from "@/lib/apiClient";
 
 interface CourseInfoContext {
   course: CourseResponse;
@@ -64,7 +65,7 @@ export const CourseInfo = () => {
           <div className="h-60 overflow-hidden rounded-xl">
             <img
               draggable={false}
-              src="https://picsum.photos/600/400"
+              src={imageUrl + course?.imagePath}
               alt="Course cover"
               className="w-full h-full object-cover select-none"
             />
@@ -118,7 +119,7 @@ export const CourseInfo = () => {
           <div className="flex items-center gap-4 border  bg-neutral-900 rounded">
             <img
               draggable={false}
-              src={"https://picsum.photos/150"}
+              src={imageUrl + course?.imagePath}
               alt="Creator"
               className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l"
             />
@@ -139,7 +140,7 @@ export const CourseInfo = () => {
                 <div className="flex items-center gap-3 rounded border hover:bg-neutral-800 transition">
                   <img
                     draggable={false}
-                    src={"https://picsum.photos/150"}
+                    src={imageUrl + val.imagePath}
                     alt={val.courseName}
                     className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l"
                   />

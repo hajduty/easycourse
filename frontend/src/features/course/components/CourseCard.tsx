@@ -3,13 +3,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/com
 import type { CourseResponse } from "@/types/course";
 import { useNavigate } from "react-router";
 import { Skeleton } from "@/components/ui/skeleton";
+import { imageUrl } from "@/lib/apiClient";
 
 interface CourseCardResponse extends CourseResponse {
   totalSections?: number,
   completedSections?: number,
 }
 
-export const CourseCard: FC<CourseCardResponse> = ({ courseName, courseDescription, createdBy, courseId, completedSections, totalSections }) => {
+export const CourseCard: FC<CourseCardResponse> = ({ courseName, courseDescription, createdBy, courseId, completedSections, totalSections, imagePath }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const navigate = useNavigate();
 
@@ -27,7 +28,7 @@ export const CourseCard: FC<CourseCardResponse> = ({ courseName, courseDescripti
 
       <img
         draggable={false}
-        src="https://picsum.photos/150"
+        src={imageUrl + imagePath}
         alt={courseName}
         onLoad={() => setIsImageLoaded(true)}
         className={`w-full h-full min-h-32 min-w-32 object-cover transition-opacity duration-500 ${isImageLoaded ? "opacity-100" : "opacity-0"

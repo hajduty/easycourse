@@ -11,6 +11,7 @@ public static class UserMappings
             Id = user.Id,
             Username = user.Username,
             Email = user.Email,
+            ImagePath = user.ProfilePicture?.Path ?? UserResult.DefaultImagePath
         };
     }
 }

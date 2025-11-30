@@ -8,4 +8,5 @@ public class CourseRequest
     public string CourseDescription { get; set; } = string.Empty;
     public ICollection<SectionDto> Sections { get; set; } = [];
     public bool? IsPublic { get; set; } = false;
+    public Guid? ImageId { get; set; } = Guid.Empty;
 }

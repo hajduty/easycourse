@@ -18,7 +18,6 @@ import Youtube from '@tiptap/extension-youtube'
 
 // --- UI Primitives ---
 import { Button } from "@/components/tiptap-ui-primitive/button"
-import { Spacer } from "@/components/tiptap-ui-primitive/spacer"
 import {
   Toolbar,
   ToolbarGroup,
@@ -62,8 +61,6 @@ import { LinkIcon } from "@/components/tiptap-icons/link-icon"
 
 // --- Hooks ---
 import { useIsBreakpoint } from "@/hooks/use-is-breakpoint"
-import { useWindowSize } from "@/hooks/use-window-size"
-import { useCursorVisibility } from "@/hooks/use-cursor-visibility"
 
 // --- Components ---
 
@@ -76,7 +73,6 @@ import "@/components/tiptap-templates/simple/simple-editor.scss"
 import { TvMinimalPlay } from "lucide-react"
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { Button as ShadButton } from "@/components/ui/button"
-import { useScrolling } from "@/hooks/use-scrolling"
 import { useScrollPosition } from "@/hooks/use-scroll-position"
 import { ImageUploadButton } from "@/components/tiptap-ui/image-upload-button"
 
@@ -187,7 +183,6 @@ const MobileToolbarContent = ({
 
 export function SimpleEditor({ content, onChange, editable = true }: { content: any, onChange?: (newContent: any) => void, editable?: boolean }) {
   const isMobile = useIsBreakpoint()
-  const { height } = useWindowSize()
   const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
     "main"
   )
@@ -274,11 +269,6 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
       editor.off("update", handleUpdate);
     };
   }, [editor, onChange]);
-
-  const rect = useCursorVisibility({
-    editor,
-    overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
-  })
 
   useEffect(() => {
     if (!isMobile && mobileView !== "main") {

@@ -5,6 +5,8 @@ namespace EasyCourse.Core.DTO.Course;
 
 public class CourseResponse
 {
+    public const string DefaultImagePath = "uploads/images/placeholder.jpg";
+
     public Guid CourseId { get; set; }
     public string CourseName { get; set; } = string.Empty;
     public string CourseDescription { get; set; } = string.Empty;
@@ -15,5 +17,5 @@ public class CourseResponse
     public DateTime CreatedAt { get; set; }
     public bool IsPublic { get; set; } = false;
     public int Views {  get; set; }
-    public Guid ImageId { get; set; }
+    public string ImagePath { get; set; } = DefaultImagePath;
 }
