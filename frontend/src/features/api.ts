@@ -1,4 +1,4 @@
-import apiClient, { imageUrl } from "@/lib/apiClient";
+import apiClient from "@/lib/apiClient";
 import { MAX_FILE_SIZE } from "@/lib/tiptap-utils";
 import type { ApiResponse } from "@/types/apiResponse";
 import type { Image } from "@/types/image";
