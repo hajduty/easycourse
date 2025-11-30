@@ -30,7 +30,7 @@ public class ParticipantRepository(AppDbContext _context) : IParticipantReposito
     {
         var result = await _context.CourseParticipant.FindAsync(userId, courseId);
 
-        return result ?? throw new KeyNotFoundException("Failed to get participant for this course");
+        return result ?? throw new KeyNotFoundException("Failed to get participation status for this course");
     }
 
     public async Task<List<CourseParticipant>> GetUserParticipations(Guid userId)
@@ -38,6 +38,8 @@ public class ParticipantRepository(AppDbContext _context) : IParticipantReposito
         var participations = await _context.CourseParticipant
             .Include(c => c.Course)
                 .ThenInclude(c => c.CreatedByUser)
+            .Include(c => c.Course)
+                .ThenInclude(c => c.CourseImage)
             .Include(c => c.Course)
                 .ThenInclude(c => c.Sections) // we ball (not optimal) (this is needed to calculate % of course completed)
             .Where(p => p.UserId == userId)

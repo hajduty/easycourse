@@ -24,4 +24,5 @@ export const useParticipantInfo = (courseId: string, userId: string) =>
       if (error?.response?.status === 404) return false;
       return failureCount < 2;
     },
+    staleTime: 1000 * 60,
   });

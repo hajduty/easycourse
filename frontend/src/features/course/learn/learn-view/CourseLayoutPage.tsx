@@ -1,4 +1,4 @@
-import { Link, Outlet, useParams } from "react-router";
+import { Link, Outlet } from "react-router";
 import { useAuth } from "@/providers/AuthProvider";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
@@ -13,7 +13,6 @@ export const CourseLayout = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [showTop, setShowTop] = useState(false);
   const [showBottom, setShowBottom] = useState(false);
-  const { sectionId } = useParams();
 
   const participantInfo = useParticipantInfo(course?.courseId!, user?.id!);
 

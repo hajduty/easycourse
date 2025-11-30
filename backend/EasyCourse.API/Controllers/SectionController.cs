@@ -1,4 +1,5 @@
 ﻿using EasyCourse.Core.DTO;
+using EasyCourse.Core.DTO.Section;
 using EasyCourse.Core.Entities;
 using EasyCourse.Core.Interfaces.Service;
 using Microsoft.AspNetCore.Authorization;

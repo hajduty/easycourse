@@ -2,6 +2,7 @@ import type { Tokens } from "@/types/auth";
 import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from "axios";
 
 export const apiUrl = import.meta.env.VITE_API_URL || 'https://localhost:7009/api';
+export const imageUrl = import.meta.env.VITE_IMAGE_URL || 'https://localhost:7009/';
 
 // Queue management
 interface QueuedRequest {

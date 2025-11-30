@@ -9,11 +9,13 @@ export interface CourseResponse {
   createdAt: Date;
   isPublic: boolean;
   views: number;
+  imagePath: string;
 }
 
 export interface CourseRequest {
-  courseName: string;
-  courseDescription: string;
-  sections: any[];
-  isPublic: boolean;
-} 
+  courseName?: string;
+  courseDescription?: string;
+  sections?: any[];
+  isPublic?: boolean;
+  imageId?: string;
+}

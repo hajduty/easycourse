@@ -18,7 +18,8 @@ public static class CourseMappings
             ParticipantCount = course.Participants?.Count ?? 0,
             CreatedAt = course.CreatedAt,
             IsPublic = course.IsPublic ?? false,
-            Views = course.Views
+            Views = course.Views,
+            ImagePath = course.CourseImage?.Path ?? CourseResponse.DefaultImagePath
         };
     }
 
@@ -35,14 +36,15 @@ public static class CourseMappings
             CourseDescription = courseRequest.CourseDescription,
             CreatedByUserId = userId,
             Sections = courseRequest.Sections.ToEntity(),
-            IsPublic = courseRequest.IsPublic
+            IsPublic = courseRequest.IsPublic,
+            CourseImageId = courseRequest.ImageId ?? null
         };
 
         if (courseId.HasValue)
         {
             entity.CourseId = courseId.Value;
         }
-         
+        
         return entity;
     }
 
