@@ -33,5 +33,6 @@ export const useGetParticipationsByUser = () => {
       return participations;
     },
     staleTime: 1000 * 60,
+    refetchOnWindowFocus: false
   })
 }

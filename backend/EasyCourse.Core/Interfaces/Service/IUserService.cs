@@ -4,7 +4,7 @@ namespace EasyCourse.Core.Interfaces.Service;
 
 public interface IUserService
 {
-    Task<UserResult?> GetUserById(Guid id);
+    Task<UserResult?> GetUserById(Guid id, Guid requestId);
     Task<UserResult?> GetUserByEmail(string email);
     Task<bool> DeleteUserById(Guid id);
 }

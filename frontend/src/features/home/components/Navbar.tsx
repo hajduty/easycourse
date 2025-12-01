@@ -1,4 +1,4 @@
-import { Notebook, Menu, UserIcon } from "lucide-react";
+import { Notebook, Menu, UserIcon, CogIcon, Cog, UserCog } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useNavigate } from "react-router";
@@ -46,7 +46,11 @@ export const Navbar = () => {
 
       <div className="ml-auto hidden md:flex items-center gap-2">
         {authenticated ?
-        <AccountDialog />
+/*         <AccountDialog /> */
+        <button className="px-4 py-2 rounded hover:bg-neutral-800 transition flex items-center gap-2 disabled:bg-transparent" onClick={() => navigate('/user/profile')}>
+          <UserCog/>
+          Account
+        </button>
         :
         <button className="px-4 py-2 rounded hover:bg-neutral-800 transition flex items-center gap-2 disabled:bg-transparent" onClick={() => navigate('/auth')}>
           <UserIcon/>

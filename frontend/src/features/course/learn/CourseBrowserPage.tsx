@@ -30,8 +30,8 @@ export const CoursePage = () => {
   const { data, isLoading, isFetching } = useQuery({
     queryKey: ["courses", debouncedQuery],
     queryFn: async () => GetCourses(debouncedQuery),
-    staleTime: 0,
-  });
+    staleTime: 60_000
+    });
 
   // Only update URL when debounced query actually changes
   useEffect(() => {

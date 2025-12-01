@@ -1,4 +1,5 @@
 ﻿using EasyCourse.Core.DTO;
+using EasyCourse.Core.DTO.Auth;
 using EasyCourse.Core.DTO.Course;
 using EasyCourse.Core.DTO.Participant;
 using EasyCourse.Core.Entities;
@@ -42,5 +43,14 @@ public class UserController(ICourseService courseService, IParticipantService pa
         var result = await userService.DeleteUserById(new Guid(userId));
 
         return HandleBoolResult(result);
+    }
+
+    [HttpGet("{userId}")]
+    [ProducesResponseType(typeof(ApiResponse<UserResult>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetUserById(Guid userId)
+    {
+        var requestId = GetUserId();
+        var user = await userService.GetUserById(userId, new Guid(requestId));
+        return HandleResult(user);
     }
 }

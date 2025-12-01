@@ -37,9 +37,15 @@ public class UserService(IUserRepository userRepository) : IUserService
     }
     */
 
-    public async Task<UserResult?> GetUserById(Guid id)
+    public async Task<UserResult?> GetUserById(Guid id, Guid requestId)
     {
         var user = await userRepository.GetUserById(id);
+
+        if (id != requestId && user != null)
+        {
+            user.Email = null;
+        }
+
         return user == null ? null : UserMappings.MapToResult(user);
     }
 
