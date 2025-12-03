@@ -12,4 +12,5 @@ public class User
     public string? GoogleId { get; set; }
     public Image? ProfilePicture { get; set; } = null;
     public Guid? ProfilePictureId { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

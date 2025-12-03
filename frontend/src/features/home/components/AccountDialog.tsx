@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { Button } from "@/components/ui/button";
-import { Settings } from "lucide-react";
+import { Settings2Icon } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { DeleteAccount } from "@/features/course/api";
 import { useQueryClient } from "@tanstack/react-query";
@@ -56,10 +56,10 @@ export function AccountDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild disabled={!authenticated}>
-        <button disabled={!authenticated} className="px-4 py-2 rounded hover:bg-neutral-800 transition flex items-center gap-2 disabled:bg-transparent">
-          <Settings size={16} />
+        <Button variant="ghost" className="justify-start">
+          <Settings2Icon className="h-4 w-4" />
           Account
-        </button>
+        </Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md dark text-white">

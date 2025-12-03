@@ -19,6 +19,7 @@ import { SectionView } from './features/course/learn/learn-view/SectionView.tsx'
 import { CourseInfo } from './features/course/learn/learn-view/CourseInfo.tsx';
 import { CourseLayout } from './features/course/learn/learn-view/CourseLayoutPage.tsx';
 import ProtectedRoute from './features/auth/components/PrivateRoute.tsx';
+import { UserPage } from './features/user/UserPage.tsx';
 const queryClient = new QueryClient();
 
 export default function ScrollToTop() {
@@ -55,6 +56,7 @@ createRoot(document.getElementById('root')!).render(
                   <Route path="section/:sectionId" element={<SectionEditor />} />
                 </Route>
               </Route>
+              <Route path="user/profile/:userId?" element={<UserPage />} />
             </Route>
             <Route element={<AuthPage />} path="auth"></Route>
           </Routes>

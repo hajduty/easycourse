@@ -11,8 +11,10 @@ import { useSearchParams } from "react-router";
 import { CourseCardSkeleton } from "../components/CourseCardSkeleton";
 import { useGetParticipationsByUser } from "../hooks/participant/useGetParticipationsByUser";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { useAuth } from "@/providers/AuthProvider";
 
 export const CoursePage = () => {
+  const {user} = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const [isInitialized, useIsInitialized] = useState(false);
   const previousDebouncedQuery = useRef<CourseQuery | null>(null);
@@ -30,8 +32,8 @@ export const CoursePage = () => {
   const { data, isLoading, isFetching } = useQuery({
     queryKey: ["courses", debouncedQuery],
     queryFn: async () => GetCourses(debouncedQuery),
-    staleTime: 0,
-  });
+    staleTime: 60_000
+    });
 
   // Only update URL when debounced query actually changes
   useEffect(() => {
@@ -78,7 +80,7 @@ export const CoursePage = () => {
 
   const isGridLoading = isLoading || isFetching;
 
-  const participations = useGetParticipationsByUser();
+  const participations = useGetParticipationsByUser(user?.id!);
 
   const participatedCourses = participations.data?.data ?? [];
   

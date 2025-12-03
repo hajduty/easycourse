@@ -1,4 +1,4 @@
-﻿using EasyCourse.Core.DTO.Auth;
+﻿using EasyCourse.Core.DTO.User;
 using EasyCourse.Core.Entities;
 using EasyCourse.Core.Interfaces.Repository;
 using EasyCourse.Core.Interfaces.Service;
@@ -19,7 +19,7 @@ public class UserService(IUserRepository userRepository) : IUserService
     }
     */
 
-    /*
+    /* bad
     public async Task<UserResult> UpdateUser(Guid id, NewUserRequest updatedUser)
     {
         var existingUser = await _userRepository.GetUserById(id);
@@ -37,9 +37,15 @@ public class UserService(IUserRepository userRepository) : IUserService
     }
     */
 
-    public async Task<UserResult?> GetUserById(Guid id)
+    public async Task<UserResult?> GetUserById(Guid id, Guid requestId)
     {
         var user = await userRepository.GetUserById(id);
+
+        if (id != requestId && user != null)
+        {
+            user.Email = null;
+        }
+
         return user == null ? null : UserMappings.MapToResult(user);
     }
 
@@ -55,5 +61,15 @@ public class UserService(IUserRepository userRepository) : IUserService
         await userRepository.DeleteUserById(id);
 
         return true;
+    }
+
+    public async Task<UserResult> UpdateUser(Guid userId, UserUpdateRequest userUpdateRequest, Guid requestId)
+    {
+        if (userId != requestId && userId != userUpdateRequest.Id)
+            throw new UnauthorizedAccessException("You can only update your own user.");
+
+        var updatedUser = await userRepository.UpdateUser(UserMappings.UpdateRequestToEntity(userUpdateRequest));
+
+        return UserMappings.MapToResult(updatedUser);
     }
 }

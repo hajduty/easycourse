@@ -1,4 +1,6 @@
-﻿namespace EasyCourse.Core.DTO.Auth;
+﻿using EasyCourse.Core.DTO.User;
+
+namespace EasyCourse.Core.DTO.Auth;
 
 public class AuthResult
 {

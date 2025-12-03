@@ -43,12 +43,35 @@ public class UserRepository(AppDbContext _context) : IUserRepository
 
     public async Task<User?> GetUserByEmail(string email)
     {
-        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        return await _context.Users.Include(u => u.ProfilePicture).FirstOrDefaultAsync(u => u.Email == email);
     }
 
     public async Task<User?> GetUserById(Guid id)
     {
-        return await _context.Users.FindAsync(id);
+        return await _context.Users.Include(u=> u.ProfilePicture).FirstOrDefaultAsync(u => u.Id == id);
+    }
+
+    public async Task<User> UpdateUser(User user)
+    {
+        var dbUser = await _context.Users
+            .Include(u => u.ProfilePicture)
+            .FirstOrDefaultAsync(u => u.Id == user.Id);
+
+        if (dbUser == null)
+            throw new KeyNotFoundException("User not found.");
+
+        if (user.Username != "")
+            dbUser.Username = user.Username;
+
+        if (user.Email != "")
+            dbUser.Email = user.Email;
+        
+        if (user.ProfilePictureId != null)
+            dbUser.ProfilePictureId = user.ProfilePictureId;
+
+        await _context.SaveChangesAsync();
+
+        return dbUser;
     }
 
     public async Task<bool> UserExists(string? email)

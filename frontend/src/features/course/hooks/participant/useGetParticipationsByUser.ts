@@ -3,15 +3,13 @@ import { GetParticipationsByUser } from "../../api"
 import type { ParticipantResponse } from "@/types/participant";
 import { participantKeys } from "./useGetParticipant";
 
-export const useGetParticipationsByUser = () => {
+export const useGetParticipationsByUser = (userId: string) => {
   const queryClient = useQueryClient();
 
   return useQuery({
     queryKey: ["participations"],
     queryFn: async () => {
-      const participations = await GetParticipationsByUser();
-
-      console.log(participations.data);
+      const participations = await GetParticipationsByUser(userId);
 
       participations.data.forEach((p: ParticipantResponse) => {
         if (p.course) {
@@ -33,5 +31,6 @@ export const useGetParticipationsByUser = () => {
       return participations;
     },
     staleTime: 1000 * 60,
+    refetchOnWindowFocus: false
   })
 }

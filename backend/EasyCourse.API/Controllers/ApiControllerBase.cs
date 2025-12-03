@@ -1,6 +1,7 @@
 ﻿using EasyCourse.Core.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Authentication;
 using System.Security.Claims;
 
 namespace EasyCourse.API.Controllers;
@@ -39,7 +40,7 @@ public class ApiControllerBase : ControllerBase
             User?.FindFirst("UserId")?.Value;
 
         if (string.IsNullOrWhiteSpace(id))
-            throw new InvalidOperationException("User ID claim is missing in the token.");
+            throw new AuthenticationException("User ID claim is missing in the token.");
 
         return id;
     }
