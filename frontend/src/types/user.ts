@@ -5,3 +5,10 @@ export interface User {
   imagePath?: string;
   createdAt?: Date;
 }
+
+export interface UserUpdate {
+  id: string;
+  username?: string;
+  email: string;
+  imageId?: string;
+}

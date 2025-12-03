@@ -83,8 +83,8 @@ export const UpdateParticipantInfo = async (courseId: string, userId: string, pa
   return data;
 }
 
-export const GetParticipationsByUser = async (): Promise<ApiResponse<ParticipantResponse[]>> => {
-  const {data} = await apiClient.get<ApiResponse<ParticipantResponse[]>>(`/user/participations`);
+export const GetParticipationsByUser = async (userId: string): Promise<ApiResponse<ParticipantResponse[]>> => {
+  const {data} = await apiClient.get<ApiResponse<ParticipantResponse[]>>(`/user/${userId}/participations`);
   return data;
 }
 

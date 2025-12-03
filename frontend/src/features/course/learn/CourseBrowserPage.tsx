@@ -3,7 +3,7 @@ import { CourseCard } from "../components/CourseCard";
 import { CourseFilter } from "../components/CourseFilter";
 import { CoursePagination } from "../components/CoursePagination";
 import { CourseSearch } from "../components/CourseSearch";
-import { useEffect, useRef, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { GetCourses } from "../api";
 import { useDebounce } from "use-debounce";
@@ -11,8 +11,10 @@ import { useSearchParams } from "react-router";
 import { CourseCardSkeleton } from "../components/CourseCardSkeleton";
 import { useGetParticipationsByUser } from "../hooks/participant/useGetParticipationsByUser";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { useAuth } from "@/providers/AuthProvider";
 
 export const CoursePage = () => {
+  const {user} = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const [isInitialized, useIsInitialized] = useState(false);
   const previousDebouncedQuery = useRef<CourseQuery | null>(null);
@@ -78,7 +80,7 @@ export const CoursePage = () => {
 
   const isGridLoading = isLoading || isFetching;
 
-  const participations = useGetParticipationsByUser();
+  const participations = useGetParticipationsByUser(user?.id!);
 
   const participatedCourses = participations.data?.data ?? [];
   
