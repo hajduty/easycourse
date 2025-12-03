@@ -8,6 +8,7 @@ import { useParticipantInfo } from "../../hooks/participant/useGetParticipant";
 import { Separator } from "@/components/ui/separator";
 import type { CourseResponse } from "@/types/course";
 import { imageUrl } from "@/lib/apiClient";
+import { useUser } from "@/features/user/hooks/useUser";
 
 interface CourseInfoContext {
   course: CourseResponse;
@@ -34,6 +35,8 @@ export const CourseInfo = () => {
   const registerParticipant = useRegisterParticipant();
   const unregisterParticipant = useRemoveParticipant();
 
+  const creatorInfo = useUser(course?.createdById).data;
+
   const handleParticipateToggle = () => {
     if (!courseId || !userInfo?.id) return;
 
@@ -57,6 +60,8 @@ export const CourseInfo = () => {
   };
   const isParticipant = !!participantInfo.data?.data;
   const isLoading = registerParticipant.isPending;
+
+  const creatorDate = creatorInfo?.createdAt ? new Date(creatorInfo.createdAt) : null;
 
   return (
     <div className="flex md:flex-row flex-col h-full">
@@ -87,7 +92,6 @@ export const CourseInfo = () => {
                   : "Join this course"}
             </Button>
           </div>
-
         </div>
 
         <h1 className="text-3xl font-bold -mt-12">{course?.courseName}</h1>
@@ -115,20 +119,20 @@ export const CourseInfo = () => {
       <div className="md:w-2/7 xl:w-1/5 w-full px-2 py-6 xl:pr-8 flex flex-col gap-6">
         <div>
           <p className="font-semibold mb-2">Created by</p>
-
-          <div className="flex items-center gap-4 border  bg-neutral-900 rounded">
-            <img
-              draggable={false}
-              src={imageUrl + course?.imagePath}
-              alt="Creator"
-              className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l"
-            />
-            <div>
-              <h2 className="font-semibold md:text-xs text-lg text-wrap line-clamp-1">{course?.createdBy} </h2>
-              <p className="md:text-xs text-sm text-neutral-400">4 courses</p>
-              <p className="md:text-xs text-sm text-neutral-500">Joined 2025-11-15</p>
+          <Link to={`/user/profile/${course?.createdById}`}>
+            <div className="flex items-center gap-4 border  bg-neutral-900 rounded hover:bg-neutral-800 transition">
+              <img
+                draggable={false}
+                src={imageUrl + creatorInfo?.imagePath}
+                alt="Creator"
+                className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l"
+              />
+              <div>
+                <h2 className="font-semibold md:text-xs text-lg text-wrap line-clamp-1">{course?.createdBy} </h2>
+                <p className="md:text-xs text-sm text-neutral-500">Joined {creatorDate?.toLocaleDateString()}</p>
+              </div>
             </div>
-          </div>
+          </Link>
 
           {otherCourses?.length > 0 && (
             <h2 className="pt-6 font-semibold">More by this user</h2>

@@ -3,7 +3,7 @@ import { CourseCard } from "../components/CourseCard";
 import { CourseFilter } from "../components/CourseFilter";
 import { CoursePagination } from "../components/CoursePagination";
 import { CourseSearch } from "../components/CourseSearch";
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { GetCourses } from "../api";
 import { useDebounce } from "use-debounce";

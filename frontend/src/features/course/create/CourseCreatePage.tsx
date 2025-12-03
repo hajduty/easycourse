@@ -70,7 +70,7 @@ export default function CourseCreateBrowser() {
               onClick={() => setOpen(true)}
               role="button"
               tabIndex={0}
-              className="rounded-xl border border-neutral-700 bg-neutral-900/40 flex flex-col items-center justify-center cursor-pointer hover:bg-neutral-800 transition min-w-32 h-full"
+              className="rounded-xl border border-neutral-700 bg-neutral-900/40 flex flex-col items-center justify-center cursor-pointer hover:bg-neutral-800 transition min-w-32 min-h-48 h-full"
             >
               <Plus className="w-10 h-10 text-neutral-300 mb-2" />
               <p className="text-neutral-300 font-medium text-sm sm:text-base text-center">
@@ -88,7 +88,7 @@ export default function CourseCreateBrowser() {
             </CarouselItem>
           ))}
         </CarouselContent>
-
+ 
         <CarouselPrevious className="hidden sm:flex" />
         <CarouselNext className="hidden sm:flex" />
       </Carousel>

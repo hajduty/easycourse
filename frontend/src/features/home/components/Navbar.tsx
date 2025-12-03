@@ -1,4 +1,4 @@
-import { Notebook, Menu, UserIcon, CogIcon, Cog, UserCog, LogOutIcon, CircleSlashIcon } from "lucide-react";
+import { Notebook, Menu, UserIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Link, useNavigate } from "react-router";

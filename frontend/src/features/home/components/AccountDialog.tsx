@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { Button } from "@/components/ui/button";
-import { Settings, Settings2Icon, SettingsIcon } from "lucide-react";
+import { Settings2Icon } from "lucide-react";
 import { useAuth } from "@/providers/AuthProvider";
 import { DeleteAccount } from "@/features/course/api";
 import { useQueryClient } from "@tanstack/react-query";

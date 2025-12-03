@@ -74,14 +74,21 @@ export const UserPage = () => {
         </span>
 
         {/* Courses created grid */}
-        <div className="text-white grow p-4">
+        <div className="text-white grow p-4 w-full">
           <h2 className="md:text-lg text-xl font-medium mb-4">Courses created</h2>
-          <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 auto-rows-auto">
-            {courses.data?.data.slice(0, maxVisibleCourses).map((course) => (
-              <div className="transition-transform" key={course.courseId}>
-                <CourseCard {...course} />
+          <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 auto-rows-auto min-h-72">
+            {courses.data?.data.length! > 0 ? (
+              courses.data?.data.slice(0, maxVisibleCourses).map((course) => (
+                <div className="transition-transform" key={course.courseId}>
+                  <CourseCard {...course} />
+                </div>
+              ))
+            ) : (
+              <div className="col-span-full h-64 flex items-center justify-center bg-neutral-900/50 rounded-xl border border-neutral-800">
+                <p className="text-neutral-700">No courses created</p>
               </div>
-            ))}
+            )}
+
           </div>
         </div>
       </div>
@@ -92,14 +99,26 @@ export const UserPage = () => {
         </h2>
         <Carousel opts={{ dragFree: true }}>
           <CarouselContent>
-            {joinedCourses.data?.data.map((val, index) => (
-              <CarouselItem
-                key={index}
-                className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 select-none p-4"
-              >
-                <CourseCard key={index} {...val.course!} completedSections={val.completedSectionIds?.length} totalSections={val.totalSections} />
+            {joinedCourses.data?.data.length! > 0 ? (
+              joinedCourses.data?.data.map((val, index) => (
+                <CarouselItem
+                  key={index}
+                  className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 select-none p-4"
+                >
+                  <CourseCard
+                    {...val.course!}
+                    completedSections={val.completedSectionIds?.length}
+                    totalSections={val.totalSections}
+                  />
+                </CarouselItem>
+              ))
+            ) : (
+              <CarouselItem className="basis-full p-4 select-none">
+                <div className="w-full h-64 flex items-center justify-center bg-neutral-900/50 rounded-xl border border-neutral-800">
+                  <p className="text-neutral-700">No joined courses</p>
+                </div>
               </CarouselItem>
-            ))}
+            )}
           </CarouselContent>
         </Carousel>
       </div>
