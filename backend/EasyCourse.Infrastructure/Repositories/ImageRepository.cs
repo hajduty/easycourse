@@ -7,10 +7,9 @@ public class ImageRepository(AppDbContext _context) : IImageRepository
 {
     public async Task<Image> CreateById(Image image)
     {
-        var result = await _context.Images.AddAsync(image);
+        _context.Images.Add(image);
         await _context.SaveChangesAsync();
-
-        return result.Entity;
+        return image;
     }
 
     public async Task<Image> GetById(Guid id)

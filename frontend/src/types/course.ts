@@ -10,6 +10,8 @@ export interface CourseResponse {
   isPublic: boolean;
   views: number;
   imagePath: string;
+  totalRatings: number;
+  averageRating: number;
 }
 
 export interface CourseRequest {

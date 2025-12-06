@@ -18,4 +18,6 @@ public class CourseResponse
     public bool IsPublic { get; set; } = false;
     public int Views {  get; set; }
     public string ImagePath { get; set; } = DefaultImagePath;
+    public double AverageRating { get; set; }
+    public int TotalRatings { get; set; }
 }

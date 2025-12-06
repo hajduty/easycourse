@@ -34,7 +34,7 @@ export const CourseLayout = () => {
   }, [sections]);
 
   return (
-    <div className="flex flex-col lg:flex-row text-white 2xl:mx-20 mx-0">
+    <div className="flex flex-col lg:flex-row text-white 2xl:mx-20 mx-0 h-full">
       {/* Desktop sidebar */}
       <div className="lg:w-1/5 w-1/4 hidden lg:flex flex-col p-6 xl:pl-8 sticky pt-20 top-13 h-fit">
         <h1 className="font-semibold text-lg">Course content</h1>
@@ -113,7 +113,7 @@ export const CourseLayout = () => {
       </div>
 
       {/* Main content / Outlet */}
-      <div className="flex-1 pt-16">
+      <div className="flex-1 lg:pt-16">
         <Outlet
           context={{
             course,

@@ -16,14 +16,9 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
 
     public async Task<Course> CreateCourse(Course newCourse)
     {
-        var course = await _context.Courses.AddAsync(newCourse);
-
+        _context.Courses.Add(newCourse);
         await _context.SaveChangesAsync();
-
-        if (course == null)
-            throw new InvalidOperationException("Failed to create course.");
-
-        return course.Entity;
+        return newCourse;
     }
 
     public async Task<bool> DeleteCourseById(Guid courseId)
@@ -92,6 +87,10 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
             "created" => query.Descending
                 ? courseQuery.OrderByDescending(c => c.CreatedAt)
                 : courseQuery.OrderBy(c => c.CreatedAt),
+
+            //"ratings" => query.Descending
+            //    ? courseQuery.OrderByDescending(c => c.Ratings.Average(r => r.Score))
+            //    : courseQuery.OrderBy(c => c.Ratings.Average(r => r.Score)),
 
             _ => courseQuery.OrderBy(c => c.CreatedAt) // fallback sort
         };

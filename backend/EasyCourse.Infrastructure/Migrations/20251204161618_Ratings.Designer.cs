@@ -4,6 +4,7 @@ using EasyCourse.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyCourse.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251204161618_Ratings")]
+    partial class Ratings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,6 +30,9 @@ namespace EasyCourse.Infrastructure.Migrations
                     b.Property<Guid>("CourseId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<double?>("AverageRating")
+                        .HasColumnType("double");
 
                     b.Property<string>("CourseDescription")
                         .IsRequired()
@@ -47,6 +53,9 @@ namespace EasyCourse.Infrastructure.Migrations
 
                     b.Property<bool?>("IsPublic")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<int?>("TotalRatings")
+                        .HasColumnType("int");
 
                     b.Property<int>("Views")
                         .HasColumnType("int");

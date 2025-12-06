@@ -38,7 +38,7 @@ export const SectionList: FC<SectionListProps> = ({
   if (!sections || sections.length === 0) {
     return (
       <div className="flex flex-col lg:flex-row text-white lg:w-1/5">
-        <div className="hidden lg:flex flex-col border-b lg:border-b-0 lg:border-r p-6 lg:p-8 w-full">
+        <div className="hidden lg:flex flex-col border-b lg:border-b-0 p-6 lg:p-8 w-full">
           <h1 className="font-semibold text-lg">Course content</h1>
           <Link to={`/course/editor/${courseId}`}>
             <Button

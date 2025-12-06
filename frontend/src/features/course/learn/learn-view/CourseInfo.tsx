@@ -9,6 +9,10 @@ import { Separator } from "@/components/ui/separator";
 import type { CourseResponse } from "@/types/course";
 import { imageUrl } from "@/lib/apiClient";
 import { useUser } from "@/features/user/hooks/useUser";
+import { StarRating } from "@/features/rating/components/RatingStars";
+import { useAddRating, useCourseRating, useUpdateRating } from "@/features/rating/hooks/useRatings";
+import { useState } from "react";
+import { UpdateRating } from "@/features/rating/api";
 
 interface CourseInfoContext {
   course: CourseResponse;
@@ -26,14 +30,17 @@ export const CourseInfo = () => {
     otherCourses,
     user,
   } = useOutletContext<CourseInfoContext>();
-
   const { courseId } = useParams<{ sectionId: string; courseId: string }>();
-
   const { user: userInfo } = useAuth();
 
   const participantInfo = useParticipantInfo(courseId!, userInfo?.id!);
   const registerParticipant = useRegisterParticipant();
   const unregisterParticipant = useRemoveParticipant();
+  const currentRatings = useCourseRating(courseId!, userInfo?.id!);
+  const updateRatings = useUpdateRating();
+  const addRatings = useAddRating();
+
+  const [ratings, setRatings] = useState<number | undefined>(currentRatings.data?.data.score);
 
   const creatorInfo = useUser(course?.createdById).data;
 
@@ -63,11 +70,31 @@ export const CourseInfo = () => {
 
   const creatorDate = creatorInfo?.createdAt ? new Date(creatorInfo.createdAt) : null;
 
+  const handleRating = (val: number) => {
+    if (!courseId || !userInfo?.id) return;
+    const existingRating = currentRatings.data?.data;
+
+    if (existingRating) {
+      updateRatings.mutate({
+        ...existingRating,
+        score: val,
+      });
+    }
+    else {
+      addRatings.mutate({
+        userId: userInfo.id,
+        entityId: courseId,
+        entityType: "Course",
+        score: val,
+      });
+    }
+  }
+
   return (
     <div className="flex md:flex-row flex-col h-full">
       <div className="md:w-5/7 xl:w-4/5 w-full border-b md:border-b-0 p-6 xl:p-8 flex flex-col gap-6">
         <div className="relative w-full rounded-xl overflow-visible pb-12">
-          <div className="h-60 overflow-hidden rounded-xl">
+          <div className="h-60 overflow-hidden rounded-xl border">
             <img
               draggable={false}
               src={imageUrl + course?.imagePath}
@@ -94,8 +121,14 @@ export const CourseInfo = () => {
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold -mt-12">{course?.courseName}</h1>
-        <p className="text-neutral-300 leading-relaxed">{course?.courseDescription}</p>
+        <span className="flex flex-row items-center gap-4 -mt-8 md:-mt-12">
+          <h1 className="text-3xl font-bold">{course?.courseName}</h1>
+          <span className="text-white flex gap-2 text-xs items-center">
+            <StarRating onChange={handleRating} value={currentRatings.data?.data?.score} initialValue={course?.averageRating}/>
+            <p className="text-gray-400">{course?.averageRating}/5 <span className="text-gray-500">({course?.totalRatings} ratings)</span></p>
+          </span>
+        </span>
+        <p className="text-neutral-300 leading-relaxed min-h-32">{course?.courseDescription}</p>
 
         <span className="flex gap-2">
           <p className="text-sm text-neutral-500">

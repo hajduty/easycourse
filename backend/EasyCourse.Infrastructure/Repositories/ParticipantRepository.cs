@@ -9,14 +9,9 @@ public class ParticipantRepository(AppDbContext _context) : IParticipantReposito
 {
     public async Task<CourseParticipant> CreateParticipant(CourseParticipant participant)
     {
-        var result = await _context.CourseParticipant.AddAsync(participant);
-
+        _context.CourseParticipant.Add(participant);
         await _context.SaveChangesAsync();
-
-        if (result == null)
-            throw new InvalidOperationException("Failed to register participant");
-
-        return result.Entity;
+        return participant;
     }
 
     public async Task<bool> DeleteByIdAsync(Guid courseId, Guid userId)
