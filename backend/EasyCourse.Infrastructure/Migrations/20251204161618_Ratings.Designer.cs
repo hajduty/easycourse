@@ -4,6 +4,7 @@ using EasyCourse.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyCourse.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251204161618_Ratings")]
+    partial class Ratings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,6 +30,9 @@ namespace EasyCourse.Infrastructure.Migrations
                     b.Property<Guid>("CourseId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
+
+                    b.Property<double?>("AverageRating")
+                        .HasColumnType("double");
 
                     b.Property<string>("CourseDescription")
                         .IsRequired()
@@ -47,6 +53,9 @@ namespace EasyCourse.Infrastructure.Migrations
 
                     b.Property<bool?>("IsPublic")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<int?>("TotalRatings")
+                        .HasColumnType("int");
 
                     b.Property<int>("Views")
                         .HasColumnType("int");
@@ -111,9 +120,6 @@ namespace EasyCourse.Infrastructure.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid?>("CourseId")
-                        .HasColumnType("char(36)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -135,8 +141,6 @@ namespace EasyCourse.Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
 
                     b.HasIndex("UserId", "EntityId")
                         .IsUnique();
@@ -273,13 +277,6 @@ namespace EasyCourse.Infrastructure.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("EasyCourse.Core.Entities.Rating", b =>
-                {
-                    b.HasOne("EasyCourse.Core.Entities.Course", null)
-                        .WithMany("Ratings")
-                        .HasForeignKey("CourseId");
-                });
-
             modelBuilder.Entity("EasyCourse.Core.Entities.Section", b =>
                 {
                     b.HasOne("EasyCourse.Core.Entities.Course", "Course")
@@ -303,8 +300,6 @@ namespace EasyCourse.Infrastructure.Migrations
             modelBuilder.Entity("EasyCourse.Core.Entities.Course", b =>
                 {
                     b.Navigation("Participants");
-
-                    b.Navigation("Ratings");
 
                     b.Navigation("Sections");
                 });

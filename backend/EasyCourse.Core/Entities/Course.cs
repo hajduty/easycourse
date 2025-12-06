@@ -22,4 +22,5 @@ public class Course
     public int Views { get; set; } = 0;
     public Image? CourseImage { get; set; }
     public Guid? CourseImageId { get; set; }
+    public ICollection<Rating> Ratings { get; set; } = [];
 }

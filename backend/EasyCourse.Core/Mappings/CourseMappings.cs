@@ -14,12 +14,14 @@ public static class CourseMappings
             CourseDescription = course.CourseDescription,
             CreatedBy = course.CreatedByUser?.Username,
             CreatedById = course.CreatedByUserId.ToString(),
-            Sections = course.Sections.ToDto(),
+            Sections = course.Sections?.ToDto() ?? [],
             ParticipantCount = course.Participants?.Count ?? 0,
             CreatedAt = course.CreatedAt,
             IsPublic = course.IsPublic ?? false,
             Views = course.Views,
-            ImagePath = course.CourseImage?.Path ?? CourseResponse.DefaultImagePath
+            ImagePath = course.CourseImage?.Path ?? CourseResponse.DefaultImagePath,
+            AverageRating = (course.Ratings != null && course.Ratings.Any()) ? course.Ratings.Average(r => r.Score) : 0,
+            TotalRatings = course.Ratings?.Count ?? 0
         };
     }
 

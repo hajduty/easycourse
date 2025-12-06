@@ -11,6 +11,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Section> Sections { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<Image> Images { get; set; }
+    public DbSet<Rating> Ratings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -22,6 +23,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             .WithMany(s => s.Sections)
             .HasForeignKey(s => s.CourseId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Rating>()
+            .HasKey(r => r.Id);
+
+        modelBuilder.Entity<Rating>()
+            .HasIndex(r => new { r.UserId, r.EntityId })
+            .IsUnique();
 
         base.OnModelCreating(modelBuilder);
     }
