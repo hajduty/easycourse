@@ -292,11 +292,10 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
     const rect = wrapperRef.current.getBoundingClientRect();
 
     setToolbarStyle({
-      top: Math.max(rect.top, 57),
+      top: Math.max(rect.top, 55),
       left: rect.left,
       width: rect.width,
     });
-    console.log(toolbarStyle.top);
   }, [scrollY]);
 
   return (

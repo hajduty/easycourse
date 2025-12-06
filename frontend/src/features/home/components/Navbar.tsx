@@ -49,7 +49,7 @@ export const Navbar = () => {
         {authenticated ?
           (<NavigationMenu >
             <NavigationMenuItem className="[&>svg]:hidden">
-              <NavigationMenuTrigger >
+              <NavigationMenuTrigger className="bg-transparent">
                 <UserIcon className="mr-2 h-4 w-4" />
                 Account
               </NavigationMenuTrigger>

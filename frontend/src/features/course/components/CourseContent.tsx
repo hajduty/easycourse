@@ -39,10 +39,10 @@ export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, reading
 
   return (
     <div
-      className={`w-full h-8 p-2 flex items-center rounded-sm gap-4 justify-around px-4 group relative border hover:bg-neutral-800 transition ${textColorClass} ${bgClass}`}
+      className={`w-full h-8 p-2 flex items-center rounded-sm lg:gap-4 gap-2 justify-around px-4 group relative border hover:bg-neutral-800 transition ${textColorClass} ${bgClass}`}
     >
-      <h1 className="text-center justify-self-center">{order}</h1>
-      <Separator className="w-8" orientation="vertical" />
+      <h1 className="text-center justify-self-center lg:ml-0 -ml-2">{order}</h1>
+      <Separator className="lg:block hidden w-4" orientation="vertical" />
 
       {/* TITLE SECTION */}
       {!editing ? (

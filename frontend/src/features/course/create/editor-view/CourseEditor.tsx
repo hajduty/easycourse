@@ -68,7 +68,7 @@ export const CourseEditor = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6 text-white py-8 mx-2 md:mx-8">
+    <div className="flex flex-col gap-6 text-white py-8 mx-2 md:mx-8 max-w-6xl">
       {/* IMAGE */}
       <div className="relative w-full h-72 md:rounded-xl overflow-hidden group cursor-pointer" onClick={handleClick}>
         <img
