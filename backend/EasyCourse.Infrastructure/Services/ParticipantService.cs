@@ -6,20 +6,28 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EasyCourse.Infrastructure.Services;
 
-public class ParticipantService(IParticipantRepository _repo) : IParticipantService
+public class ParticipantService(IParticipantRepository _repo, IRatingRepository ratingRepo) : IParticipantService
 {
     public async Task<CourseParticipantResponse> GetParticipantInfo(Guid userId, Guid courseId)
     {
         var participant = await _repo.GetParticipant(userId, courseId) ?? throw new KeyNotFoundException("Participant info not found for this user and course");
 
-        return ParticipantMapping.ToDto(participant);
+        return ParticipantMapping.ToDto(participant, null);
     }
 
     public async Task<List<CourseParticipantResponse>> GetUserParticipations(Guid userId)
     {
         var participations = await _repo.GetUserParticipations(userId) ?? throw new KeyNotFoundException("User has not participated in any courses");
 
-        return ParticipantMapping.ToDto(participations);
+        var courseIds = participations.Select(p => p.CourseId.ToString()).ToList();
+
+        var ratings = await ratingRepo.GetRatingsByEntities("course", courseIds);
+
+        var ratingsGrouped = ratings
+            .GroupBy(r => r.EntityId)
+            .ToDictionary(g => g.Key, g => g.ToList());
+
+        return ParticipantMapping.ToDto(participations, ratingsGrouped);
     }
 
     public async Task<CourseParticipantResponse> RegisterParticipant(CourseParticipantRequest courseParticipant, Guid userId)
@@ -33,7 +41,7 @@ public class ParticipantService(IParticipantRepository _repo) : IParticipantServ
 
         var participant = await _repo.CreateParticipant(participantEntity);
 
-        return participant.ToDto();
+        return participant.ToDto(null);
     }
 
     public async Task<bool> UnregisterParticipant(Guid userId, Guid courseId, Guid requestUserId)
@@ -56,7 +64,7 @@ public class ParticipantService(IParticipantRepository _repo) : IParticipantServ
 
         var participant = await _repo.UpdateByIdAsync(entity.CourseId, entity.UserId, entity);
 
-        return participant.ToDto();
+        return participant.ToDto(null);
 
     }
 }

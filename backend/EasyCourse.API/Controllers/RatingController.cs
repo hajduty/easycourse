@@ -37,4 +37,12 @@ public class RatingController(IRatingService ratingService) : ApiControllerBase
         var result = await ratingService.UpdateRating(ratingDto, new Guid(userId));
         return HandleResult(result);
     }
+
+    [HttpGet("course/{courseId}/user/{userId}")]
+    [ProducesResponseType(typeof(ApiResponse<RatingDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetUserCourseRating([FromRoute] Guid courseId, [FromRoute] Guid userId)
+    {
+        var result = await ratingService.GetUserRating("course", courseId.ToString(), userId);
+        return HandleResult(result);
+    }
 }

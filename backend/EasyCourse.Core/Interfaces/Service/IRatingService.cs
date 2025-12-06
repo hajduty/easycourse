@@ -6,6 +6,7 @@ public interface IRatingService
 {
     Task<RatingDto> CreateRating(RatingDto newRating, Guid userId);
     Task<RatingDto?> GetRatingById(int ratingId);
+    Task<RatingDto?> GetUserRating(string entityType, string entityId,  Guid userId);
     Task<IEnumerable<RatingDto>> GetRatingsByEntity(string entityType, string entityId);
     Task<RatingDto?> UpdateRating(RatingDto updatedRating, Guid userId);
 }

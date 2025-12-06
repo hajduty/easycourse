@@ -5,9 +5,17 @@ namespace EasyCourse.Core.Mappings;
 
 public static class ParticipantMapping
 {
-    public static CourseParticipantResponse ToDto(this CourseParticipant participant)
+    public static CourseParticipantResponse ToDto(
+        this CourseParticipant participant,
+        Dictionary<string, List<Rating>>? ratingsGrouped = null)
     {
         var course = participant.Course;
+
+        List<Rating>? courseRatings = null;
+        if (course != null && ratingsGrouped != null)
+        {
+            ratingsGrouped.TryGetValue(course.CourseId.ToString(), out courseRatings);
+        }
 
         return new CourseParticipantResponse
         {
@@ -16,9 +24,16 @@ public static class ParticipantMapping
             UserId = participant.UserId,
             LastCompletedSectionId = participant.LastCompletedSectionId,
             LastCompletedDate = participant.LastCompletedDate,
-            Course = course != null ? course.ToResponseDto() : null,
+            Course = course?.ToResponseDto(courseRatings),
             TotalSections = course?.Sections?.Count ?? 0
         };
+    }
+
+    public static List<CourseParticipantResponse> ToDto(
+        this IEnumerable<CourseParticipant> participantDtos,
+        Dictionary<string, List<Rating>>? ratingsGrouped = null)
+    {
+        return participantDtos.Select(p => p.ToDto(ratingsGrouped)).ToList();
     }
 
     public static CourseParticipant ToEntity(this CourseParticipantRequest entity)
@@ -33,7 +48,9 @@ public static class ParticipantMapping
         };
     }
 
-    public static List<CourseParticipant> ToEntity(this IEnumerable<CourseParticipantRequest> participantDtos) => [.. participantDtos.Select(s => s.ToEntity())];
-
-    public static List<CourseParticipantResponse> ToDto(this IEnumerable<CourseParticipant> participantDtos) => [.. participantDtos.Select(s => s.ToDto())];
+    public static List<CourseParticipant> ToEntity(
+        this IEnumerable<CourseParticipantRequest> participantDtos)
+    {
+        return participantDtos.Select(s => s.ToEntity()).ToList();
+    }
 }

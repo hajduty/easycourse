@@ -1,12 +1,13 @@
 ﻿using EasyCourse.Core.DTO;
 using EasyCourse.Core.DTO.Course;
+using EasyCourse.Core.Entities;
 using EasyCourse.Core.Interfaces.Repository;
 using EasyCourse.Core.Interfaces.Service;
 using EasyCourse.Core.Mappings;
 
 namespace EasyCourse.Infrastructure.Services;
 
-public class CourseService(ICourseRepository courseRepo) : ICourseService
+public class CourseService(ICourseRepository courseRepo, IRatingRepository ratingRepo) : ICourseService
 {
     public async Task<CourseResponse> CreateCourse(CourseRequest newCourse, Guid userId)
     {
@@ -14,7 +15,7 @@ public class CourseService(ICourseRepository courseRepo) : ICourseService
 
         var course = await courseRepo.CreateCourse(entity);
 
-        return course.ToResponseDto() ?? throw new InvalidOperationException("Failed to create course.");
+        return course.ToResponseDto(null) ?? throw new InvalidOperationException("Failed to create course.");
     }
 
     public async Task<bool> DeleteCourseById(Guid courseId, Guid userId)
@@ -31,18 +32,31 @@ public class CourseService(ICourseRepository courseRepo) : ICourseService
 
     public async Task<CourseResponse?> GetCourseById(Guid courseId)
     {
-        var course = await courseRepo.GetCourseById(courseId);
+        var course = await courseRepo.GetCourseById(courseId) ?? throw new InvalidOperationException("Course not found");
 
-        return CourseMappings.ToResponseDto(course) ?? throw new InvalidOperationException("Course does not exist");
+        var ratings = await ratingRepo.GetRatingsByEntity("course", courseId.ToString());
+
+        return CourseMappings.ToResponseDto(course, ratings);
     }
 
     public async Task<PagedResponse<CourseResponse>> GetCoursesAsync(CourseQuery query)
     {
         var (courses, totalCount) = await courseRepo.GetAndFilterCoursesAsync(query);
 
-        var response = courses.ToResponseDto();
+        var courseIds = courses.Select(c => c.CourseId.ToString()).ToList();
+        var ratings = await ratingRepo.GetRatingsByEntities("Course", courseIds);
 
-        return new PagedResponse<CourseResponse>(response, totalCount, query.Page, query.PageSize);
+        var ratingsGrouped = ratings
+            .GroupBy(r => r.EntityId)
+            .ToDictionary(g => g.Key, g => g.ToList());
+
+        var courseResponses = courses.Select(c =>
+        {
+            ratingsGrouped.TryGetValue(c.CourseId.ToString(), out var courseRatings);
+            return c.ToResponseDto(courseRatings);
+        }).ToList();
+
+        return new PagedResponse<CourseResponse>(courseResponses, totalCount, query.Page, query.PageSize);
     }
 
     public async Task<IEnumerable<CourseResponse>> GetCoursesByUserId(Guid userId, Guid? requestId)
@@ -57,7 +71,10 @@ public class CourseService(ICourseRepository courseRepo) : ICourseService
             courses = [.. courses.Where(c => c.IsPublic == true)];
         }
 
-        return courses.ToResponseDto();
+        var courseIds = courses.Select(c => c.CourseId.ToString()).ToList();
+        var ratings = await ratingRepo.GetRatingsByEntities("Course", courseIds);
+
+        return courses.ToResponseDto(ratings);
     }
 
     public async Task<CourseResponse> UpdateCourse(CourseRequest updatedCourse, Guid userId, Guid courseId)
@@ -69,6 +86,6 @@ public class CourseService(ICourseRepository courseRepo) : ICourseService
 
         var result = await courseRepo.UpdateCourse(updatedCourse.ToEntity(userId, courseId));
 
-        return result.ToResponseDto() ?? throw new InvalidOperationException("Error updating course");
+        return result.ToResponseDto(null) ?? throw new InvalidOperationException("Error updating course");
     }
 }

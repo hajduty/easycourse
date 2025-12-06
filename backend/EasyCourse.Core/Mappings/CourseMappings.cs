@@ -1,11 +1,12 @@
 ﻿using EasyCourse.Core.DTO.Course;
 using EasyCourse.Core.Entities;
+using System.Runtime.CompilerServices;
 
 namespace EasyCourse.Core.Mappings;
 
 public static class CourseMappings
 {
-    public static CourseResponse ToResponseDto(this Course course)
+    public static CourseResponse ToResponseDto(this Course course, IEnumerable<Rating>? ratings)
     {
         return new CourseResponse
         {
@@ -20,14 +21,25 @@ public static class CourseMappings
             IsPublic = course.IsPublic ?? false,
             Views = course.Views,
             ImagePath = course.CourseImage?.Path ?? CourseResponse.DefaultImagePath,
-            AverageRating = (course.Ratings != null && course.Ratings.Any()) ? course.Ratings.Average(r => r.Score) : 0,
-            TotalRatings = course.Ratings?.Count ?? 0
+            AverageRating = (ratings != null && ratings.Any()) ? ratings.Average(r => r.Score) : 0,
+            TotalRatings = ratings?.Count() ?? 0
         };
     }
 
-    public static List<CourseResponse> ToResponseDto(this IEnumerable<Course> courses)
+    public static List<CourseResponse> ToResponseDto(
+        this IEnumerable<Course> courses,
+        IEnumerable<Rating>? ratings)
     {
-        return [.. courses.Select(c => c.ToResponseDto())];
+        var ratingsGrouped = ratings?
+            .GroupBy(r => r.EntityId)
+            .ToDictionary(g => g.Key, g => g.ToList())
+            ?? new Dictionary<string, List<Rating>>();
+
+        return courses.Select(c =>
+        {
+            ratingsGrouped.TryGetValue(c.CourseId.ToString(), out var courseRatings);
+            return c.ToResponseDto(courseRatings);
+        }).ToList();
     }
 
     public static Course ToEntity(this CourseRequest courseRequest, Guid userId, Guid? courseId)
@@ -44,6 +56,11 @@ public static class CourseMappings
         if (courseId.HasValue)
         {
             entity.CourseId = courseId.Value;
+        }
+
+        if (courseRequest.ImageId.HasValue)
+        {
+            entity.CourseImageId = courseRequest.ImageId;
         }
         
         return entity;

@@ -30,6 +30,12 @@ public class RatingRepository(AppDbContext _context) : IRatingRepository
         return await _context.Ratings.FindAsync(ratingId);
     }
 
+    public async Task<Rating?> GetUserRatingForEntity(string entityType, string entityId, Guid userId)
+    {
+        return await _context.Ratings
+            .FirstOrDefaultAsync(r => r.EntityType == entityType && r.EntityId == entityId && r.UserId == userId);
+    }
+
     public async Task<IEnumerable<Rating>> GetRatingsByEntity(string entityType, string entityId)
     {
         return await _context.Ratings
@@ -48,5 +54,12 @@ public class RatingRepository(AppDbContext _context) : IRatingRepository
         await _context.SaveChangesAsync();
 
         return existing;
+    }
+
+    public async Task<IEnumerable<Rating>> GetRatingsByEntities(string entityType, List<string> entityIds)
+    {
+        return await _context.Ratings
+            .Where(r => r.EntityType == entityType && entityIds.Contains(r.EntityId))
+            .ToListAsync();
     }
 } 

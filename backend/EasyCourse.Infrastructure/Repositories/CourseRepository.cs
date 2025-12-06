@@ -38,7 +38,6 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
         return await _context.Courses
             .Include(c => c.CreatedByUser)
             .Include(c => c.CourseImage)
-            .Include(c => c.Ratings)
             .FirstOrDefaultAsync(c => c.CourseId == courseId);
     }
 
@@ -49,7 +48,6 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
             .Include(c => c.CreatedByUser)
             .Include(c => c.Participants)
             .Include(c => c.CourseImage)
-            .Include(c => c.Ratings)
             .ToListAsync();
     }
 
