@@ -51,18 +51,16 @@ public static class CourseMappings
             CreatedByUserId = userId,
             Sections = courseRequest.Sections.ToEntity(),
             IsPublic = courseRequest.IsPublic,
+            CourseImageId = null,
+            CourseImage = null
         };
 
         if (courseId.HasValue)
-        {
             entity.CourseId = courseId.Value;
-        }
 
-        if (courseRequest.ImageId.HasValue)
-        {
+        if (courseRequest.ImageId.HasValue && courseRequest.ImageId.Value != Guid.Empty)
             entity.CourseImageId = courseRequest.ImageId;
-        }
-        
+
         return entity;
     }
 
