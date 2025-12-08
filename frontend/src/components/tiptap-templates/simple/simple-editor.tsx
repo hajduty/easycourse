@@ -370,3 +370,5 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
     </div>
   )
 }
+
+export default SimpleEditor;

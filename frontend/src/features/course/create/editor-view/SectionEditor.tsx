@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router';
 import { Button } from '@/components/ui/button';
-import { SimpleEditor } from '@/components/tiptap-templates/simple/simple-editor';
 import type { Content, Editor } from '@tiptap/react';
 import { useSection } from '../../hooks/section/useGetSection';
 import { useUpdateSection } from '../../hooks/section/useUpdateSection';
@@ -9,6 +8,9 @@ import { AlertDialog, AlertDialogDescription, AlertDialogTitle } from '@radix-ui
 import { AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from '@/components/ui/alert-dialog';
 import { QuizEditor } from './QuizEditor';
 import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from '@/components/animate-ui/primitives/base/collapsible';
+
+import React from 'react';
+const SimpleEditor = React.lazy(() => import("@/components/tiptap-templates/simple/simple-editor"));
 
 export const SectionEditor = () => {
   const { sectionId, courseId } = useParams();
@@ -252,11 +254,13 @@ export const SectionEditor = () => {
             </AlertDialog>
           </div>
         ) : isContentLoaded && loadedForSection === sectionId ? (
-          <SimpleEditor
-            key={sectionId}
-            content={content}
-            onChange={handleContentChange}
-          />
+          <React.Suspense fallback={<div className="p-4 text-gray-400">Loading content…</div>}>
+            <SimpleEditor
+              key={sectionId}
+              content={content}
+              onChange={handleContentChange}
+            />
+          </React.Suspense>
         ) : (
           <div className="flex items-center justify-center h-full">
             <p className="text-gray-400">Loading...</p>
