@@ -39,6 +39,9 @@ public static class DependencyInjection
         services.AddScoped<IRatingRepository, RatingRepository>();
         services.AddScoped<IRatingService, RatingService>();
 
+        services.AddScoped<ICommentRepository, CommentRepository>();
+        services.AddScoped<ICommentService, CommentService>();
+
         return services;
     }
 }

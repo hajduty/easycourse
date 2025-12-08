@@ -1,4 +1,3 @@
-
 using EasyCourse.API.Filters;
 using EasyCourse.API.Middleware;
 using EasyCourse.Infrastructure;

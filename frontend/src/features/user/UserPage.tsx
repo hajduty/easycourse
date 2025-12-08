@@ -10,6 +10,7 @@ import { UploadImage } from "../api";
 import { useRef } from "react";
 import { useUpdateUser } from "./hooks/useUpdateUser";
 import { useWindowSize } from "@/hooks/use-window-size";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const UserPage = () => {
   const { userId: routeUserId } = useParams();
@@ -54,13 +55,17 @@ export const UserPage = () => {
       <div className="flex md:flex-row flex-col gap-8 text-white items-center">
         <span className="flex flex-col gap-2 pt-10">
           <div className="group">
-            <img
+{/*             <img
               src={imageUrl + user.data?.imagePath}
               alt=""
               className="w-64 h-64 aspect-square border-2 max-h-64 max-w-64 object-fit rounded-full hover:opacity-80 cursor-pointer"
               draggable={false}
               onClick={handleClick}
-            />
+            /> */}
+            <Avatar className="w-64 h-64 aspect-square border-2 max-h-64 max-w-64 object-fit rounded-full hover:opacity-80 cursor-pointer" onClick={handleClick} draggable={false}>
+              <AvatarImage src={imageUrl+user.data?.imagePath} alt={user?.data?.username}></AvatarImage>
+               <AvatarFallback className="text-9xl">{user?.data?.username!.charAt(0).toUpperCase()}</AvatarFallback>
+            </Avatar>
             <input
               type="file"
               ref={inputRef}

@@ -32,14 +32,14 @@ public class ApiControllerBase : ControllerBase
             BadRequest(ApiResponse<object>.Fail(failureMessage));
     }
 
-    protected string GetUserId()
+    protected string GetUserId(bool noThrow = false)
     {
         var id =
             User?.FindFirst("sub")?.Value ??
             User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ??
             User?.FindFirst("UserId")?.Value;
 
-        if (string.IsNullOrWhiteSpace(id))
+        if (string.IsNullOrWhiteSpace(id) && !noThrow)
             throw new AuthenticationException("User ID claim is missing in the token.");
 
         return id;

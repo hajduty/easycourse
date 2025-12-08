@@ -37,14 +37,9 @@ public class UserService(IUserRepository userRepository) : IUserService
     }
     */
 
-    public async Task<UserResult?> GetUserById(Guid id, Guid requestId)
+    public async Task<UserResult?> GetOwnUser(Guid requestId)
     {
-        var user = await userRepository.GetUserById(id);
-
-        if (id != requestId && user != null)
-        {
-            user.Email = null;
-        }
+        var user = await userRepository.GetUserById(requestId);
 
         return user == null ? null : UserMappings.MapToResult(user);
     }
@@ -71,5 +66,14 @@ public class UserService(IUserRepository userRepository) : IUserService
         var updatedUser = await userRepository.UpdateUser(UserMappings.UpdateRequestToEntity(userUpdateRequest));
 
         return UserMappings.MapToResult(updatedUser);
+    }
+
+    public async Task<UserResult?> GetPublicUserById(Guid id)
+    {
+        var user = await userRepository.GetUserById(id) ?? throw new KeyNotFoundException($"User with id {id} not found.");
+
+        user.Email = "";
+
+        return user == null ? null : UserMappings.MapToResult(user);
     }
 }

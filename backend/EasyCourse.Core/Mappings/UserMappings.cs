@@ -12,7 +12,7 @@ public static class UserMappings
             Id = user.Id,
             Username = user.Username,
             Email = user.Email,
-            ImagePath = user.ProfilePicture?.Path ?? UserResult.DefaultImagePath,
+            ImagePath = user.ProfilePicture?.Path,
             CreatedAt = user.CreatedAt
         };
     }

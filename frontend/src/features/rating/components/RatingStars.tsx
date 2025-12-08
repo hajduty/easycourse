@@ -81,7 +81,7 @@ export function StarRating({
                   filled
                     ? "text-yellow-400 fill-yellow-400"
                     : dimmed
-                    ? "text-yellow-200 fill-yellow-200 opacity-20"
+                    ? "text-yellow-200 fill-yellow-400 opacity-50"
                     : "text-gray-400"
                 }`}
                 aria-hidden
