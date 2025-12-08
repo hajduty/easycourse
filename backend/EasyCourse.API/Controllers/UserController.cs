@@ -26,8 +26,13 @@ public class UserController(ICourseService courseService, IParticipantService pa
     [ProducesResponseType(typeof(ApiResponse<List<CourseResponse[]>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCoursesByUser(Guid userId)
     {
-        var requestId = GetUserId();
-        var courses = await courseService.GetCoursesByUserId(userId, new Guid(requestId));
+        var requestIdString = GetUserId(noThrow: true);
+
+        Guid requestId;
+        if (!Guid.TryParse(requestIdString, out requestId))
+            requestId = Guid.Empty;
+
+        var courses = await courseService.GetCoursesByUserId(userId, requestId);
 
         return HandleResult(courses);
     }
@@ -47,8 +52,16 @@ public class UserController(ICourseService courseService, IParticipantService pa
     [ProducesResponseType(typeof(ApiResponse<UserResult>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUserById(Guid userId)
     {
-        var requestId = GetUserId();
-        var user = await userService.GetUserById(userId, new Guid(requestId));
+        var user = await userService.GetPublicUserById(userId);
+        return HandleResult(user);
+    }
+
+    [HttpGet]
+    [Authorize]
+    [ProducesResponseType(typeof(ApiResponse<UserResult>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetOwnUser(Guid userId)
+    {
+        var user = await userService.GetOwnUser(userId);
         return HandleResult(user);
     }
 
