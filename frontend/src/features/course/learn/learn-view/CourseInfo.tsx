@@ -13,6 +13,11 @@ import { StarRating } from "@/features/rating/components/RatingStars";
 import { useAddRating, useCourseRating, useUpdateRating } from "@/features/rating/hooks/useRatings";
 import { useState } from "react";
 import { UpdateRating } from "@/features/rating/api";
+import { NewComment } from "@/features/comment/components/NewComment";
+import { CommentList } from "@/features/comment/components/CommentList";
+import { useCommentsForEntity } from "@/features/comment/hooks/useComment";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface CourseInfoContext {
   course: CourseResponse;
@@ -39,6 +44,7 @@ export const CourseInfo = () => {
   const currentRatings = useCourseRating(courseId!, userInfo?.id!);
   const updateRatings = useUpdateRating();
   const addRatings = useAddRating();
+  const comments = useCommentsForEntity("course", courseId!);
 
   const [ratings, setRatings] = useState<number | undefined>(currentRatings.data?.data.score);
 
@@ -124,7 +130,7 @@ export const CourseInfo = () => {
         <span className="flex flex-row items-center gap-4 -mt-8 md:-mt-12">
           <h1 className="text-3xl font-bold">{course?.courseName}</h1>
           <span className="text-white flex gap-2 text-xs items-center">
-            <StarRating onChange={handleRating} value={currentRatings.data?.data?.score} initialValue={course?.averageRating}/>
+            <StarRating onChange={handleRating} value={currentRatings.data?.data?.score} initialValue={course?.averageRating} />
             <p className="text-gray-400">{course?.averageRating}/5 <span className="text-gray-500">({course?.totalRatings} ratings)</span></p>
           </span>
         </span>
@@ -147,6 +153,20 @@ export const CourseInfo = () => {
             </Button>
           </Link>
         )}
+        <div className="w-full">
+          <h1 className="text-neutral-400">
+            {comments?.data?.data?.length
+              ? `${comments.data.data.length} comments`
+              : "No comments yet."}
+          </h1>
+          <NewComment
+            name={user?.username}
+            profilePic={user?.imagePath}
+            entityType="course"
+            entityId={courseId!}
+          />
+          <CommentList entityId={courseId!} entityType="course" />
+        </div>
       </div>
 
       <div className="md:w-2/7 xl:w-1/5 w-full px-2 py-6 xl:pr-8 flex flex-col gap-6">
@@ -154,12 +174,16 @@ export const CourseInfo = () => {
           <p className="font-semibold mb-2">Created by</p>
           <Link to={`/user/profile/${course?.createdById}`}>
             <div className="flex items-center gap-4 border  bg-neutral-900 rounded hover:bg-neutral-800 transition">
-              <img
+              {/*               <img
                 draggable={false}
                 src={imageUrl + creatorInfo?.imagePath}
                 alt="Creator"
                 className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l"
-              />
+              /> */}
+                <Avatar className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-none rounded-l">
+                  <AvatarImage src={imageUrl + creatorInfo?.imagePath} alt={creatorInfo?.username} className="rounded-none"/>
+                  <AvatarFallback className="rounded-none bg-black text-white">{creatorInfo?.username?.charAt(0).toUpperCase()}</AvatarFallback>
+                </Avatar>
               <div>
                 <h2 className="font-semibold md:text-xs text-lg text-wrap line-clamp-1">{course?.createdBy} </h2>
                 <p className="md:text-xs text-sm text-neutral-500">Joined {creatorDate?.toLocaleDateString()}</p>
