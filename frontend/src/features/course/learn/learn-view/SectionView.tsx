@@ -1,10 +1,12 @@
-import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor"
 import { useParams } from "react-router";
 import type { Content } from "@tiptap/react";
 import { useEffect, useState } from "react";
 import { QuizView } from "./QuizView";
 import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "@/components/animate-ui/primitives/base/collapsible";
 import { useSection } from "../../hooks/section/useGetSection";
+import React from "react";
+
+const SimpleEditor = React.lazy(() => import("@/components/tiptap-templates/simple/simple-editor"));
 
 export const SectionView = () => {
   const { sectionId, courseId } = useParams<{ sectionId: string; courseId: string }>();
@@ -41,7 +43,9 @@ export const SectionView = () => {
     <div className="flex xl:flex-row flex-col p-0 m-0 text-white w-full bg-neutral-950">
       <div className="xl:w-4/5 flex-1">
         {isContentLoaded && loadedForSection === sectionId ? (
-          <SimpleEditor key={sectionId} content={content} editable={false} />
+          <React.Suspense fallback={<div className="p-4 text-gray-400">Loading content…</div>}>
+            <SimpleEditor key={sectionId} content={content} editable={false} />
+          </React.Suspense>
         ) : (
           <div className="flex items-center justify-center h-full">
             <p className="text-gray-400"></p>
