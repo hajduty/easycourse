@@ -36,7 +36,7 @@ export const CourseInfo = () => {
     user,
   } = useOutletContext<CourseInfoContext>();
   const { courseId } = useParams<{ sectionId: string; courseId: string }>();
-  const { user: userInfo } = useAuth();
+  const { user: userInfo, authenticated } = useAuth();
 
   const participantInfo = useParticipantInfo(courseId!, userInfo?.id!);
   const registerParticipant = useRegisterParticipant();
@@ -111,10 +111,10 @@ export const CourseInfo = () => {
 
           <div className="absolute bottom-6 right-6">
             <Button
-              className={`${isParticipant ? "bg-red-500 hover:bg-red-700 w-32" : "bg-green-700 hover:bg-green-800 w-42"
-                } text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition-all duration-200 hover:-translate-y-0.5`}
+              className={`disabled:bg-gray-400 ${isParticipant ? "bg-red-500 hover:bg-red-700 w-32" : "bg-green-700 hover:bg-green-800 w-42"
+                } text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition-all duration-200 hover:-translate-y-0.5 `}
               onClick={handleParticipateToggle}
-              disabled={isLoading}
+              disabled={isLoading || !authenticated}
             >
               {isLoading
                 ? isParticipant
