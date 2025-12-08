@@ -131,7 +131,7 @@ export const CourseInfo = () => {
           <h1 className="text-3xl font-bold">{course?.courseName}</h1>
           <span className="text-white flex gap-2 text-xs items-center">
             <StarRating onChange={handleRating} value={currentRatings.data?.data?.score} initialValue={course?.averageRating} />
-            <p className="text-gray-400">{course?.averageRating}/5 <span className="text-gray-500">({course?.totalRatings} ratings)</span></p>
+            <p className="text-gray-400">{course?.averageRating.toFixed(1)}/5 <span className="text-gray-500">({course?.totalRatings} ratings)</span></p>
           </span>
         </span>
         <p className="text-neutral-300 leading-relaxed min-h-32">{course?.courseDescription}</p>
@@ -181,7 +181,7 @@ export const CourseInfo = () => {
                 className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l"
               /> */}
                 <Avatar className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-none rounded-l">
-                  <AvatarImage src={imageUrl + creatorInfo?.imagePath} alt={creatorInfo?.username} className="rounded-none"/>
+                  <AvatarImage src={imageUrl + creatorInfo?.imagePath} alt={creatorInfo?.username} className="rounded-none object-cover"/>
                   <AvatarFallback className="rounded-none bg-black text-white">{creatorInfo?.username?.charAt(0).toUpperCase()}</AvatarFallback>
                 </Avatar>
               <div>
@@ -203,7 +203,7 @@ export const CourseInfo = () => {
                     draggable={false}
                     src={imageUrl + val.imagePath}
                     alt={val.courseName}
-                    className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l"
+                    className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l object-cover"
                   />
                   <div className="flex flex-col overflow-hidden p-1">
                     <h2 className="font-semibold text-xs line-clamp-1 text-wrap">{val.courseName}</h2>

@@ -63,7 +63,7 @@ export const UserPage = () => {
               onClick={handleClick}
             /> */}
             <Avatar className="w-64 h-64 aspect-square border-2 max-h-64 max-w-64 object-fit rounded-full hover:opacity-80 cursor-pointer" onClick={handleClick} draggable={false}>
-              <AvatarImage src={imageUrl+user.data?.imagePath} alt={user?.data?.username}></AvatarImage>
+              <AvatarImage src={imageUrl+user.data?.imagePath} alt={user?.data?.username} className="object-cover"></AvatarImage>
                <AvatarFallback className="text-9xl">{user?.data?.username!.charAt(0).toUpperCase()}</AvatarFallback>
             </Avatar>
             <input
