@@ -17,7 +17,7 @@ public class SectionService(ICourseRepository courseRepo, ISectionRepository sec
             throw new UnauthorizedAccessException("User is not authorized to add sections to this course.");
         }
 
-        var createdSection = await sectionRepo.CreateSection(SectionMappings.ToEntity(newSection));
+        var createdSection = await sectionRepo.CreateSection(SectionMappings.ToEntity(newSection, true));
 
         return SectionMappings.ToDto(createdSection);
     }
