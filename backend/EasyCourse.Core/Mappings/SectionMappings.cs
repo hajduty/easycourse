@@ -20,11 +20,10 @@ public static class SectionMappings
         };
     }
 
-    public static Section ToEntity(this SectionDto sectionDto)
+    public static Section ToEntity(this SectionDto sectionDto, bool newSection = false)
     {
-        return new Section
+        var section =  new Section
         {
-            SectionId = sectionDto.SectionId,
             CourseId = sectionDto.CourseId,
             Order = sectionDto.Order,
             Title = sectionDto.Title,
@@ -33,6 +32,11 @@ public static class SectionMappings
             ReadingTime = sectionDto.ReadingTime,
             LastUpdated = sectionDto.LastUpdated,
         };
+
+        if (!newSection)
+            section.SectionId = sectionDto.SectionId;
+
+        return section;
     }
 
     public static List<Section> ToEntity(this IEnumerable<SectionDto> sectionDtos) => [.. sectionDtos.Select(s => s.ToEntity())];

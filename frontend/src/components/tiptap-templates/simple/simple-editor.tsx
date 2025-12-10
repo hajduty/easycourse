@@ -181,6 +181,21 @@ const MobileToolbarContent = ({
   </>
 )
 
+function sanitizeJson(json: any) {
+  if (json.content && Array.isArray(json.content)) {
+    json.content = json.content.map((node: { type: string; text: null | undefined; content: any }) => {
+      if (node.type === 'text' && (node.text === null || node.text === undefined)) {
+        return null;  // Remove invalid text nodes
+      }
+      if (node.content) {
+        node.content = sanitizeJson(node).content;  // Recurse
+      }
+      return node;
+    }).filter(Boolean);  // Filter out nulls
+  }
+  return json;
+}
+
 export function SimpleEditor({ content, onChange, editable = true }: { content: any, onChange?: (newContent: any) => void, editable?: boolean }) {
   const isMobile = useIsBreakpoint()
   const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
@@ -246,7 +261,7 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
         onError: (error) => console.error("Upload failed:", error),
       }),
     ],
-    content: content,
+    content: typeof content === 'object' ? sanitizeJson(content) : content,
     onUpdate: ({ editor }) => {
       const text = editor.getText();
       const count = text.trim() === "" ? 0 : text.trim().split(/\s+/).length;
@@ -259,7 +274,7 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
     if (!editor || !onChange) return;
 
     const handleUpdate = () => {
-      const json = editor;
+      const json = editor.getJSON();
       onChange(json);
     };
 

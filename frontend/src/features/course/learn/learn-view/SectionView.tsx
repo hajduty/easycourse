@@ -21,7 +21,12 @@ export const SectionView = () => {
 
     let parsedContent: Content = "";
     if (loadedSection.data.sectionData) {
-      try { parsedContent = JSON.parse(loadedSection.data.sectionData); } catch { }
+      try {
+        parsedContent = JSON.parse(loadedSection.data.sectionData);
+      } catch {
+        // Assume it's HTML string if JSON parsing fails
+        parsedContent = loadedSection.data.sectionData;
+      }
     }
 
     setContent(parsedContent);
