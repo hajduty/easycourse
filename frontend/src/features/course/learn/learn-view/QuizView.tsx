@@ -147,7 +147,7 @@ export const QuizView = ({ quizData }: QuizViewProps) => {
                   {submitted && (
                     <span
                       className={
-                        isCorrect ? "text-green-400 text-xs" : "text-red-400 text-xs"
+                        isCorrect ? "text-emerald-400 text-xs" : "text-red-400 text-xs"
                       }
                     >
                       {isCorrect ? "Correct" : "Wrong"}

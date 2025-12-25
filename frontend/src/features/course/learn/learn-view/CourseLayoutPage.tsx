@@ -125,32 +125,6 @@ export const CourseLayout = () => {
           }}
         />
       </div>
-      <div className=" lg:hidden w-full overflow-y-auto p-2 scrollbar-hide">
-        <div className="flex gap-2 h-full">
-          <Link to={`/course/${course?.courseId}`}>
-            <Button variant={'outline'} size={'sm'}>
-              <Home />
-              Course page
-            </Button>
-          </Link>
-          {sections.map((val, index) => {
-            const completedSections = participantInfo.data?.data.completedSectionIds || [];
-            const isCompleted = completedSections.includes(val.sectionId!);
-
-            return (
-              <Link key={index} to={`/course/${course?.courseId}/section/${val.sectionId}`} className="shrink-0">
-                <CourseContent
-                  {...val}
-                  canDelete={false}
-                  onDelete={() => { }}
-                  onEdit={() => { }}
-                  isCompleted={isCompleted}
-                />
-              </Link>
-            );
-          })}
-        </div>
-      </div>
     </div>
   );
 };

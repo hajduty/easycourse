@@ -196,7 +196,7 @@ export const QuizEditor = ({ quizData, onSave, saveStatus }: QuizEditorProps) =>
           onClick={() => handleSave()}
           className={`
             "w-full cursor-pointer active:bg-neutral-500 transition-colors
-            ${saveStatus === "saved" && "bg-green-500 hover:bg-green-600"}
+            ${saveStatus === "saved" && "bg-emerald-500 hover:bg-emerald-600"}
             `}
         >
           {saveStatus === "saving" ? "Saving…" : saveStatus === "saved" ? "Saved" : "Save"}

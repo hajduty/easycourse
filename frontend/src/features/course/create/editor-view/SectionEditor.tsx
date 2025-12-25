@@ -92,8 +92,8 @@ export const SectionEditor = () => {
   }, [sectionId, loadedSection.data]);
 
   const handleContentChange = useCallback(
-    (newContent: Editor) => {
-      setContent(newContent.getJSON());
+    (newContent: Content) => {
+      setContent(newContent);
 
       // Get the current section at call time (not closure time)
       const targetSectionId = currentSectionRef.current;
@@ -102,7 +102,7 @@ export const SectionEditor = () => {
       localStorage.setItem(
         `editorContent:${targetSectionId}`,
         JSON.stringify({
-          content: newContent.getJSON(),
+          content: newContent,
           lastUpdated: Date.now()
         })
       );
@@ -127,12 +127,20 @@ export const SectionEditor = () => {
           isSavingRef.current = true;
 
           try {
+            // Create a temporary editor instance to get text for reading time calculation
+            const textContent = JSON.stringify(newContent)
+              .replace(/<[^>]*>/g, '') // Remove HTML tags if any
+              .replace(/&nbsp;/g, ' ') // Replace HTML spaces
+              .trim();
+
+            const wordCount = textContent === "" ? 0 : textContent.split(/\s+/).filter(Boolean).length;
+
             await updateSection.mutateAsync({
               data: {
                 ...loadedSection.data,
-                sectionData: JSON.stringify(newContent.getJSON()),
+                sectionData: JSON.stringify(newContent),
                 lastUpdated: new Date(),
-                readingTime: Math.ceil((newContent.getText().trim().split(/\s+/).filter(Boolean).length) / 150)
+                readingTime: Math.ceil(wordCount / 150)
               },
             });
 

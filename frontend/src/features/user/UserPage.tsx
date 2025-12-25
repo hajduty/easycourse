@@ -85,7 +85,7 @@ export const UserPage = () => {
             {courses.data?.data.length! > 0 ? (
               courses.data?.data.slice(0, maxVisibleCourses).map((course) => (
                 <div className="transition-transform" key={course.courseId}>
-                  <CourseCard {...course} />
+                  <CourseCard {...course} size="small"/>
                 </div>
               ))
             ) : (
@@ -111,6 +111,7 @@ export const UserPage = () => {
                   className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 select-none p-4"
                 >
                   <CourseCard
+                    size="small"
                     {...val.course!}
                     completedSections={val.completedSectionIds?.length}
                     totalSections={val.totalSections}

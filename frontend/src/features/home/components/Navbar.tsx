@@ -11,7 +11,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="sticky overflow-visible top-0 z-50 w-full px-4 py-2 border-b backdrop-blur-3xl border-neutral-900 text-white flex items-center font-bold dark">
+    <div className="sticky overflow-visible top-0 z-50 w-full px-4 py-2 backdrop-blur-2xl bg-background/40 text-white flex items-center font-bold dark">
       <div className="flex items-center gap-2">
         <Notebook />
         <button
@@ -33,7 +33,7 @@ export const Navbar = () => {
         <Button
           variant={'ghost'}
           className="px-4 py-1 rounded transition cursor-pointer"
-          onClick={() => navigate("/course/create")}
+          onClick={() => navigate("/course/create")}  
         >
           Create
         </Button>
