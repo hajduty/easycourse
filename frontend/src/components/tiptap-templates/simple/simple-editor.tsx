@@ -76,6 +76,8 @@ import { Button as ShadButton } from "@/components/ui/button"
 import { useScrollPosition } from "@/hooks/use-scroll-position"
 import { ImageUploadButton } from "@/components/tiptap-ui/image-upload-button"
 
+import CodeBlockShiki from 'tiptap-extension-code-block-shiki'
+
 const MainToolbarContent = ({
 
   onHighlighterClick,
@@ -239,6 +241,13 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
         },
       }
       ),
+      CodeBlockShiki.configure({
+        defaultLanguage: 'csharp',
+        themes: {
+          light: 'dark-plus',
+          dark: 'dark-plus',
+        },
+      }),
       Youtube.configure({
         controls: true,
         nocookie: true,
@@ -313,6 +322,8 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
     });
   }, [scrollY]);
 
+  console.log(editor?.getJSON())
+
   return (
     <div className=" h-full flex flex-col scrollbar-hide" ref={wrapperRef}>
       <EditorContext.Provider value={{ editor }}>
@@ -331,47 +342,47 @@ export function SimpleEditor({ content, onChange, editable = true }: { content: 
             className="fixed z-2000 bg-neutral-950"
           >
             <div className="flex justify-center align-middle items-center w-full gap-2">
-            <div className=" text-sm text-neutral-400">
-              {wordCount} words
-            </div>
-            {mobileView === "main" ? (
-              <MainToolbarContent
-                onHighlighterClick={() => setMobileView("highlighter")}
-                onLinkClick={() => setMobileView("link")}
-                isMobile={isMobile}
-              />
-            ) : (
-              <MobileToolbarContent
-                type={mobileView === "highlighter" ? "highlighter" : "link"}
-                onBack={() => setMobileView("main")}
-              />
-            )}
-
-            <ShadButton variant={'ghost'} className="text-xs" onClick={() => setYtDialogOpen(true)}>
-              <TvMinimalPlay />
-              Add Video
-            </ShadButton>
-            <AlertDialog open={ytDialogOpen} onOpenChange={setYtDialogOpen}>
-              <AlertDialogContent className="dark text-white">
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Insert YouTube Video</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Paste the YouTube video URL below.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <input
-                  className="w-full border rounded px-2 py-1"
-                  type="text"
-                  placeholder="https://www.youtube.com/watch?v=..."
-                  value={ytUrl}
-                  onChange={(e) => setYtUrl(e.target.value)}
+              <div className=" text-sm text-neutral-400">
+                {wordCount} words
+              </div>
+              {mobileView === "main" ? (
+                <MainToolbarContent
+                  onHighlighterClick={() => setMobileView("highlighter")}
+                  onLinkClick={() => setMobileView("link")}
+                  isMobile={isMobile}
                 />
-                <AlertDialogFooter className="flex justify-end gap-2 mt-2">
-                  <ShadButton onClick={() => setYtDialogOpen(false)}>Cancel</ShadButton>
-                  <ShadButton onClick={insertYoutube}>Insert</ShadButton>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+              ) : (
+                <MobileToolbarContent
+                  type={mobileView === "highlighter" ? "highlighter" : "link"}
+                  onBack={() => setMobileView("main")}
+                />
+              )}
+
+              <ShadButton variant={'ghost'} className="text-xs" onClick={() => setYtDialogOpen(true)}>
+                <TvMinimalPlay />
+                Add Video
+              </ShadButton>
+              <AlertDialog open={ytDialogOpen} onOpenChange={setYtDialogOpen}>
+                <AlertDialogContent className="dark text-white">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Insert YouTube Video</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Paste the YouTube video URL below.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <input
+                    className="w-full border rounded px-2 py-1"
+                    type="text"
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    value={ytUrl}
+                    onChange={(e) => setYtUrl(e.target.value)}
+                  />
+                  <AlertDialogFooter className="flex justify-end gap-2 mt-2">
+                    <ShadButton onClick={() => setYtDialogOpen(false)}>Cancel</ShadButton>
+                    <ShadButton onClick={insertYoutube}>Insert</ShadButton>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </Toolbar>
         }

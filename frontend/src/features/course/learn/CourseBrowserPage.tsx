@@ -98,7 +98,7 @@ export const CoursePage = () => {
                 <CarouselContent className="-ml-2 md:ml-0 flex">
                   {participatedCourses.map((course, index) => (
                     <CarouselItem key={index} className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 select-none">
-                      <CourseCard key={index} {...course.course!} completedSections={course.completedSectionIds?.length} totalSections={course.totalSections} />
+                      <CourseCard size="small" key={index} {...course.course!} completedSections={course.completedSectionIds?.length} totalSections={course.totalSections} />
                     </CarouselItem>
                   ))}
                 </CarouselContent>

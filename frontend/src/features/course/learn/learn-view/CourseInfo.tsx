@@ -144,6 +144,10 @@ export const CourseInfo = () => {
           <p className="text-sm text-neutral-500">
             {course?.views} Views
           </p>
+          <Separator orientation="vertical"></Separator>
+          <p className="text-sm text-neutral-500">
+            {course?.participantCount} Participants
+          </p>
         </span>
 
         {course?.createdById === user?.id && (

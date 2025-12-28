@@ -3,6 +3,7 @@ using EasyCourse.Core.Entities;
 using EasyCourse.Core.Interfaces.Repository;
 using EasyCourse.Core.Mappings;
 using EasyCourse.Infrastructure.Data;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace EasyCourse.Infrastructure.Repositories;
@@ -38,6 +39,7 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
         return await _context.Courses
             .Include(c => c.CreatedByUser)
             .Include(c => c.CourseImage)
+            .Include(c => c.Participants)
             .FirstOrDefaultAsync(c => c.CourseId == courseId);
     }
 
@@ -53,6 +55,9 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
 
     public async Task<(IEnumerable<Course> Courses, int TotalCount)> GetAndFilterCoursesAsync(CourseQuery query)
     {
+        var page = Math.Max(query.Page, 1);
+        var pageSize = Math.Clamp(query.PageSize, 1, 100);
+
         var baseQuery = _context.Courses.Where(c => c.IsPublic == true).AsQueryable();
 
         if (!string.IsNullOrEmpty(query.Query))
@@ -69,39 +74,54 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
 
         var totalCount = await baseQuery.CountAsync();
 
-        IQueryable<Course> courseQuery = baseQuery
-            .Include(c => c.Participants)
-            .Include(c => c.CreatedByUser)
-            .Include(c => c.CourseImage);
+        var orderedIdsQuery = baseQuery
+            .Select(c => new
+            {
+                c.CourseId,
+                PopularityScore =
+                    (decimal)c.Views * 0.2m +
+                    (decimal)c.Participants.Count * 2m,
+                c.CourseName,
+                c.CreatedAt
+            });
 
-        courseQuery = query.SortBy?.ToLower() switch
+        orderedIdsQuery = query.SortBy?.ToLower() switch
         {
             "coursename" => query.Descending
-                ? courseQuery.OrderByDescending(c => c.CourseName)
-                : courseQuery.OrderBy(c => c.CourseName),
+                ? orderedIdsQuery.OrderByDescending(x => x.CourseName)
+                : orderedIdsQuery.OrderBy(x => x.CourseName),
 
             "popular" => query.Descending
-                ? courseQuery.OrderByDescending(c => c.Participants.Count)
-                : courseQuery.OrderBy(c => c.Participants.Count),
+                ? orderedIdsQuery.OrderByDescending(x => x.PopularityScore)
+                : orderedIdsQuery.OrderBy(x => x.PopularityScore),
 
             "created" => query.Descending
-                ? courseQuery.OrderByDescending(c => c.CreatedAt)
-                : courseQuery.OrderBy(c => c.CreatedAt),
+                ? orderedIdsQuery.OrderByDescending(x => x.CreatedAt)
+                : orderedIdsQuery.OrderBy(x => x.CreatedAt),
 
-            //"ratings" => query.Descending
-            //    ? courseQuery.OrderByDescending(c => c.Ratings.Average(r => r.Score))
-            //    : courseQuery.OrderBy(c => c.Ratings.Average(r => r.Score)),
-
-            _ => courseQuery.OrderBy(c => c.CreatedAt) // fallback sort
+            _ => orderedIdsQuery.OrderByDescending(x => x.CreatedAt)
         };
 
-        var courses = await courseQuery
-            .Skip((query.Page - 1) * query.PageSize)
-            .Take(query.PageSize)
+        var pageIds = await orderedIdsQuery
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(x => x.CourseId)
+            .ToListAsync();
+
+        var courses = await _context.Courses
+            .Where(c => pageIds.Contains(c.CourseId))
+            .Include(c => c.Participants)
+            .Include(c => c.CreatedByUser)
+            .Include(c => c.CourseImage)
+            .AsSplitQuery()
             .AsNoTracking()
             .ToListAsync();
 
-        return (courses, totalCount);
+        var orderedCourses = pageIds
+            .Join(courses, id => id, c => c.CourseId, (_, c) => c)
+            .ToList();
+
+        return (orderedCourses, totalCount);
     }
 
     public async Task<Course> UpdateCourse(Course updatedCourse)
