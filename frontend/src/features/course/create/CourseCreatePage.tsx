@@ -82,14 +82,14 @@ export default function CourseCreateBrowser() {
           </h2>
         </div>
 
-        <Carousel className="w-full text-white">
+        <Carousel className="w-full text-white" opts={{ dragFree: true }}>
           <CarouselContent className="-ml-2 md:ml-0 flex gap-4 sm:gap-6">
             <CarouselItem className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 select-none">
               <div
                 onClick={() => setOpen(true)}
                 role="button"
                 tabIndex={0}
-                className="rounded-xl border border-neutral-700 bg-neutral-900/40 flex flex-col items-center justify-center cursor-pointer hover:bg-neutral-800 transition min-w-32 min-h-48 h-full"
+                className="aspect-square rounded-xl border border-neutral-700 bg-neutral-900/40 flex flex-col items-center justify-center cursor-pointer hover:bg-neutral-800 transition-all duration-300 group p-1"
               >
                 <Plus className="w-10 h-10 text-neutral-300 mb-2" />
                 <p className="text-neutral-300 font-medium text-sm sm:text-base text-center">
@@ -103,7 +103,7 @@ export default function CourseCreateBrowser() {
                 key={i}
                 className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 select-none"
               >
-                <CourseCard {...course} />
+                <CourseCard {...course} size="small"/>
               </CarouselItem>
             ))}
           </CarouselContent>
