@@ -31,15 +31,21 @@ export default function CourseCreateBrowser() {
   const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
 
-  const [course, setCourse] = useState({
+  const [course, setCourse] = useState<{
+    courseName: string;
+    courseDescription: string;
+    sections: never[];
+    isPublic: boolean;
+    imageId: string | undefined;
+  }>({
     courseName: "",
     courseDescription: "",
     sections: [],
     isPublic: false,
-    imageId: "",
+    imageId: undefined,
   });
   const [uploadingImage, setUploadingImage] = useState(false);
-  const [uploadedImagePath, setUploadedImagePath] = useState("uploads/images/placeholder.jpg");
+  const [uploadedImagePath, setUploadedImagePath] = useState("");
 
   const userCourses = useCoursesByUser(user?.id);
   const myCourses = userCourses.data?.data ?? [];
@@ -47,7 +53,13 @@ export default function CourseCreateBrowser() {
   const handleCourseCreation = () => {
     setError("");
 
-    createCourse.mutate(course, {
+    // Create a clean course object without empty imageId
+    const courseData = { ...course };
+    if (!courseData.imageId) {
+      delete courseData.imageId;
+    }
+
+    createCourse.mutate(courseData, {
       onSuccess: (response) => {
         if (!response.success || !response.data) {
           setError("Error creating course, try again later.");
@@ -57,7 +69,7 @@ export default function CourseCreateBrowser() {
         setOpen(false);
         navigate(`/course/editor/${response.data.courseId}`);
       },
-      onError: () => setError("Error creating course, try again later."),
+      onError: () => {setError("Error creating course, try again later.")}
     });
   };
 

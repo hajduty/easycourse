@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Clock, ScrollText, Star } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { imageUrl } from '@/lib/apiClient';
@@ -10,15 +11,51 @@ import type { size } from 'lodash';
 import { Separator } from '@/components/ui/separator';
 import { formatMinutesToHours } from '@/lib/utils';
 
-type Props = CourseResponse & { className?: string };
+type Props = CourseResponse & { className?: string; isLoading?: boolean };
 
 export const LargeCourseCard = (props: Props) => {
   const navigate = useNavigate();
   const creator = useUser(props.createdById);
 
+  if (props.isLoading) {
+    return (
+      <Card
+        className={
+          'relative rounded-xl overflow-hidden p-2 gap-2 w-full' +
+          (props.className ?? '')
+        }
+      >
+        <Skeleton className="h-42 w-full rounded-lg" />
+        <div className="flex gap-1 items-center">
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-3 w-16" />
+        </div>
+        <Skeleton className="h-6 w-3/4" />
+        <div className="flex gap-1 items-center">
+          <Skeleton className="h-8 w-8 rounded-full" />
+          <Skeleton className="h-4 w-24" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-3 w-full" />
+          <Skeleton className="h-3 w-4/5" />
+          <Skeleton className="h-3 w-3/4" />
+        </div>
+        <div className='mt-2 flex flex-row gap-4'>
+          <div className='flex flex-row items-center gap-1'>
+            <Skeleton className="h-4 w-4" />
+            <Skeleton className="h-3 w-12" />
+          </div>
+          <div className='flex flex-row items-center gap-1'>
+            <Skeleton className="h-4 w-4" />
+            <Skeleton className="h-3 w-16" />
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
   return (
     <Link to={`/course/${props.courseId}`}>
-
       <Card
         className={
           'relative rounded-xl overflow-hidden cursor-pointer group p-2 gap-2 w-full' +

@@ -117,7 +117,7 @@ export const CoursePage = () => {
         </div>
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-4 md:gap-8 w-full mx-auto">
           {isGridLoading
-            ? Array.from({ length: 8 }).map((_, i) => <CourseCardSkeleton key={i} />)
+            ? Array.from({ length: 8 }).map((_, i) => <LargeCourseCard key={i} isLoading={true} {...({} as any)}/>)
             : sortedCourses.map((course, index) => <LargeCourseCard key={index} {...course} />)}
         </div>
       </div>

@@ -122,7 +122,7 @@ export const HomePage = () => {
             </div>
 
             {/* Create a problem */}
-{/*             <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/*             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h3 className="text-3xl font-bold text-neutral-100 mb-4">
                   Create a problem
@@ -149,16 +149,12 @@ export const HomePage = () => {
           </h2>
           <div className="grid md:grid-cols-3 lg:grid-cols-3 gap-6">
             {isLoadingPopular ? (
-              // Loading skeletons
-              Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 h-64 flex items-center justify-center">
-                  <p className="text-neutral-600">Loading...</p>
-                </div>
+              Array.from({ length: 3 }).map((_, i) => (
+                <LargeCourseCard key={i} isLoading={true} {...({} as any)} />
               ))
             ) : topCourses.length > 0 ? (
-              // Display top-rated courses
               topCourses.map((course, index) => (
-                <LargeCourseCard key={index} {...course}/>
+                <LargeCourseCard key={index} {...course} isLoading={false} />
               ))
             ) : (
               // No courses available
@@ -170,7 +166,8 @@ export const HomePage = () => {
         </div>
       </section>
 
-{/*             <section className="py-16 px-6">
+
+      {/*             <section className="py-16 px-6">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-neutral-100 mb-8">
             Explore categories
