@@ -6,6 +6,7 @@ import { useRegisterParticipant } from "../../hooks/participant/useCreatePartici
 import { useRemoveParticipant } from "../../hooks/participant/useDeleteParticipant";
 import { useParticipantInfo } from "../../hooks/participant/useGetParticipant";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { CourseResponse } from "@/types/course";
 import { imageUrl } from "@/lib/apiClient";
 import { useUser } from "@/features/user/hooks/useUser";
@@ -48,7 +49,7 @@ export const CourseInfo = () => {
 
   const [ratings, setRatings] = useState<number | undefined>(currentRatings.data?.data.score);
 
-  const creatorInfo = useUser(course?.createdById).data;
+  const { data: creatorInfo, isLoading: isCreatorLoading } = useUser(course?.createdById);
 
   const handleParticipateToggle = () => {
     if (!courseId || !userInfo?.id) return;
@@ -94,6 +95,91 @@ export const CourseInfo = () => {
         score: val,
       });
     }
+  }
+
+  // Show skeleton while data is loading
+  const isDataLoading = participantInfo.isLoading || currentRatings.isLoading || comments.isLoading || isCreatorLoading;
+
+  if (isDataLoading) {
+    return (
+      <div className="flex md:flex-row flex-col h-full">
+        <div className="md:w-5/7 xl:w-4/5 w-full border-b md:border-b-0 p-6 xl:p-8 flex flex-col gap-6">
+          {/* Course image skeleton */}
+          <div className="relative w-full rounded-xl overflow-visible pb-12">
+            <Skeleton className="h-60 w-full rounded-xl" />
+            <div className="absolute bottom-6 right-6">
+              <Skeleton className="h-10 w-32 rounded-lg" />
+            </div>
+          </div>
+
+          {/* Title and rating skeleton */}
+          <div className="flex flex-row items-center gap-4 -mt-8 md:-mt-12">
+            <Skeleton className="h-8 w-64" />
+            <div className="flex gap-2 items-center">
+              <Skeleton className="h-4 w-16" />
+              <Skeleton className="h-3 w-20" />
+            </div>
+          </div>
+
+          {/* Description skeleton */}
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-5/6" />
+            <Skeleton className="h-4 w-4/5" />
+            <Skeleton className="h-4 w-3/4" />
+          </div>
+
+          {/* Metadata skeleton */}
+          <div className="flex gap-2">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-4 w-1" />
+            <Skeleton className="h-4 w-16" />
+            <Skeleton className="h-4 w-1" />
+            <Skeleton className="h-4 w-20" />
+          </div>
+
+          {/* Comments section skeleton */}
+          <div className="w-full space-y-4">
+            <Skeleton className="h-5 w-32" />
+            <Skeleton className="h-20 w-full rounded-lg" />
+            <div className="space-y-3">
+              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-5/6" />
+            </div>
+          </div>
+        </div>
+
+        <div className="md:w-2/7 xl:w-1/5 w-full px-2 py-6 xl:pr-8 flex flex-col gap-6">
+          <div>
+            {/* Created by section */}
+            <Skeleton className="h-4 w-24 mb-2" />
+            <div className="flex items-center gap-4 border bg-neutral-900 rounded p-3">
+              <Skeleton className="w-16 h-16 rounded-l" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-3 w-20" />
+              </div>
+            </div>
+
+            {/* More courses section */}
+            <Skeleton className="h-5 w-32 mt-6 mb-2" />
+            <div className="flex flex-col gap-4">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="flex items-center gap-3 rounded border p-2">
+                  <Skeleton className="w-16 h-16 rounded-l" />
+                  <div className="flex-1 space-y-1">
+                    <Skeleton className="h-3 w-20" />
+                    <Skeleton className="h-3 w-24" />
+                    <Skeleton className="h-3 w-16" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
