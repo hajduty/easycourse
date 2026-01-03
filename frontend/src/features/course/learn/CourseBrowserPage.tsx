@@ -17,7 +17,6 @@ import { LargeCourseCard } from "../components/LargeCourseCard";
 export const CoursePage = () => {
   const {user} = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isInitialized, useIsInitialized] = useState(false);
   const previousDebouncedQuery = useRef<CourseQuery | null>(null);
 
   const [query, setQuery] = useState<CourseQuery>({
@@ -25,7 +24,7 @@ export const CoursePage = () => {
     page: Number(searchParams.get("page")) || 1,
     pageSize: Number(searchParams.get("pageSize")) || 8,
     sortBy: searchParams.get("sortBy") ?? "Popular",
-    descending: searchParams.get("descending") === "true",
+    descending: searchParams.get("descending") ? searchParams.get("descending") === "true" : true,
   });
 
   const [debouncedQuery] = useDebounce(query, 200);
@@ -36,26 +35,20 @@ export const CoursePage = () => {
     staleTime: 60_000
     });
 
-  // Only update URL when debounced query actually changes
+  // Update URL when debounced query changes
   useEffect(() => {
-    if (!isInitialized) {
-      useIsInitialized(true);
-      previousDebouncedQuery.current = debouncedQuery;
-      return;
-    }
-
-    // Only update if something actually changed
     if (JSON.stringify(previousDebouncedQuery.current) !== JSON.stringify(debouncedQuery)) {
+      const isInitial = previousDebouncedQuery.current === null;
       setSearchParams({
         query: debouncedQuery.query!,
         page: String(debouncedQuery.page),
         pageSize: String(debouncedQuery.pageSize),
         sortBy: debouncedQuery.sortBy!,
         descending: String(debouncedQuery.descending),
-      });
+      }, { replace: isInitial });
       previousDebouncedQuery.current = debouncedQuery;
     }
-  }, [debouncedQuery, setSearchParams, isInitialized]);
+  }, [debouncedQuery, setSearchParams]);
 
   const courses = data?.data.items ?? [];
 

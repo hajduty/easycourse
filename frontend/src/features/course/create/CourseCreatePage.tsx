@@ -3,13 +3,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { CircleAlert, Plus } from "lucide-react";
+import { CircleAlert, Plus, Upload } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
 import { useCreateCourse } from "../hooks/course/useCreateCourse";
 import { useNavigate } from "react-router";
 import { useCoursesByUser } from "../hooks/course/useCoursesByUser";
 import { useAuth } from "@/providers/AuthProvider";
 import { CourseCard } from "../components/CourseCard";
+import { LargeCourseCard } from "../components/LargeCourseCard";
 import {
   Dialog,
   DialogContent,
@@ -20,6 +21,8 @@ import {
 } from "@/components/ui/dialog";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { CourseStats } from "../components/CourseStats";
+import { UploadImage } from "@/features/api";
+import { imageUrl } from "@/lib/apiClient";
 
 export default function CourseCreateBrowser() {
   const { user } = useAuth();
@@ -33,7 +36,10 @@ export default function CourseCreateBrowser() {
     courseDescription: "",
     sections: [],
     isPublic: false,
+    imageId: "",
   });
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadedImagePath, setUploadedImagePath] = useState("uploads/images/placeholder.jpg");
 
   const userCourses = useCoursesByUser(user?.id);
   const myCourses = userCourses.data?.data ?? [];
@@ -98,7 +104,7 @@ export default function CourseCreateBrowser() {
         )}
 
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogContent className="text-white max-w-lg">
+          <DialogContent className="text-white max-w-5xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Create a new course</DialogTitle>
               <DialogDescription>
@@ -106,39 +112,101 @@ export default function CourseCreateBrowser() {
               </DialogDescription>
             </DialogHeader>
 
-            <div className="flex flex-col gap-4 py-2 ">
-              <div>
-                <p className="font-semibold text-sm text-neutral-300 pb-1">Title</p>
-                <Input
-                  value={course.courseName}
-                  onChange={(e) =>
-                    setCourse((c) => ({ ...c, courseName: e.target.value }))
-                  }
-                />
+            <div className="flex flex-col md:flex-row gap-4 py-2 h-full">
+              <div className="flex flex-col gap-4 w-full md:w-1/2">
+                <div>
+                  <p className="font-semibold text-sm text-neutral-300 pb-1">Title</p>
+                  <Input
+                    value={course.courseName}
+                    onChange={(e) =>
+                      setCourse((c) => ({ ...c, courseName: e.target.value }))
+                    }
+                  />
+                </div>
+
+                <div>
+                  <p className="font-semibold text-sm text-neutral-300 pb-1">
+                    Description
+                  </p>
+                  <Textarea
+                    placeholder="Max 1000 characters..."
+                    maxLength={1000}
+                    value={course.courseDescription}
+                    onChange={(e) =>
+                      setCourse((c) => ({ ...c, courseDescription: e.target.value }))
+                    }
+                    className="min-h-[150px]"
+                  />
+                </div>
+
+                <div>
+                  <p className="font-semibold text-sm text-neutral-300 pb-1">
+                    Course Image
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+
+                        setUploadingImage(true);
+                        try {
+                          const response = await UploadImage(file);
+                          if (response.success && response.data) {
+                            setCourse((c) => ({ ...c, imageId: response.data.id }));
+                            setUploadedImagePath(response.data.path);
+                          } else {
+                            setError("Failed to upload image");
+                          }
+                        } catch (err) {
+                          setError(err instanceof Error ? err.message : "Failed to upload image");
+                        } finally {
+                          setUploadingImage(false);
+                        }
+                      }}
+                      disabled={uploadingImage}
+                      className="flex-1"
+                    />
+                    {uploadingImage && <Spinner />}
+                  </div>
+                  {uploadedImagePath && (
+                    <p className="text-xs text-neutral-400 mt-1">Image uploaded successfully</p>
+                  )}
+                </div>
+
+                {error && (
+                  <Alert variant="destructive">
+                    <CircleAlert />
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>{error}</AlertDescription>
+                  </Alert>
+                )}
               </div>
 
-              <div>
-                <p className="font-semibold text-sm text-neutral-300 pb-1">
-                  Description
-                </p>
-                <Textarea
-                  placeholder="Max 1000 characters..."
-                  maxLength={1000}
-                  value={course.courseDescription}
-                  onChange={(e) =>
-                    setCourse((c) => ({ ...c, courseDescription: e.target.value }))
-                  }
-                  className="min-h-[150px]"
-                />
+              <div className="w-full md:w-1/2 pointer-events-none select-none flex flex-col">
+                <p className="font-semibold text-sm text-neutral-300 pb-2">Preview</p>
+                <div className="flex-1 min-h-0">
+                  <LargeCourseCard
+                    courseId=""
+                    courseName={course.courseName || "Course Title"}
+                    courseDescription={course.courseDescription || "Course description will appear here..."}
+                    createdBy={user?.username || "Creator"}
+                    createdById={user?.id || ""}
+                    sections={[]}
+                    participantCount={0}
+                    createdAt={new Date()}
+                    isPublic={false}
+                    views={0}
+                    imagePath={(uploadedImagePath || "uploads/images/placeholder.jpg")}
+                    totalRatings={0}
+                    averageRating={0}
+                    totalReadTime={0}
+                    className="pointer-events-none h-full"
+                  />
+                </div>
               </div>
-
-              {error && (
-                <Alert variant="destructive">
-                  <CircleAlert />
-                  <AlertTitle>Error</AlertTitle>
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
             </div>
 
             <DialogFooter>
