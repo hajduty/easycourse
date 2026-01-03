@@ -71,7 +71,7 @@ export function StarRating({
               onFocus={() => !readOnly && setHoverIndex(i)}
               onBlur={() => !readOnly && setHoverIndex(null)}
               onClick={() => handleSelect(i)}
-              className={`p-1 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors items-center flex ${
+              className={`p-0.5 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-colors items-center flex ${
                 readOnly ? "cursor-default" : "cursor-pointer"
               }`}
             >

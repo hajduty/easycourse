@@ -12,6 +12,7 @@ import { CourseCardSkeleton } from "../components/CourseCardSkeleton";
 import { useGetParticipationsByUser } from "../hooks/participant/useGetParticipationsByUser";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useAuth } from "@/providers/AuthProvider";
+import { LargeCourseCard } from "../components/LargeCourseCard";
 
 export const CoursePage = () => {
   const {user} = useAuth();
@@ -124,7 +125,7 @@ export const CoursePage = () => {
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-4 md:gap-8 w-full mx-auto">
           {isGridLoading
             ? Array.from({ length: 8 }).map((_, i) => <CourseCardSkeleton key={i} />)
-            : sortedCourses.map((course, index) => <CourseCard key={index} {...course} />)}
+            : sortedCourses.map((course, index) => <LargeCourseCard key={index} {...course} />)}
         </div>
       </div>
       <CoursePagination

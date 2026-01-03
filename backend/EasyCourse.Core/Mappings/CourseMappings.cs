@@ -1,12 +1,13 @@
 ﻿using EasyCourse.Core.DTO.Course;
 using EasyCourse.Core.Entities;
+using EasyCourse.Core.ReadModels;
 using System.Runtime.CompilerServices;
 
 namespace EasyCourse.Core.Mappings;
 
 public static class CourseMappings
 {
-    public static CourseResponse ToResponseDto(this Course course, IEnumerable<Rating>? ratings)
+    public static CourseResponse ToResponseDto(this Course course, IReadOnlyCollection<Rating>? ratings, IReadOnlyCollection<SectionMinimal>? partialSection = null)
     {
         return new CourseResponse
         {
@@ -17,6 +18,8 @@ public static class CourseMappings
             CreatedById = course.CreatedByUserId.ToString(),
             Sections = course.Sections?.ToDto() ?? [],
             ParticipantCount = course.Participants?.Count ?? 0,
+            TotalSections = partialSection?.Count ?? 0,
+            TotalReadTime = partialSection?.Sum(s => s.ReadingTime) ?? 0,
             CreatedAt = course.CreatedAt,
             IsPublic = course.IsPublic ?? false,
             Views = course.Views,
@@ -27,8 +30,8 @@ public static class CourseMappings
     }
 
     public static List<CourseResponse> ToResponseDto(
-        this IEnumerable<Course> courses,
-        IEnumerable<Rating>? ratings)
+        this IReadOnlyCollection<Course> courses,
+        IReadOnlyCollection<Rating>? ratings)
     {
         var ratingsGrouped = ratings?
             .GroupBy(r => r.EntityId)
@@ -64,7 +67,7 @@ public static class CourseMappings
         return entity;
     }
 
-    public static List<Course> ToEntity(this IEnumerable<CourseRequest> courseRequests, Guid userId)
+    public static List<Course> ToEntity(this IReadOnlyCollection<CourseRequest> courseRequests, Guid userId)
     {
         return [.. courseRequests.Select(cr => cr.ToEntity(userId, null))];
     }

@@ -19,5 +19,8 @@ public class CourseResponse
     public int Views {  get; set; }
     public string ImagePath { get; set; } = DefaultImagePath;
     public double AverageRating { get; set; }
+
     public int TotalRatings { get; set; }
+    public int? TotalSections { get; set; }
+    public int? TotalReadTime { get; set; }
 }

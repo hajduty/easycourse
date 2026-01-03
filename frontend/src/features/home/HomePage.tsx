@@ -7,6 +7,7 @@ import { CourseCard } from "../course/components/CourseCard";
 import { useQuery } from "@tanstack/react-query";
 import { GetCourses } from "../course/api";
 import type { CourseQuery } from "@/types/courseQuery";
+import { LargeCourseCard } from "../course/components/LargeCourseCard";
 
 export const HomePage = () => {
   const categories = ["AI", "Python", "Web Dev", "Data", "Design"];
@@ -121,7 +122,7 @@ export const HomePage = () => {
             </div>
 
             {/* Create a problem */}
-            <div className="grid md:grid-cols-2 gap-12 items-center">
+{/*             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h3 className="text-3xl font-bold text-neutral-100 mb-4">
                   Create a problem
@@ -134,24 +135,22 @@ export const HomePage = () => {
               </div>
               <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-8 aspect-video flex items-center justify-center">
                 <div className="text-neutral-600 text-center">
-                  <div className="text-6xl mb-4">x</div>
-                  <p className="text-sm">Code Problem Solver Preview</p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
 
-      <section className="py-20 px-6">
+      <section className="pb-20 px-6">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-bold text-neutral-100 mb-12 text-center">
-            Most popular courses
+            The most popular courses
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 lg:grid-cols-3 gap-6">
             {isLoadingPopular ? (
               // Loading skeletons
-              Array.from({ length: 3 }).map((_, i) => (
+              Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 h-64 flex items-center justify-center">
                   <p className="text-neutral-600">Loading...</p>
                 </div>
@@ -159,7 +158,7 @@ export const HomePage = () => {
             ) : topCourses.length > 0 ? (
               // Display top-rated courses
               topCourses.map((course, index) => (
-                <CourseCard key={index} {...course} />
+                <LargeCourseCard key={index} {...course}/>
               ))
             ) : (
               // No courses available

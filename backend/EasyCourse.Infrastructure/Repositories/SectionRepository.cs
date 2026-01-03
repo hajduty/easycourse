@@ -1,5 +1,6 @@
 ﻿using EasyCourse.Core.Entities;
 using EasyCourse.Core.Interfaces.Repository;
+using EasyCourse.Core.ReadModels;
 using EasyCourse.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,6 +38,22 @@ public class SectionRepository(AppDbContext context) : ISectionRepository
             .AsNoTracking()
             .Where(s => s.CourseId == courseId)
             .OrderBy(o => o.Order)
+            .ToListAsync();
+    }
+
+    public async Task<IReadOnlyCollection<SectionMinimal>> GetMinimalSectionsByCourseIds(
+        IReadOnlyCollection<Guid> courseIds)
+    {
+        return await context.Sections
+            .AsNoTracking()
+            .Where(s => courseIds.Contains(s.CourseId))
+            .Select(s => new SectionMinimal
+            {
+                SectionId = s.SectionId,
+                CourseId = s.CourseId,
+                Order = s.Order,
+                ReadingTime = s.ReadingTime
+            })
             .ToListAsync();
     }
 
