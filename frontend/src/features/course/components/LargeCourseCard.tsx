@@ -68,7 +68,7 @@ export const LargeCourseCard = (props: Props) => {
         </span>
         <span className='flex gap-1 items-center'>
           <StarRating initialValue={props.averageRating} readOnly={true} />
-          <p className='text-xs text-neutral-400'>{props.averageRating}/5 ({props.totalRatings})</p>
+          <p className='text-xs text-neutral-400'>{props.averageRating.toFixed(1)}/5 ({props.totalRatings})</p>
         </span>
         <h1 className='line-clamp-1'>{props.courseName}</h1>
         <span className='flex gap-1 items-center'>
@@ -81,7 +81,7 @@ export const LargeCourseCard = (props: Props) => {
           <p className='text-sm text-neutral-300 font-semibold'>{props.createdBy}</p>
         </span>
         <h2 className='overflow-y-scroll scrollbar-hide text-neutral-400 group-hover:text-neutral-200 transition-all text-sm h-14'>{props.courseDescription}</h2>
-        <div className='text-neutral-300 mt-2 flex flex-row gap-4'>
+        <div className='text-neutral-300 mt-2 mb-1 flex flex-row gap-4'>
           <span className='flex flex-row items-center'>
             <Clock size={'16'} />
             <span className='ml-1 text-xs font-semibold'>{formatMinutesToHours(props.totalReadTime)}</span>

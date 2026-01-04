@@ -148,6 +148,46 @@
     --chart-4: oklch(0.627 0.265 303.9);
     --chart-5: oklch(0.645 0.246 16.439);
   }
+
+  /* Custom scrollbar styles */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.6);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(128, 128, 128, 0.8);
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  /* For Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(128, 128, 128, 0.6) transparent;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: rgba(192, 192, 192, 0.6);
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(192, 192, 192, 0.8);
+  }
+
+  .dark * {
+    scrollbar-color: rgba(192, 192, 192, 0.6) transparent;
+  }
 }
 
 @keyframes description-scroll {

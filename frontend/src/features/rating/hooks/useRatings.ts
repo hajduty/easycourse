@@ -6,18 +6,18 @@ const ratingKeys = {
   course: (entityId: string) => ["rating", "course", entityId] as const,
 };
 
-export const useCourseRating = (entityId: string | null, userId: string) => {
+export const useCourseRating = (entityId: string | null, userId: string | undefined) => {
   return useQuery({
     queryKey: entityId ? ratingKeys.course(entityId) : ["rating", "course", "null"],
     queryFn: () => {
       if (!entityId) throw new Error("No entityId provided");
-      return GetCourseRating(entityId, userId);
+      return GetCourseRating(entityId, userId!);
     },
     retry: (failureCount, error: any) => {
       if (error?.response?.status === 404) return false;
       return failureCount < 3;
     },
-    enabled: !!entityId,
+    enabled: !!entityId && !!userId,
   });
 };
 

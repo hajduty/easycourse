@@ -47,7 +47,7 @@ export const Navbar = () => {
 
       <div className="ml-auto hidden md:flex items-center gap-2 [&>svg]:hidden list-none">
         {authenticated ?
-          (<NavigationMenu >
+          (<NavigationMenu viewport={false}>
             <NavigationMenuItem className="[&>svg]:hidden">
               <NavigationMenuTrigger className="bg-transparent">
                 <UserIcon className="mr-2 h-4 w-4" />
