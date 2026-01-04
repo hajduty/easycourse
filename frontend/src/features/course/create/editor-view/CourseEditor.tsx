@@ -92,8 +92,17 @@ export const CourseEditor = () => {
             <div className="absolute bottom-0 left-0 right-0 h-48 bg-linear-to-t from-black/80 via-black/40 to-transparent"></div>
 
             <div className="absolute bottom-0 left-0 right-0 p-4">
-              <div className="flex flex-col gap-2 text-white">
-                <h1 className="text-3xl font-bold drop-shadow-lg shadow-black">{course?.courseName}</h1>
+            <div className="flex flex-col gap-2 text-white">
+                {isEditing ? (
+                  <Input
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="text-3xl font-bold bg-black/80 backdrop-blur-sm border-white/30 text-white placeholder:text-white/70"
+                    placeholder={course?.courseName || "Course title"}
+                  />
+                ) : (
+                  <h1 className="text-3xl font-bold drop-shadow-lg shadow-black">{course?.courseName}</h1>
+                )}
                 <div className="flex items-center gap-2 md:gap-4">
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -137,7 +146,16 @@ export const CourseEditor = () => {
 
           <div className="border bg-neutral-900/40 rounded-lg p-4 flex flex-col gap-4">
             <h1 className="font-semibold select-none">About this course</h1>
-            <p className="text-sm -mt-2">{course?.courseDescription}</p>
+            {isEditing ? (
+              <Textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="text-sm bg-neutral-800/90 border-neutral-600 text-white placeholder:text-neutral-400 min-h-[80px]"
+                placeholder={course?.courseDescription || "Course description"}
+              />
+            ) : (
+              <p className="text-sm -mt-2">{course?.courseDescription}</p>
+            )}
             <span className="text-xs text-neutral-500 flex font-semibold flex-row items-center gap-2 mt-1">
               <span className="flex gap-1">
                 <CalendarClock size={14} />
@@ -164,9 +182,20 @@ export const CourseEditor = () => {
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
-              <Button onClick={() => setIsEditing(true)} className="w-fit cursor-pointer">
-                <Pencil /> Edit Details
-              </Button>
+              {isEditing ? (
+                <div className="flex gap-2">
+                  <Button onClick={() => setIsEditing(false)} variant="outline" className="w-fit cursor-pointer">
+                    Cancel
+                  </Button>
+                  <Button onClick={save} className="w-fit cursor-pointer">
+                    Save
+                  </Button>
+                </div>
+              ) : (
+                <Button onClick={() => setIsEditing(true)} className="w-fit cursor-pointer">
+                  <Pencil /> Edit Details
+                </Button>
+              )}
             </div>
           </div>
         </div>
