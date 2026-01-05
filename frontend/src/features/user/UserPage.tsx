@@ -72,7 +72,7 @@ export const UserPage = () => {
                   alt={user?.data?.username}
                   className="object-cover"
                 />
-                <AvatarFallback className="text-7xl bg-gradient-to-br from-purple-500 to-pink-500">
+                <AvatarFallback className="text-7xl bg-black">
                   {user?.data?.username?.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>

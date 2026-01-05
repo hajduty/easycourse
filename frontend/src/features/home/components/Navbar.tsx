@@ -37,12 +37,12 @@ export const Navbar = () => {
         >
           Create
         </Button>
-        <Button
+{/*         <Button
           variant={'ghost'}
           className="px-4 py-1 rounded transition cursor-pointer"
         >
           Rankings
-        </Button>
+        </Button> */}
       </div>
 
       <div className="ml-auto hidden md:flex items-center gap-2 [&>svg]:hidden list-none">
@@ -98,11 +98,11 @@ export const Navbar = () => {
               >
                 Create
               </button>
-              <button
+{/*               <button
                 className="px-4 py-2 rounded hover:bg-neutral-800 transition text-left"
               >
                 Rankings
-              </button>
+              </button> */}
 
               {authenticated ? (
                 <div className="flex flex-col gap-2 mt-4">
