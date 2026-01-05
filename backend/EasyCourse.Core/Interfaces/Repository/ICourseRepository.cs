@@ -7,9 +7,9 @@ public interface ICourseRepository
 {
     Task<Course> CreateCourse(Course newCourse);
     Task<Course?> GetCourseById(Guid courseId);
-    Task<IEnumerable<Course>> GetCoursesByUserId(Guid userId);
+    Task<IReadOnlyCollection<Course>> GetCoursesByUserId(Guid userId);
     Task<Course> UpdateCourse(Course updatedCourse);
     Task<bool> DeleteCourseById(Guid courseId);
     Task<bool> CourseExists(Guid courseId);
-    Task<(IEnumerable<Course> Courses, int TotalCount)> GetAndFilterCoursesAsync(CourseQuery query);
+    Task<(IReadOnlyCollection<Course> Courses, int TotalCount)> GetAndFilterCoursesAsync(CourseQuery query);
 }

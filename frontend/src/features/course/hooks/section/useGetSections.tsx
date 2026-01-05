@@ -18,5 +18,6 @@ export const useSections = (courseId?: string) => {
     },
     enabled: Boolean(courseId),
     staleTime: 1000 * 60,
+    refetchOnMount: false,
   });
 };

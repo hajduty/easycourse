@@ -37,21 +37,72 @@ export const SectionList: FC<SectionListProps> = ({
 
   if (!sections || sections.length === 0) {
     return (
-      <div className="flex flex-col lg:flex-row text-white lg:w-1/5">
-        <div className="hidden lg:flex flex-col border-b lg:border-b-0 p-6 lg:p-8 w-full">
+      <>
+        {/* Desktop sidebar */}
+        <div className="lg:w-1/5 w-1/4 hidden lg:flex flex-col pl-4 pr-2 xl:pl-8 sticky pt-20 top-13 h-fit">
           <h1 className="font-semibold text-lg">Course content</h1>
-          <Link to={`/course/editor/${courseId}`}>
+          <div className="flex flex-col gap-2 md:gap-4">
+            <Link to={`/course/editor/${courseId}`}>
+              <Button variant="outline" size="sm" className="w-full cursor-pointer">
+                <Home />
+                <p className="w-fit line-clamp-1">{courseTitle}</p>
+              </Button>
+            </Link>
             <Button
-              variant="outline"
-              size="sm"
-              className="w-full my-4 cursor-pointer"
+              className="cursor-pointer"
+              variant="default"
+              onClick={onAdd}
             >
-              <Home/>
+              {createSection.isPending && <Spinner />}
+              <PlusCircle />
+              Add new section
+            </Button>
+          </div>
+        </div>
+
+        {/* Mobile / tablet horizontal sections */}
+        <div className="lg:hidden w-full overflow-x-auto p-2">
+          <div className="flex gap-2">
+            <Link to={`/course/editor/${courseId}`}>
+              <Button variant="outline" size="sm">
+                Course page
+              </Button>
+            </Link>
+            <Button
+              className="cursor-pointer shrink-0"
+              variant="outline"
+              onClick={onAdd}
+              size="sm"
+            >
+              {createSection.isPending && <Spinner />}
+              <PlusCircle />
+              Add new section
+            </Button>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <>
+      {/* Desktop sidebar */}
+      <div className="lg:w-1/5 w-1/4 hidden lg:flex flex-col pl-4 pr-2 xl:pl-8 sticky pt-20 top-13 h-fit">
+        <h1 className="font-semibold text-lg">Course content</h1>
+        <div className="flex flex-col gap-2 md:gap-4">
+          <Link to={`/course/editor/${courseId}`}>
+            <Button variant="outline" size="sm" className="w-full cursor-pointer">
+              <Home />
               <p className="w-fit line-clamp-1">{courseTitle}</p>
             </Button>
           </Link>
+
+          <div className="relative">
+            <SectionsGradientList sections={sections} />
+          </div>
+
           <Button
-            className="cursor-pointer mt-4"
+            className="cursor-pointer"
             variant="default"
             onClick={onAdd}
           >
@@ -61,47 +112,13 @@ export const SectionList: FC<SectionListProps> = ({
           </Button>
         </div>
       </div>
-    );
-  }
 
-  return (
-    <>
-      {/* Desktop sidebar */}
-      <div className="hidden lg:flex flex-col p-6 lg:p-8 w-1/5 text-white sticky top-14 pt-2 h-full">
-        <h1 className="font-semibold text-lg">Course content</h1>
-
-        <Link to={`/course/editor/${courseId}`}>
-          <Button
-            variant="outline"
-            size="sm"
-            className="w-full my-4 cursor-pointer"
-          >
-            <Home/>
-            <p className="w-fit line-clamp-1">{courseTitle}</p>
-          </Button>
-        </Link>
-
-        <div className="relative mt-2">
-          <div className="flex flex-col gap-2 max-h-[600px] overflow-y-scroll scrollbar-hide">
-            <SectionsGradientList sections={sections} />
-          </div>
-        </div>
-
-        <Button
-          className="cursor-pointer mt-4"
-          variant="default"
-          onClick={onAdd}
-        >
-          {createSection.isPending && <Spinner />}
-          <PlusCircle />
-          Add new section
-        </Button>
-      </div>
-
+      {/* Mobile / tablet horizontal sections */}
       <div className="lg:hidden w-full overflow-x-auto p-2">
         <div className="flex gap-2">
           <Link to={`/course/editor/${courseId}`}>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="shrink-0">
+              <Home />
               Course page
             </Button>
           </Link>
@@ -112,16 +129,16 @@ export const SectionList: FC<SectionListProps> = ({
               to={`/course/editor/${courseId}/section/${s.sectionId}`}
               className="shrink-0"
             >
-              <div className="min-w-[200px]"> 
+              <div className="min-w-[160px] max-w-[200px]">
                 <SectionsGradientList sections={[s]} />
               </div>
             </Link>
           ))}
           <Button
-            className="cursor-pointer"
+            className="cursor-pointer shrink-0"
             variant="outline"
             onClick={onAdd}
-            size={'sm'}
+            size="sm"
           >
             {createSection.isPending && <Spinner />}
             <PlusCircle />
@@ -244,7 +261,7 @@ export function SectionsGradientList({ sections: initialSections }: { sections: 
       
       <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          <div ref={scrollRef} className="max-h-[600px] overflow-y-auto scrollbar-hide flex flex-col gap-4">
+          <div ref={scrollRef} className="max-h-[600px] overflow-y-auto scrollbar-hide flex flex-col gap-2">
             {items.map((id) => {
               const val = sectionState.find((s) => s.sectionId === id)!;
               return (

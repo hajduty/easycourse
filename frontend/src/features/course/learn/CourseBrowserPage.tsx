@@ -12,11 +12,11 @@ import { CourseCardSkeleton } from "../components/CourseCardSkeleton";
 import { useGetParticipationsByUser } from "../hooks/participant/useGetParticipationsByUser";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useAuth } from "@/providers/AuthProvider";
+import { LargeCourseCard } from "../components/LargeCourseCard";
 
 export const CoursePage = () => {
   const {user} = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isInitialized, useIsInitialized] = useState(false);
   const previousDebouncedQuery = useRef<CourseQuery | null>(null);
 
   const [query, setQuery] = useState<CourseQuery>({
@@ -24,7 +24,7 @@ export const CoursePage = () => {
     page: Number(searchParams.get("page")) || 1,
     pageSize: Number(searchParams.get("pageSize")) || 8,
     sortBy: searchParams.get("sortBy") ?? "Popular",
-    descending: searchParams.get("descending") === "true",
+    descending: searchParams.get("descending") ? searchParams.get("descending") === "true" : true,
   });
 
   const [debouncedQuery] = useDebounce(query, 200);
@@ -35,26 +35,20 @@ export const CoursePage = () => {
     staleTime: 60_000
     });
 
-  // Only update URL when debounced query actually changes
+  // Update URL when debounced query changes
   useEffect(() => {
-    if (!isInitialized) {
-      useIsInitialized(true);
-      previousDebouncedQuery.current = debouncedQuery;
-      return;
-    }
-
-    // Only update if something actually changed
     if (JSON.stringify(previousDebouncedQuery.current) !== JSON.stringify(debouncedQuery)) {
+      const isInitial = previousDebouncedQuery.current === null;
       setSearchParams({
         query: debouncedQuery.query!,
         page: String(debouncedQuery.page),
         pageSize: String(debouncedQuery.pageSize),
         sortBy: debouncedQuery.sortBy!,
         descending: String(debouncedQuery.descending),
-      });
+      }, { replace: isInitial });
       previousDebouncedQuery.current = debouncedQuery;
     }
-  }, [debouncedQuery, setSearchParams, isInitialized]);
+  }, [debouncedQuery, setSearchParams]);
 
   const courses = data?.data.items ?? [];
 
@@ -123,8 +117,8 @@ export const CoursePage = () => {
         </div>
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-4 md:gap-8 w-full mx-auto">
           {isGridLoading
-            ? Array.from({ length: 8 }).map((_, i) => <CourseCardSkeleton key={i} />)
-            : sortedCourses.map((course, index) => <CourseCard key={index} {...course} />)}
+            ? Array.from({ length: 8 }).map((_, i) => <LargeCourseCard key={i} isLoading={true} {...({} as any)}/>)
+            : sortedCourses.map((course, index) => <LargeCourseCard key={index} {...course} />)}
         </div>
       </div>
       <CoursePagination

@@ -6,6 +6,7 @@ export const useUser = (userId: string) => {
     queryKey: ["user", userId],
     queryFn: async () => (await GetUserInfo(userId!)).data,
     enabled: Boolean(userId),
-    staleTime: 1000 * 60,
+    staleTime: 1000 * 60, // 1 minute
+    refetchOnMount: false,
   });
 };

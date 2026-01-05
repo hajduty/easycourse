@@ -4,10 +4,11 @@ using EasyCourse.Core.Entities;
 using EasyCourse.Core.Interfaces.Repository;
 using EasyCourse.Core.Interfaces.Service;
 using EasyCourse.Core.Mappings;
+using EasyCourse.Core.ReadModels;
 
 namespace EasyCourse.Infrastructure.Services;
 
-public class CourseService(ICourseRepository courseRepo, IRatingRepository ratingRepo) : ICourseService
+public class CourseService(ICourseRepository courseRepo, IRatingRepository ratingRepo, ISectionRepository sectionRepo) : ICourseService
 {
     public async Task<CourseResponse> CreateCourse(CourseRequest newCourse, Guid userId)
     {
@@ -50,10 +51,25 @@ public class CourseService(ICourseRepository courseRepo, IRatingRepository ratin
             .GroupBy(r => r.EntityId)
             .ToDictionary(g => g.Key, g => g.ToList());
 
+        var courseGuids = courseIds
+            .Select(Guid.Parse)
+            .ToList();
+
+        var minimalSections = await sectionRepo.GetMinimalSectionsByCourseIds(courseGuids);
+
+        var sectionsGrouped = minimalSections
+            .GroupBy(s => s.CourseId)
+            .ToDictionary(
+                g => g.Key,
+                g => (IReadOnlyCollection<SectionMinimal>)g.ToList()
+            );
+
         var courseResponses = courses.Select(c =>
         {
             ratingsGrouped.TryGetValue(c.CourseId.ToString(), out var courseRatings);
-            return c.ToResponseDto(courseRatings);
+            sectionsGrouped.TryGetValue(c.CourseId, out var courseSections);
+
+            return c.ToResponseDto(courseRatings, courseSections);
         }).ToList();
 
         return new PagedResponse<CourseResponse>(courseResponses, totalCount, query.Page, query.PageSize);

@@ -12,6 +12,8 @@ export interface CourseResponse {
   imagePath: string;
   totalRatings: number;
   averageRating: number;
+  totalSections?: number;
+  totalReadTime: number;
 }
 
 export interface CourseRequest {

@@ -16,6 +16,8 @@ export const useCommentsForEntity = (entityType: string, entityId: string) => {
       return failureCount < 3;
     },
     enabled: !!entityType && !!entityId,
+    staleTime: 1000 * 60, // 1 minute
+    refetchOnMount: false,
   });
 };
 

@@ -15,7 +15,7 @@ export interface SectionItem extends Section {
 }
 
 export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, readingTime, canDelete, sectionId, onEdit, isCompleted }) => {
-  const {sectionId: paramSectionId} = useParams();
+  const { sectionId: paramSectionId } = useParams();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editing, setEditing] = useState<boolean>();
   const [tempTitle, setTempTitle] = useState(title);
@@ -39,15 +39,15 @@ export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, reading
 
   return (
     <div
-      className={`w-full h-8 p-2 flex items-center rounded-sm lg:gap-4 gap-2 justify-around px-4 group relative border hover:bg-neutral-800 transition ${textColorClass} ${bgClass}`}
+      className={`w-full h-8 p-2 flex items-center rounded-sm xl:gap-4 gap-2 px-4 group relative border hover:bg-neutral-800 transition ${textColorClass} ${bgClass}`}
     >
-      <h1 className="text-center justify-self-center lg:ml-0 -ml-2">{order}</h1>
-      <Separator className="lg:block hidden w-4" orientation="vertical" />
+      <h1 className="text-center shrink-0 -ml-2 xl:ml-0">{order}</h1>
+      <Separator className="w-4" orientation="vertical" />
 
       {/* TITLE SECTION */}
       {!editing ? (
         <h1
-          className="grow cursor-pointer line-clamp-1"
+          className="flex-1 min-w-0 cursor-pointer truncate"
           onClick={() => {
             if (!canDelete) return;
             setTempTitle(title);
@@ -61,10 +61,10 @@ export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, reading
           value={tempTitle}
           onChange={(e) => setTempTitle(e.target.value)}
           onBlur={finishEditing}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-            }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
           onKeyDown={(e) => {
             if (e.key === "Enter") finishEditing();
             if (e.key === "Escape") {
@@ -72,9 +72,11 @@ export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, reading
               setEditing(false);
             }
           }}
-          className="px-2 h-auto border-0 bg-transparent focus:bg-transparent dark:bg-transparent grow mr-4 focus:ring-0 focus:outline-0 focus-visible:ring-0"
+          className="flex-1 min-w-0 px-2 h-auto border-0 bg-transparent
+      focus:ring-0 focus:outline-0 focus-visible:ring-0"
         />
       )}
+
 
       {/* Pencil icon ONLY when editing is available */}
       {canDelete && !editing && (
@@ -144,9 +146,11 @@ export const CourseContent: FC<SectionItem> = ({ onDelete, order, title, reading
       {!canDelete && (
         <>
           <Separator className="w-8" orientation="vertical" />
-          <p className="text-xs text-nowrap text-neutral-200">
-            {readingTime} Minutes
-          </p>
+          <div className="-mr-2 xl:mr-0">
+            <p className="text-xs text-nowrap text-neutral-200">
+              {readingTime}min
+            </p>
+          </div>
         </>
       )}
     </div>

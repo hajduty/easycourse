@@ -43,7 +43,7 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
             .FirstOrDefaultAsync(c => c.CourseId == courseId);
     }
 
-    public async Task<IEnumerable<Course>> GetCoursesByUserId(Guid userId)
+    public async Task<IReadOnlyCollection<Course>> GetCoursesByUserId(Guid userId)
     {
         return await _context.Courses
             .Where(c => c.CreatedByUserId == userId)
@@ -53,7 +53,7 @@ public class CourseRepository(AppDbContext _context) : ICourseRepository
             .ToListAsync();
     }
 
-    public async Task<(IEnumerable<Course> Courses, int TotalCount)> GetAndFilterCoursesAsync(CourseQuery query)
+    public async Task<(IReadOnlyCollection<Course> Courses, int TotalCount)> GetAndFilterCoursesAsync(CourseQuery query)
     {
         var page = Math.Max(query.Page, 1);
         var pageSize = Math.Clamp(query.PageSize, 1, 100);
