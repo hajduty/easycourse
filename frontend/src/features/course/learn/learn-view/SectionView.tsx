@@ -58,7 +58,7 @@ export const SectionView = () => {
         )}
       </div>
 
-      <div className="xl:w-1/5 xl:border-t-0 border sticky top-30 h-fit">
+      <div className="xl:w-1/5 xl:border-t-0 xl:border-0 border sticky top-30 h-fit">
         <div className="hidden xl:block p-2">
           <QuizView key={sectionId} quizData={parsedQuizData}></QuizView>
         </div>
