@@ -7,5 +7,6 @@ export const useCourse = (courseId?: string) => {
     queryFn: () => GetCourseById(courseId!),
     enabled: Boolean(courseId),
     staleTime: 1000 * 60,
+    refetchOnMount: false,
   });
 };

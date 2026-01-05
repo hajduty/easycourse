@@ -18,6 +18,8 @@ export const useCourseRating = (entityId: string | null, userId: string | undefi
       return failureCount < 3;
     },
     enabled: !!entityId && !!userId,
+    staleTime: 1000 * 60, // 1 minute
+    refetchOnMount: false,
   });
 };
 
