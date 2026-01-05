@@ -8,7 +8,7 @@ export const useSection = (courseId?: string, sectionId?: string) => {
       const res = await GetSection(courseId!, sectionId!);
       return res.data;
     },
-    enabled: Boolean(courseId),
+    enabled: Boolean(courseId) && Boolean(sectionId),
     staleTime: 1000 * 60,
   });
 };

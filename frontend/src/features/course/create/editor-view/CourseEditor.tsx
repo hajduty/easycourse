@@ -84,7 +84,7 @@ export const CourseEditor = () => {
           <div className="relative w-full xl:rounded-xl rounded-sm overflow-hidden h-96 border">
             <img
               draggable={false}
-              src={imageUrl + course?.imagePath}
+              src={course?.imagePath ? imageUrl + course.imagePath : undefined}
               alt="Course cover"
               className="w-full h-full object-cover select-none"
             />
@@ -206,7 +206,7 @@ export const CourseEditor = () => {
             <Link to={`/user/profile/${course?.createdById}`}>
               <div className="flex items-center gap-4 border  bg-neutral-900 rounded hover:bg-neutral-800 transition">
                 <Avatar className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-none rounded-l">
-                  <AvatarImage src={imageUrl + creatorInfo?.imagePath} alt={creatorInfo?.username} className="rounded-none object-cover" />
+                  <AvatarImage src={creatorInfo?.imagePath ? imageUrl + creatorInfo.imagePath : undefined} alt={creatorInfo?.username} className="rounded-none object-cover" />
                   <AvatarFallback className="rounded-none bg-black text-white">{creatorInfo?.username?.charAt(0).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <div>
@@ -226,7 +226,7 @@ export const CourseEditor = () => {
                   <div className="flex items-center gap-3 rounded border hover:bg-neutral-800 transition">
                     <img
                       draggable={false}
-                      src={imageUrl + val?.imagePath}
+                      src={val?.imagePath ? imageUrl + val.imagePath : undefined}
                       alt={val?.courseName}
                       className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l object-cover"
                     />

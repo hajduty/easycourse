@@ -198,7 +198,7 @@ export const CourseCard: FC<CourseCardResponse> = ({
 
       <img
         draggable={false}
-        src={imageUrl + imagePath}
+        src={imagePath ? imageUrl + imagePath : undefined}
         alt={courseName}
         onLoad={() => setIsImageLoaded(true)}
         className={`w-full h-full object-cover transition-all duration-500 ${
@@ -251,7 +251,7 @@ export const CourseCard: FC<CourseCardResponse> = ({
           >
             <CardFooter className="p-0 text-white/80 text-xs m-0">
               <Avatar className={avatarSizeVariants({ size })}>
-                <AvatarImage src={imageUrl + creatorInfo.data?.imagePath} className="rounded-full" />
+                <AvatarImage src={creatorInfo.data?.imagePath ? imageUrl + creatorInfo.data.imagePath : undefined} className="rounded-full" />
                 <AvatarFallback className={`bg-black ${size === "small" ? "text-[10px]" : "text-xs"}`}>
                   {createdBy.charAt(0).toUpperCase()}
                 </AvatarFallback>

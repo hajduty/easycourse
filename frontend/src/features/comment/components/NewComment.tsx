@@ -37,7 +37,7 @@ export const NewComment = ({ name, profilePic, entityType, entityId }: NewCommen
   const commentForm = (
     <div className="w-full items-start flex py-4 gap-3">
       <Avatar className="mt-2">
-        <AvatarImage src={imageUrl+profilePic} alt={name} className=""/>
+        <AvatarImage src={profilePic ? imageUrl + profilePic : undefined} alt={name} className=""/>
         <AvatarFallback>{name?.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
 

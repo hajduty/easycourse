@@ -30,6 +30,7 @@ export const useGetParticipationsByUser = (userId: string) => {
 
       return participations;
     },
+    enabled: Boolean(userId),
     staleTime: 1000 * 60,
     refetchOnWindowFocus: false
   })

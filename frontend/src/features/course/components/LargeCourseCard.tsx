@@ -64,7 +64,7 @@ export const LargeCourseCard = (props: Props) => {
         onClick={() => navigate(`/course/${props.courseId}`)}
       >
         <span className='h-42 w-full overflow-hidden rounded-lg p-0 m-0'>
-          <img src={imageUrl + props.imagePath} className='h-full w-full object-cover group-hover:scale-110 transition-all duration-200' />
+          <img src={props.imagePath ? imageUrl + props.imagePath : undefined} className='h-full w-full object-cover group-hover:scale-110 transition-all duration-200' />
         </span>
         <span className='flex gap-1 items-center'>
           <StarRating initialValue={props.averageRating} readOnly={true} />
@@ -73,7 +73,7 @@ export const LargeCourseCard = (props: Props) => {
         <h1 className='line-clamp-1'>{props.courseName}</h1>
         <span className='flex gap-1 items-center'>
           <Avatar className='p-1'>
-            <AvatarImage src={imageUrl + creator.data?.imagePath} className="rounded-full" />
+            <AvatarImage src={creator.data?.imagePath ? imageUrl + creator.data.imagePath : undefined} className="rounded-full" />
             <AvatarFallback className={`bg-black text-xs`}>
               {props.createdBy.charAt(0).toUpperCase()}
             </AvatarFallback>

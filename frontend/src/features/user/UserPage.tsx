@@ -68,7 +68,7 @@ export const UserPage = () => {
             <div className="relative group">
               <Avatar className="w-48 h-48 border-4 border-neutral-800 shadow-2xl transition-all duration-300 group-hover:border-neutral-700">
                 <AvatarImage
-                  src={imageUrl + user.data?.imagePath}
+                  src={user.data?.imagePath ? imageUrl + user.data.imagePath : undefined}
                   alt={user?.data?.username}
                   className="object-cover"
                 />

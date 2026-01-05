@@ -111,56 +111,62 @@ export const CourseInfo = () => {
     return (
       <TooltipProvider>
         <div className="flex md:flex-row flex-col h-full">
-          {/* MAIN CONTENT */}
+
+          {/* MAIN */}
           <div className="md:w-5/7 xl:w-4/5 w-full border-b md:border-b-0 p-2 xl:p-8 flex flex-col gap-6">
 
-            {/* Image container */}
+            {/* Hero image */}
             <div className="relative w-full xl:rounded-xl rounded-sm overflow-hidden h-96 border">
               <Skeleton className="absolute inset-0" />
 
-              {/* Bottom gradient */}
-              <div className="absolute bottom-0 left-0 right-0 h-48 bg-linear-to-t from-black/40 to-transparent" />
+              {/* gradient */}
+              <div className="absolute bottom-0 left-0 right-0 h-48 bg-linear-to-t from-black/60 to-transparent" />
 
-              {/* Title + stats */}
+              {/* title + stats */}
               <div className="absolute bottom-0 left-0 right-0 p-4 space-y-2">
-                <Skeleton className="h-8 w-2/3" />
-
-                <div className="flex items-center gap-4">
+                <Skeleton className="h-8 w-1/2" />
+                <div className="flex items-center gap-3">
+                  <Skeleton className="h-4 w-14" />
+                  <Skeleton className="h-4 w-px bg-white/40" />
                   <Skeleton className="h-4 w-16" />
-                  <Skeleton className="h-4 w-1" />
-                  <Skeleton className="h-4 w-20" />
-                  <Skeleton className="h-4 w-1" />
-                  <Skeleton className="h-4 w-28" />
+                  <Skeleton className="h-4 w-px bg-white/40" />
+                  <Skeleton className="h-4 w-24" />
                 </div>
               </div>
 
-              {/* Join button */}
+              {/* join button */}
               <div className="absolute bottom-4 right-4">
-                <Skeleton className="h-10 w-36 rounded-lg" />
+                <Skeleton className="h-10 w-40 rounded-lg" />
               </div>
             </div>
 
-            {/* Description */}
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-11/12" />
-              <Skeleton className="h-4 w-5/6" />
-              <Skeleton className="h-4 w-3/4" />
+            {/* ABOUT CARD */}
+            <div className="border bg-neutral-900/40 rounded-lg p-4 flex flex-col gap-4">
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-5 w-28" />
+              </div>
+
+              <Separator className="bg-neutral-800" />
+
+              <Skeleton className="h-5 w-40" />
+
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-11/12" />
+                <Skeleton className="h-4 w-5/6" />
+              </div>
+
+              <Skeleton className="h-4 w-48" />
+              <Skeleton className="h-9 w-32 rounded-md" />
             </div>
 
-            {/* Publish date */}
-            <Skeleton className="h-4 w-48" />
-
-            {/* Comments */}
-            <div className="space-y-4">
+            {/* COMMENTS */}
+            <div className="bg-neutral-900/40 border rounded-lg p-4 space-y-4">
               <Skeleton className="h-5 w-32" />
-              <Skeleton className="h-20 w-full rounded-lg" />
-
-              <div className="space-y-3">
-                <Skeleton className="h-16 w-full rounded-lg" />
-                <Skeleton className="h-16 w-full rounded-lg" />
-                <Skeleton className="h-16 w-5/6 rounded-lg" />
-              </div>
+              <Skeleton className="h-16 w-full rounded-lg" />
+              <Skeleton className="h-16 w-full rounded-lg" />
+              <Skeleton className="h-16 w-5/6 rounded-lg" />
             </div>
           </div>
 
@@ -187,9 +193,13 @@ export const CourseInfo = () => {
                   <div key={i} className="flex items-center gap-3 rounded border">
                     <Skeleton className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l" />
                     <div className="flex-1 space-y-2 p-1">
-                      <Skeleton className="h-3 w-24" />
-                      <Skeleton className="h-3 w-32" />
-                      <Skeleton className="h-3 w-20" />
+                      <Skeleton className="h-3 w-28" />
+                      <Skeleton className="h-3 w-full" />
+                      <div className="flex gap-3">
+                        <Skeleton className="h-3 w-10" />
+                        <Skeleton className="h-3 w-10" />
+                        <Skeleton className="h-3 w-10" />
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -209,7 +219,7 @@ export const CourseInfo = () => {
           <div className="relative w-full xl:rounded-xl rounded-sm overflow-hidden h-96 border">
             <img
               draggable={false}
-              src={imageUrl + course?.imagePath}
+              src={course?.imagePath ? imageUrl + course.imagePath : undefined}
               alt="Course cover"
               className="w-full h-full object-cover select-none"
             />
@@ -276,7 +286,7 @@ export const CourseInfo = () => {
               </Button>
             </div>
           </div>
-{/*           <p className="text-neutral-300 leading-relaxed min-h-32">{course?.courseDescription}</p>
+          {/*           <p className="text-neutral-300 leading-relaxed min-h-32">{course?.courseDescription}</p>
 
           <p className="text-sm text-neutral-500">
             Published: {date?.toLocaleDateString()}
@@ -295,13 +305,13 @@ export const CourseInfo = () => {
                 Published {date?.toLocaleDateString()}
               </span>
             </span>
-          {course?.createdById === user?.id && (
-            <Link to={`/course/editor/${course?.courseId}`} className="self-start">
-              <Button variant="secondary" className="flex items-center gap-2">
-                <Pencil /> Edit course
-              </Button>
-            </Link>
-          )}
+            {course?.createdById === user?.id && (
+              <Link to={`/course/editor/${course?.courseId}`} className="self-start">
+                <Button variant="secondary" className="flex items-center gap-2">
+                  <Pencil /> Edit course
+                </Button>
+              </Link>
+            )}
           </div>
           <div className="bg-neutral-900/40 border rounded-lg p-4">
             <div className="w-full">
@@ -331,7 +341,7 @@ export const CourseInfo = () => {
                 className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l"
               /> */}
                 <Avatar className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-none rounded-l">
-                  <AvatarImage src={imageUrl + creatorInfo?.imagePath} alt={creatorInfo?.username} className="rounded-none object-cover" />
+                  <AvatarImage src={creatorInfo?.imagePath ? imageUrl + creatorInfo.imagePath : undefined} alt={creatorInfo?.username} className="rounded-none object-cover" />
                   <AvatarFallback className="rounded-none bg-black text-white">{creatorInfo?.username?.charAt(0).toUpperCase()}</AvatarFallback>
                 </Avatar>
                 <div>
@@ -351,7 +361,7 @@ export const CourseInfo = () => {
                   <div className="flex items-center gap-3 rounded border hover:bg-neutral-800 transition">
                     <img
                       draggable={false}
-                      src={imageUrl + val.imagePath}
+                      src={val.imagePath ? imageUrl + val.imagePath : undefined}
                       alt={val.courseName}
                       className="w-20 h-20 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-l object-cover"
                     />
