@@ -1,6 +1,5 @@
 ﻿using EasyCourse.Core.Interfaces.Service;
 using EasyCourse.Infrastructure.Options;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;

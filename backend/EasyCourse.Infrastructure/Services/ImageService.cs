@@ -2,9 +2,6 @@
 using EasyCourse.Core.Entities;
 using EasyCourse.Core.Interfaces.Repository;
 using EasyCourse.Core.Interfaces.Service;
-using EasyCourse.Core.Mappings;
-using EasyCourse.Infrastructure.Data;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 
 namespace EasyCourse.Infrastructure.Services;
