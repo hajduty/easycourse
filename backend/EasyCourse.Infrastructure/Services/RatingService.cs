@@ -1,9 +1,7 @@
 ﻿using EasyCourse.Core.DTO.Rating;
-using EasyCourse.Core.Entities;
 using EasyCourse.Core.Interfaces.Repository;
 using EasyCourse.Core.Interfaces.Service;
 using EasyCourse.Core.Mappings;
-using Microsoft.IdentityModel.Tokens;
 
 namespace EasyCourse.Infrastructure.Services;
 

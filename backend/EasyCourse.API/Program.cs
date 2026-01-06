@@ -81,6 +81,8 @@ namespace EasyCourse.API
                 app.UseSwaggerUI(Theme.UniversalDark);
             }
 
+            app.EnsureMinioBuckets();
+
             app.UseCors("AllowOrigin");
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
@@ -92,8 +94,6 @@ namespace EasyCourse.API
             app.UseAuthorization();
 
             app.MapControllers();
-
-            app.UseStaticFiles();
 
             app.Run();
         }

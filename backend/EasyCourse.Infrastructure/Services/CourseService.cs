@@ -1,6 +1,5 @@
 ﻿using EasyCourse.Core.DTO;
 using EasyCourse.Core.DTO.Course;
-using EasyCourse.Core.Entities;
 using EasyCourse.Core.Interfaces.Repository;
 using EasyCourse.Core.Interfaces.Service;
 using EasyCourse.Core.Mappings;
