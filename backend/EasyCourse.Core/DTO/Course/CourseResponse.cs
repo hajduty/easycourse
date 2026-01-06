@@ -5,7 +5,7 @@ namespace EasyCourse.Core.DTO.Course;
 
 public class CourseResponse
 {
-    public const string DefaultImagePath = "uploads/images/placeholder.jpg";
+    public const string DefaultImagePath = "images/originals/placeholder.jpg";
 
     public Guid CourseId { get; set; }
     public string CourseName { get; set; } = string.Empty;

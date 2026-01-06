@@ -7,21 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\uploads\images\13368d41-3f4f-4862-a084-5d28afeb78c0.png" />
-    <Content Remove="wwwroot\uploads\images\2a55c06b-c9f7-47de-94f3-4d0968b0ce77.png" />
-    <Content Remove="wwwroot\uploads\images\4e4e95df-a57a-4fda-8ed4-e3297785a16f.png" />
-    <Content Remove="wwwroot\uploads\images\4fcc456d-13bb-4617-bb9b-693ed3b92f84.png" />
-    <Content Remove="wwwroot\uploads\images\533d95b3-1db1-482f-ade5-bcac237dae92.png" />
-    <Content Remove="wwwroot\uploads\images\58b32ff4-d704-4b16-8c35-cef49fe3854c.jpg" />
-    <Content Remove="wwwroot\uploads\images\a0e0b7fe-6781-4758-a68e-72ffef074861.png" />
-    <Content Remove="wwwroot\uploads\images\a6d6ab95-2853-4a27-a59f-5a09c9f06465.png" />
-    <Content Remove="wwwroot\uploads\images\aa734d31-291b-47cc-88a7-30d3d952053d.png" />
-    <Content Remove="wwwroot\uploads\images\b3c9fd50-3a9a-4275-9907-046b1c855c41.png" />
-    <Content Remove="wwwroot\uploads\images\ca130623-d179-48d3-97c8-7eb858b827ba.png" />
-    <Content Remove="wwwroot\uploads\images\f81f3b91-4a3b-4000-99b0-d860fcaa9ffe.png" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
       <PrivateAssets>all</PrivateAssets>

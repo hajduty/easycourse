@@ -31,26 +31,6 @@ public class ImageController(IImageService imageService) : ApiControllerBase
         return HandleResult(image);
     }
 
-    [HttpGet("{id}/file")]
-    public async Task<IActionResult> GetImageFile(Guid id)
-    {
-        var image = await imageService.GetMetadataAsync(id);
-        var bytes = await imageService.GetFileBytesAsync(id);
-
-        return File(bytes, "application/octet-stream", Path.GetFileName(image.Path));
-    }
-
-    [Authorize]
-    [HttpPut("{id}")]
-    [ProducesResponseType(typeof(ApiResponse<ImageDto>), StatusCodes.Status200OK)]
-    [Consumes("multipart/form-data")]
-    public async Task<IActionResult> UpdateImage(Guid id, [FromForm] ImageRequest file)
-    {
-        var userId = GetUserId();
-        var updated = await imageService.UpdateImageAsync(id, file.File, new Guid(userId));
-        return HandleResult(updated);
-    }
-
     [Authorize]
     [HttpDelete("{id}")]
     [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status200OK)]

@@ -2,7 +2,7 @@ import type { Tokens } from "@/types/auth";
 import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from "axios";
 
 export const apiUrl = import.meta.env.VITE_API_URL || 'https://localhost:7009/api';
-export const imageUrl = import.meta.env.VITE_IMAGE_URL || 'https://localhost:7009/';
+export const imageUrl = import.meta.env.VITE_IMAGE_URL || 'https://minio-i4o4gsocoocg80sw8kwwk0o8.95.216.165.107.sslip.io/images/';
 
 // Queue management
 interface QueuedRequest {
