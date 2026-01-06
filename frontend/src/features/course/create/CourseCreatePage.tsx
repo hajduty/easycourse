@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { CircleAlert, Plus, Upload } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
@@ -151,6 +153,19 @@ export default function CourseCreateBrowser() {
                   />
                 </div>
 
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id="visibility"
+                    checked={course.isPublic}
+                    onCheckedChange={(checked) =>
+                      setCourse((c) => ({ ...c, isPublic: checked as boolean }))
+                    }
+                  />
+                  <Label htmlFor="visibility" className="text-sm text-neutral-300">
+                    Make course public
+                  </Label>
+                </div>
+
                 <div>
                   <p className="font-semibold text-sm text-neutral-300 pb-1">
                     Course Image
@@ -209,7 +224,7 @@ export default function CourseCreateBrowser() {
                     sections={[]}
                     participantCount={0}
                     createdAt={new Date()}
-                    isPublic={false}
+                    isPublic={course.isPublic}
                     views={0}
                     imagePath={(uploadedImagePath || "uploads/images/placeholder.jpg")}
                     totalRatings={0}
