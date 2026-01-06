@@ -2,6 +2,8 @@ import { useNavigate, useOutletContext } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { useRef, useState } from "react";
 import { useUpdateCourse } from "../../hooks/course/useUpdateCourse";
 import { Eye, EyeOff, Pencil, Trash, CalendarClock, Users, Star } from "lucide-react";
@@ -165,6 +167,36 @@ export const CourseEditor = () => {
             ) : (
               <p className="text-sm -mt-2">{course?.courseDescription}</p>
             )}
+
+            <div className="flex items-center gap-2">
+              {isEditing ? (
+                <>
+                  <Checkbox
+                    id="visibility"
+                    checked={isPublic}
+                    onCheckedChange={(checked) => setIsPublic(checked as boolean)}
+                  />
+                  <Label htmlFor="visibility" className="text-sm">
+                    Make course public
+                  </Label>
+                </>
+              ) : (
+                <span className="text-sm text-neutral-400">
+                  {course?.isPublic ? (
+                    <>
+                      <Eye size={14} className="inline mr-1" />
+                      Public course
+                    </>
+                  ) : (
+                    <>
+                      <EyeOff size={14} className="inline mr-1" />
+                      Private course
+                    </>
+                  )}
+                </span>
+              )}
+            </div>
+
             <span className="text-xs text-neutral-500 flex font-semibold flex-row items-center gap-2 mt-1">
               <span className="flex gap-1">
                 <CalendarClock size={14} />
