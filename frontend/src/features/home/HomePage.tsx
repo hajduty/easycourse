@@ -1,3 +1,4 @@
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import course from "../../assets/course_5.png";
@@ -10,6 +11,7 @@ import type { CourseQuery } from "@/types/courseQuery";
 import { LargeCourseCard } from "../course/components/LargeCourseCard";
 
 export const HomePage = () => {
+  usePageTitle(undefined); // Just shows "EasyCourse"
   const categories = ["AI", "Python", "Web Dev", "Data", "Design"];
 
   // Query for top popular courses

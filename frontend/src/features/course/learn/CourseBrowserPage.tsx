@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GetCourses } from "../api";
 import { useDebounce } from "use-debounce";
 import { useSearchParams } from "react-router";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { CourseCardSkeleton } from "../components/CourseCardSkeleton";
 import { useGetParticipationsByUser } from "../hooks/participant/useGetParticipationsByUser";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
@@ -15,6 +16,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { LargeCourseCard } from "../components/LargeCourseCard";
 
 export const CoursePage = () => {
+  usePageTitle("Browse Courses");
   const {user} = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const previousDebouncedQuery = useRef<CourseQuery | null>(null);

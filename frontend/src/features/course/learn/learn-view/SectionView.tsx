@@ -1,16 +1,29 @@
-import { useParams } from "react-router";
+import { useParams, useOutletContext } from "react-router";
 import type { Content } from "@tiptap/react";
 import { useEffect, useState } from "react";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { QuizView } from "./QuizView";
 import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "@/components/animate-ui/primitives/base/collapsible";
 import { useSection } from "../../hooks/section/useGetSection";
 import React from "react";
 
+interface CourseInfoContext {
+  course: any;
+}
+
 const SimpleEditor = React.lazy(() => import("@/components/tiptap-templates/simple/simple-editor"));
 
 export const SectionView = () => {
   const { sectionId, courseId } = useParams<{ sectionId: string; courseId: string }>();
+  const { course } = useOutletContext<CourseInfoContext>();
   const loadedSection = useSection(courseId!, sectionId!);
+
+  // Set page title with course name and section title
+  usePageTitle(
+    course?.courseName && loadedSection.data?.title
+      ? `${loadedSection.data.title} - ${course.courseName}`
+      : course?.courseName
+  );
 
   const [content, setContent] = useState<Content>("");
   const [isContentLoaded, setIsContentLoaded] = useState(false);

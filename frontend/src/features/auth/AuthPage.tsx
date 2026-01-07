@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Tabs, TabsContent, TabsContents, TabsList, TabsTrigger } from "../../components/animate-ui/components/animate/tabs"
 import { Card } from "../../components/ui/card"
 import { LoginCard } from "./components/LoginCard"
@@ -7,6 +8,7 @@ import { BubbleBackground } from '@/components/animate-ui/components/backgrounds
 import { useAuth } from "@/providers/AuthProvider";
 
 function AuthPage() {
+  usePageTitle("Auth - EasyCourse");
   const {authenticated} = useAuth();
   const navigate = useNavigate();
 

@@ -1,4 +1,7 @@
+import { usePageTitle } from "@/hooks/usePageTitle";
+
 export const CodePage = () => {
+  usePageTitle("Code Problems");
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Code Problems</h1>

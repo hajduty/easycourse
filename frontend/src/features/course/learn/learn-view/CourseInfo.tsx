@@ -1,3 +1,4 @@
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { Button } from "@/components/ui/button";
 import { CalendarClock, Eye, Pencil, Star, Users } from "lucide-react";
 import { Link, useOutletContext, useParams } from "react-router";
@@ -38,6 +39,9 @@ export const CourseInfo = () => {
     user,
   } = useOutletContext<CourseInfoContext>();
   const { courseId } = useParams<{ sectionId: string; courseId: string }>();
+
+  // Set page title with course name
+  usePageTitle(course?.courseName);
   const { user: userInfo, authenticated } = useAuth();
 
   const participantInfo = useParticipantInfo(courseId!, userInfo?.id!);

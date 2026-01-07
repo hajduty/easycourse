@@ -9,6 +9,7 @@ import { CircleAlert, Plus, Upload } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
 import { useCreateCourse } from "../hooks/course/useCreateCourse";
 import { useNavigate } from "react-router";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { useCoursesByUser } from "../hooks/course/useCoursesByUser";
 import { useAuth } from "@/providers/AuthProvider";
 import { CourseCard } from "../components/CourseCard";
@@ -27,6 +28,7 @@ import { UploadImage } from "@/features/api";
 import { imageUrl } from "@/lib/apiClient";
 
 export default function CourseCreateBrowser() {
+  usePageTitle("Create Course");
   const { user } = useAuth();
   const navigate = useNavigate();
   const createCourse = useCreateCourse();

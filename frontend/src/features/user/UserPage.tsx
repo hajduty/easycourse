@@ -1,5 +1,6 @@
 import { useAuth } from "@/providers/AuthProvider";
 import { useParams } from "react-router";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { useUser } from "./hooks/useUser";
 import { imageUrl } from "@/lib/apiClient";
 import { CourseCard } from "../course/components/CourseCard";
@@ -23,6 +24,9 @@ export const UserPage = () => {
 
   const resolvedUserId = routeUserId ?? authUser?.id;
   const user = useUser(resolvedUserId!);
+
+  // Set page title
+  usePageTitle(user.data?.username ? `${user.data.username} - Profile` : undefined);
   const updateUser = useUpdateUser();
   const courses = useCoursesByUser(resolvedUserId);
   const joinedCourses = useGetParticipationsByUser(resolvedUserId!);

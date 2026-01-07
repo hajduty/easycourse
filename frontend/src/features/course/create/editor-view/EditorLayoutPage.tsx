@@ -1,5 +1,5 @@
-
 import { Outlet, useParams } from "react-router";
+import { usePageTitle } from "@/hooks/usePageTitle";
 import { useCourse } from "../../hooks/course/useCourse";
 import { useSections } from "../../hooks/section/useGetSections";
 import { useAuth } from "@/providers/AuthProvider";
@@ -17,6 +17,9 @@ export const EditorLayout = () => {
   const sections = sectionsQuery.data ?? [];
   const userCourses = userCoursesQuery.data?.data ?? [];
   const otherCourses = userCourses.filter((c: any) => c?.courseId !== courseId);
+
+  // Set page title with course name
+  usePageTitle(course?.courseName ? `${course.courseName} - Editor` : "Editor");
 
   // Create date from course creation date
   const date = course?.createdAt ? new Date(course.createdAt) : null;
